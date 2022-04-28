@@ -21,9 +21,9 @@
             <RouterLink
                 active-class="active-group"
                 class="btn btn-menu tab tooltip"
-                :class="{active: tabId === 'permissions'}"
+                :class="{active: tabId === 'permissions', disabled: $s.admin.groups.length === 0}"
                 :data-tooltip="$t('permissions')"
-                :to="routeSettings('permissions')"
+                :to="$s.admin.groups.length > 0 ? routeSettings('permissions') : $router.currentRoute.value.href"
             >
                 <Icon class="icon-small" name="Operator" />
             </RouterLink>

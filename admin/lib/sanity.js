@@ -21,13 +21,14 @@ export async function verifyConfig(app) {
     } else {
         configFile = path.join(process.env.HOME, '.pyriterc')
     }
+    // Always keep a reference to the config file itself in the config.
+    app.settings.config = configFile
 
     if (!await fs.pathExists(configFile)) {
         app.logger.info('generating config...')
-        let sfuPath = app.settings.sfu.path
-        let sfuUrl = app.settings.sfu.url
+        let sfuPath
 
-        // Config passed as commandline argument
+        // sfuPath & sfuUrl are passed as commandline argument
         if (app.settings.sfuPath) {
             sfuPath = app.settings.sfuPath
             delete app.settings.sfuPath
@@ -49,14 +50,15 @@ export async function verifyConfig(app) {
 
         // Add initial user.
         const user = userTemplate({admin: true, name: 'pyrite'})
+        app.logger.info(`initial admin login: ${user.name}/${user.password}`)
         app.settings.users = [user]
 
         if (app.settings.sfuUrl) {
-            sfuUrl = app.settings.sfuUrl
+            app.settings.sfu.url = app.settings.sfuUrl
+            delete app.settings.sfuUrl
         }
 
         app.settings.sfu.path = sfuPath
-        app.settings.sfu.url = sfuUrl
         app.settings.session.secret = crypto.randomBytes(20).toString('hex')
 
         await fs.writeFile(configFile, JSON.stringify(app.settings, null, '  '))
@@ -70,7 +72,6 @@ export async function verifyConfig(app) {
             recordings: path.join(app.settings.sfu.path, 'recordings'),
         },
     }
-
 }
 
 export async function verifySFU() {

@@ -24,6 +24,10 @@ id # Find out your host user/group id; used to keep volume permissions sane
 PYRITE_UID=1000 PYRITE_GID=1000 docker-compose up
 ```
 
+* Open a browser: <http://localhost:3030> :tada:
+* Click on the logo to switch to admin modus
+* Login with the credentials listed in the pyrite logger
+
 ## Vanilla Galène
 
 As an alternative, build Galène manually:
@@ -60,7 +64,7 @@ npm run dev  # run frontend service on http://localhost:3000
 nodemon admin/app.js  # run Express backend on http://localhost:3030
 ```
 
-:tada: Open a browser: <http://localhost:3030>
+Open a browser: <http://localhost:3030> :tada:
 
 <p float="left">
     <img width="300" src="./docs/pyrite.png">

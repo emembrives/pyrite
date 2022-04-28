@@ -120,7 +120,12 @@ export async function loadGroup(groupName) {
 export async function loadGroups(publicEndpoint = false) {
     app.logger.debug(`load groups`)
     // Contains clientCount; mix it with the Pyrite group info.
-    let galeneGroups = await (await fetch(`${app.settings.sfu.url}/public-groups.json`)).json()
+    let galeneGroups
+    try {
+        galeneGroups = await (await fetch(`${app.settings.sfu.url}/public-groups.json`)).json()
+    } catch(err) {
+        galeneGroups = []
+    }
     const files = await globby(path.join(app.config.sfu.path.groups, '**', '*.json'))
     const fileData = await Promise.all(files.map((i) => fs.promises.readFile(i, 'utf8')))
     const groupNames = files.map((i) => {
