@@ -5,17 +5,11 @@
 
 [Galène](https://galene.org/) is a videoconference server (an “SFU”) that is easy
 to deploy and that requires moderate server resources. [Pyrite](https://pyrite.video)
-is an alternative web client and management interface based on the
-[Vue](https://v3.vuejs.org/) framework. Checkout the documentation to learn more
-about Pyrite's [features](./docs/features.md) or to find instructions how to
-deploy Pyrite on a network.
+is an alternative web client and management interface for Galène, based on the
+[Vue](https://v3.vuejs.org/) framework. Checkout Pyrite's [features](./docs/features.md)
+or read more about how to deploy Pyrite on a network [here](./docs/index.md).
 
-# Installation
-
-## Docker
-
-For a quick try, just try the Docker-compose config, which includes Docker
-images for the Galène & Pyrite service.
+# Getting Started
 
 ```bash
 git clone https://github.com/garage44/pyrite
@@ -28,9 +22,7 @@ PYRITE_UID=1000 PYRITE_GID=1000 docker-compose up
 * Click on the logo to switch to admin modus
 * Login with the credentials listed in the pyrite logger
 
-## Vanilla Galène
-
-As an alternative, build Galène manually:
+## Manual Installation
 
 ```bash
 git clone https://github.com/jech/galene
@@ -41,30 +33,16 @@ mkdir -p {data,groups,recordings}
 ./galene --insecure
 ```
 
-### Pyrite - Published
-
-No need to build Pyrite manually; just run it directly from npm if you
-trust the package. This is the Express service that also exposes the frontend
-as one single service:
-
 ```bash
+# Use the published version:
 npx @garage44/pyrite:latest
-```
-
-### Pyrite - Development
-
-The manual build is for development, or to get a grasp of how services interact.
-The Express service and the frontend (Vitejs) are started separately to keep
-development simple:
-
-```bash
+# Or manually run the dev-stack:
+git clone https://github.com/garage44/pyrite
 cd pyrite
 npm install
-npm run dev  # run frontend service on http://localhost:3000
-nodemon admin/app.js  # run Express backend on http://localhost:3030
+npm run dev  # vitejs dev-service: http://localhost:3000
+nodemon admin/app.js  # Express backend: http://localhost:3030
 ```
-
-Open a browser: <http://localhost:3030> :tada:
 
 <p float="left">
     <img width="300" src="./docs/pyrite.png">

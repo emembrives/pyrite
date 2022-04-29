@@ -51,7 +51,7 @@ export async function authMiddleware(req, res, next) {
     }
 }
 
-export async function initMiddleware() {
+export function initMiddleware() {
     app.use(expressWinston.logger({
         colorize: true,
         expressFormat: true,
@@ -62,6 +62,7 @@ export async function initMiddleware() {
     app.use(cookieParser())
     app.use(sessions(app.settings.session))
     app.use(bodyParser.json())
+
     app.use(authMiddleware)
 
     apiDashboard(app)

@@ -2,6 +2,8 @@
 
 import express from 'express'
 
+import http from 'http'
+import httpProxy from 'http-proxy'
 import {initMiddleware} from './lib/middleware.js'
 import path from 'path'
 import rc from 'rc'
@@ -34,6 +36,14 @@ const logFormat = winston.format.printf(({level, message, timestamp}) => {
 })
 
 const app = express()
+const proxy = httpProxy.createProxyServer({
+    target: {
+        host: 'localhost',
+        port: 8443,
+    },
+})
+const server = http.createServer(app)
+
 app.config = {
     path:  {
         base: path.join(path.dirname(import.meta.url).replace('file://', ''), '..'),
@@ -67,12 +77,16 @@ app.settings = settings
 
     initMiddleware()
 
-    app.listen(settings.listen.port, settings.listen.host, () => {
+    server.listen(settings.listen.port, settings.listen.host, () => {
         app.logger.info(`listening host: ${settings.listen.host}:${settings.listen.port}`)
 
         if (process.env.PYRITE_NO_SECURITY) {
             app.logger.warn('SESSION SECURITY IS DISABLED')
         }
+    })
+
+    server.on('upgrade', (req, socket, head) => {
+        proxy.ws(req, socket, head)
     })
 })()
 

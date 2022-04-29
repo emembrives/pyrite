@@ -29,9 +29,6 @@ export default defineConfig({
             '/api': {
                 target: 'http://localhost:3030',
             },
-            '/ice-servers.json': 'http://localhost:8443',
-            '/public-groups.json': 'http://localhost:8443',
-            '/recordings/pyrite': 'http://localhost:8443',
             '/ws': {
                 changeOrigin: false,
                 target: 'http://localhost:8443/',

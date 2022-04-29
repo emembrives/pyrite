@@ -32,10 +32,6 @@ server {
         proxy_send_timeout 120s;
     }
 
-    location ~ ^/(public-groups.json|ice-servers.json) {
-        proxy_pass http://127.0.0.1:8443;
-    }
-
     location / {
         proxy_pass http://127.0.0.1:3030;
         proxy_http_version 1.1;
