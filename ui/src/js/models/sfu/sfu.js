@@ -365,7 +365,7 @@ class ModelSFU {
     }
 
     async onJoined(kind, group, permissions, status, data, message) {
-        app.logger.debug(`[onJoined] ${kind}/${group}`)
+        app.logger.debug(`[onJoined] ${kind}/${group}: ${message}`)
         let _permissions = {}
         switch(kind) {
         case 'fail':

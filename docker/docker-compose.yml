@@ -15,7 +15,7 @@ services:
 
   galene:
     container_name: galene
-    image: garage44/galene:0.5.0
+    image: garage44/galene:latest
     networks:
       - pyrite
     ports:

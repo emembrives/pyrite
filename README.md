@@ -20,7 +20,7 @@ PYRITE_UID=1000 PYRITE_GID=1000 docker-compose up
 
 * Open a browser: <http://localhost:3030> :tada:
 * Click on the logo to switch to admin modus
-* Login with the credentials listed in the pyrite logger
+* Login with the pyrite admin credentials listed in the initial logs
 
 ## Manual Installation
 
