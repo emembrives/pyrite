@@ -37,10 +37,7 @@ const logFormat = winston.format.printf(({level, message, timestamp}) => {
 
 const app = express()
 const proxy = httpProxy.createProxyServer({
-    target: {
-        host: 'localhost',
-        port: 8443,
-    },
+    target: settings.sfu.url,
 })
 const server = http.createServer(app)
 
