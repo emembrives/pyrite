@@ -7,12 +7,25 @@
                 :data-tooltip="$route.name.includes('conference-') ? $t('switch to admin') : $t('switch to conference')"
                 :to="toggleAdminConference"
             >
-                <Icon class="icon" name="Logo" />PYRITE
+                <Icon class="icon" name="Logo" />
+                <div class="l-name">
+                    <div class="name">
+                        PYRITE
+                    </div>
+                    <div class="version">
+                        {{ version }}
+                    </div>
+                </div>
             </RouterLink>
 
-            <div class="version">
-                {{ version }}
-            </div>
+            <button
+                class="btn btn-collapse tooltip"
+                :class="{active: !$s.chat.hidden}"
+                :data-tooltip="$s.chat.hidden ? $t('show chat') : $t('hide chat')"
+                @click="$s.chat.hidden = !$s.chat.hidden"
+            >
+                <Icon class="icon-small" name="collapseLeft" />
+            </button>
         </header>
         <slot />
     </div>
@@ -76,8 +89,9 @@ export default defineComponent({
             align-items: center;
             color: var(--primary-color);
             display: flex;
+            flex: 1;
             font-family: var(--font-secondary);
-            justify-content: center;
+            justify-content: flex-start;
 
             svg {
                 color: var(--primary-color);
@@ -95,13 +109,24 @@ export default defineComponent({
             }
         }
 
-        .version {
-            bottom: 0;
-            font-family: var(--font-secondary);
-            font-size: var(--text-s);
-            font-style: italic;
-            position: absolute;
-            right: calc(var(--spacer) * 1.75);
+        .l-name {
+
+            .name {
+                width: 100%;
+            }
+
+            .version {
+                bottom: 0;
+                color: var(--grey-7);
+                font-family: var(--font-secondary);
+                font-size: var(--text-xs);
+                font-style: italic;
+                position: absolute;
+            }
+        }
+
+        .btn-collapse {
+
         }
     }
 }

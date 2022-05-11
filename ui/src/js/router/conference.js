@@ -14,6 +14,7 @@ export default [{
             path: '/',
         },
         {
+            // Settings accessible when not in a group yet
             component: Settings,
             name: 'conference-settings',
             path: '/settings/:tabId',
@@ -38,8 +39,25 @@ export default [{
                 if (app.$s.group.connected) return {name: 'conference-groups-connected'}
                 return {name: 'conference-groups-disconnected'}
             },
+
         },
         {
+
+            children: [
+                {
+                    // Settings accessible when not in a group yet
+                    beforeEnter: (to, from, next) => {
+                        if (!app.$s.group.connected) {
+                            next({name: 'conference-settings', params: {tabId: 'misc'}})
+                        } else {
+                            next()
+                        }
+                    },
+                    component: Settings,
+                    name: 'conference-group-settings',
+                    path: 'settings/:tabId',
+                },
+            ],
             component: Streams,
             name: 'conference-groups-connected',
             path: '/groups/:groupId',

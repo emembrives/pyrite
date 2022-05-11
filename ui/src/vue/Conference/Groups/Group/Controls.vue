@@ -7,23 +7,21 @@
 
             <button
                 v-if="$s.permissions.present"
-                class="btn btn-menu tooltip tooltip-left"
+                class="btn btn-menu tooltip tooltip-left mb-1"
                 :class="{active: $s.devices.mic.enabled, error: !$s.devices.mic.enabled}"
                 :data-tooltip="`${$t('switch microphone')} ${$s.devices.mic.enabled ? $t('off') : $t('on')}`"
                 @click="toggleMicrophone"
             >
                 <Icon class="icon-small" name="Mic" />
             </button>
-
-            <button
-                v-if="$s.permissions.present"
-                class="btn btn-menu tooltip tooltip-left mb-1"
-                :class="{active: $s.user.data.raisehand}"
-                :data-tooltip="$s.user.data.raisehand ? $t('hinting for speaking time') : $t('request speaking time')"
-                @click="toggleRaiseHand"
+            <RouterLink
+                class="btn btn-menu tooltip"
+                :class="{active: $route.name === 'conference-group-settings'}"
+                :data-tooltip="$t('settings')"
+                :to="settingsRoute"
             >
-                <Icon class="hand icon-small" :class="{wave: $s.user.data.raisehand}" name="Hand" />
-            </button>
+                <Icon class="icon-small" name="Settings" />
+            </RouterLink>
 
             <button
                 v-if="$s.permissions.present"
@@ -85,7 +83,13 @@ export default {
             }
             return this.$t('stream video file ({formats})', {formats: formats.join(',')})
         },
-
+        settingsRoute() {
+            if (this.$router.currentRoute.value.name ===  'conference-group-settings') {
+                return {groupId: this.$s.group.name, name: 'conference-groups-connected'}
+            } else {
+                return {name: 'conference-group-settings', params: {tabId: 'misc'}}
+            }
+        },
     },
     data() {
         return {

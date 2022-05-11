@@ -9,14 +9,14 @@
             :playsinline="true"
         />
 
-        <transition name="loading-transition">
+        <Transition name="loading-transition">
             <div v-if="loading" class="loading-container">
                 <Icon class="spinner" name="Spinner" />
             </div>
             <div v-else-if="!modelValue.hasVideo" class="audio-container">
                 <Icon name="Mic" />
             </div>
-        </transition>
+        </Transition>
 
         <Reports v-if="stats.visible" :description="modelValue" @click="toggleStats" />
 

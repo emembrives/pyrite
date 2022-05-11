@@ -75,6 +75,11 @@ const volatileState = {
     groups: [],
     mediaReady: false,
     notifications: [],
+    panels: {
+        settings: {
+            collapsed: false,
+        },
+    },
     permissions: {
         op: false,
         // Assume present permission before connecting,

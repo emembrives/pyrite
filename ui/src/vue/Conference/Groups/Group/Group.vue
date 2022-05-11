@@ -1,5 +1,11 @@
 <template>
-    <div ref="view" class="c-stream-view">
+    <div ref="view" class="c-group">
+        <router-view v-slot="{ Component }">
+            <Transition>
+                <component :is="Component" />
+            </Transition>
+        </router-view>
+
         <Stream
             v-for="(description, index) in $s.streams" :key="description.id"
             :ref="el => { if (el) { streamsRef[index] = el } else {streamsRef.splice(index, 1)}}"
@@ -11,8 +17,8 @@
 
 <script>
 import {nextTick} from 'vue'
-import Stream from './Stream/Stream.vue'
 
+import Stream from './Stream/Stream.vue'
 /**
  * Grid-layout made possible by https://github.com/salbatore
  * See: https://alicunde.github.io/Videoconference-Dish-CSS-JS/
@@ -114,6 +120,16 @@ export default {
 </script>
 
 <style lang='scss'>
+.v-enter-active,
+.v-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}
+
 @keyframes show {
 
     0% {
@@ -127,7 +143,7 @@ export default {
     }
 }
 
-.c-stream-view {
+.c-group {
     align-content: center;
     align-items: center;
     background: var(--grey-1);
@@ -135,6 +151,7 @@ export default {
     flex-wrap: wrap;
     justify-content: center;
     overflow: hidden;
+    position: relative;
 
     .c-stream {
         align-self: center;
@@ -146,6 +163,16 @@ export default {
     .logo-animated {
         height: 30%;
         width: 30%;
+    }
+
+    .c-settings {
+        background: hsl(var(--grey-h) var(--grey-s) var(--light-4) / 80%);
+        max-width: 100%;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 100%;
+        z-index: 10;
     }
 }
 </style>

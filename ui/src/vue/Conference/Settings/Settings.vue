@@ -11,21 +11,21 @@
             <RouterLink
                 class="btn btn-menu tab tooltip"
                 :data-tooltip="$t('devices')"
-                :to="{name: 'conference-settings', params: {tabId: 'devices'}}"
+                :to="{name: settingsRoute, params: {tabId: 'devices'}}"
             >
                 <Icon class="icon-small" name="Webcam" />
             </RouterLink>
             <RouterLink
                 class="btn btn-menu tab tooltip"
                 :data-tooltip="$t('media')"
-                :to="{name: 'conference-settings', params: {tabId: 'media'}}"
+                :to="{name: settingsRoute, params: {tabId: 'media'}}"
             >
                 <Icon class="icon-small" name="Media" />
             </RouterLink>
             <RouterLink
                 class="btn btn-menu tab tooltip"
                 :data-tooltip="$t('miscellaneous')"
-                :to="{name: 'conference-settings', params: {tabId: 'misc'}}"
+                :to="{name: settingsRoute, params: {tabId: 'misc'}}"
             >
                 <Icon class="icon-small" name="Pirate" />
             </RouterLink>
@@ -55,6 +55,15 @@ import TabMedia from './TabMedia.vue'
 import TabMisc from './TabMisc.vue'
 
 export default {
+    computed: {
+        settingsRoute() {
+            if (this.$s.group.connected) {
+                return 'conference-group-settings'
+            } else {
+                return 'conference-settings'
+            }
+        },
+    },
     components: {TabDevices, TabMedia, TabMisc},
     methods: {
         saveSettings() {
@@ -66,3 +75,18 @@ export default {
     },
 }
 </script>
+
+<style lang="scss">
+.c-settings {
+
+    &.panel {
+        background: rgba(0 0 0 / 50%);
+        height: 100vh;
+        margin-right: var(--space-4);
+        min-width: 50%;
+        position: absolute;
+        right: 0;
+    }
+}
+
+</style>

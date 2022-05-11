@@ -2,6 +2,7 @@
     <nav class="c-general-controls">
         <div class="navigational-controls">
             <RouterLink
+                v-if="!$s.group.connected"
                 class="btn btn-menu tooltip"
                 :class="{active: $route.name === 'conference-settings'}"
                 :data-tooltip="$t('settings')"
@@ -11,7 +12,7 @@
             </RouterLink>
 
             <RouterLink
-                v-if="$s.group.name" class="btn btn-menu tooltip"
+                v-if="!$s.group.connected && $s.group.name" class="btn btn-menu tooltip"
                 :class="{
                     active: ['conference-groups-connected', 'conference-groups-disconnected'].includes($route.name)
                 }"
@@ -22,13 +23,9 @@
                 <Icon v-else class="icon-small" name="GroupLocked" />
             </RouterLink>
 
-            <button v-else class="btn btn-menu" disabled>
-                <Icon class="icon-small" name="Group" />
-            </button>
-
             <button
                 v-if="$s.group.connected"
-                class="btn btn-menu tooltip mb-1"
+                class="btn btn-menu tooltip"
                 :class="{active: !$s.chat.hidden}"
                 :data-tooltip="$s.chat.hidden ? $t('show chat') : $t('hide chat')"
                 @click="$s.chat.hidden = !$s.chat.hidden"
@@ -36,7 +33,17 @@
                 <Icon class="icon-small" name="Chat" />
             </button>
 
-            <Context v-if="$s.group.connected && $s.permissions.op" />
+            <button
+                v-if="$s.group.connected && $s.permissions.present"
+                class="btn btn-menu tooltip tooltip-left"
+                :class="{active: $s.user.data.raisehand}"
+                :data-tooltip="$s.user.data.raisehand ? $t('hinting for speaking time') : $t('request speaking time')"
+                @click="toggleRaiseHand"
+            >
+                <Icon class="hand icon-small" :class="{wave: $s.user.data.raisehand}" name="Hand" />
+            </button>
+
+            <Context v-if="$s.group.connected && $s.permissions.op" class="mb-1" />
 
             <button
                 v-if="$s.group.connected"

@@ -31,10 +31,11 @@ import GroupChat from './Groups/Group/Chat.vue'
 import GroupControls from './Groups/Group/Controls.vue'
 import Groups from './Groups/List.vue'
 import Header from '@/vue/Elements/Header.vue'
+import Settings from '@/vue/Conference/Settings/Settings.vue'
 import UsersList from './Users/List/List.vue'
 
 export default {
-    components: {ConferenceControls, GroupChat, GroupControls, Groups, Header, UsersList},
+    components: {ConferenceControls, GroupChat, GroupControls, Groups, Header, Settings, UsersList},
     data() {
         return {
             chatToggle: false,
