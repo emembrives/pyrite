@@ -90,6 +90,14 @@
                 >
                     <Icon class="icon-small" name="Login" />
                 </button>
+                <button
+                    class="btn btn-menu tooltip tooltip-left"
+                    :data-tooltip="$t('clear credentials')"
+                    :disabled="!app.$s.user.username && !app.$s.user.password"
+                    @click="clearCredentials"
+                >
+                    <Icon class="icon-small" name="Backspace" />
+                </button>
             </div>
         </div>
     </div>
@@ -125,6 +133,11 @@ export default {
         }
     },
     methods: {
+        clearCredentials() {
+            app.$s.user.username = ''
+            app.$s.user.password = ''
+            app.store.save()
+        },
         async login() {
             this.vuelidateExternalResults.user.username = []
             this.vuelidateExternalResults.user.password = []
