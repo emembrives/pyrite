@@ -42,7 +42,7 @@
                 <Icon class="hand icon-small" :class="{wave: $s.user.data.raisehand}" name="Hand" />
             </button>
 
-            <Context v-if="$s.group.connected && $s.permissions.op" class="mb-1" />
+            <Context v-if="$s.group.connected && $s.permissions.op" class="mb-2" />
 
             <button
                 v-if="$s.group.connected"

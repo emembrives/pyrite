@@ -1,20 +1,6 @@
 <template>
     <nav class="c-room-controls">
         <div class="group-controls">
-            <button class="btn btn-menu no-feedback tooltip tooltip-left" :data-tooltip="`${volume.value}% ${$t('audio volume')}`">
-                <FieldSlider v-model="volume" />
-            </button>
-
-            <button
-                v-if="$s.permissions.present"
-                class="btn btn-menu tooltip tooltip-left mb-1"
-                :class="{active: $s.devices.mic.enabled, error: !$s.devices.mic.enabled}"
-                :data-tooltip="`${$t('switch microphone')} ${$s.devices.mic.enabled ? $t('off') : $t('on')}`"
-                @click="toggleMicrophone"
-            >
-                <Icon class="icon-small" name="Mic" />
-            </button>
-
             <button
                 v-if="$s.permissions.present"
                 class="btn btn-menu tooltip tooltip-left"
@@ -38,7 +24,7 @@
 
             <button
                 v-if="$s.permissions.present"
-                class="btn btn-menu mb-1"
+                class="btn btn-menu mb-2"
                 :class="{active: $s.upMedia.video.length}"
             >
                 <FieldFile
@@ -47,6 +33,20 @@
                     :tooltip="filePlayTooltip"
                     @file="togglePlayFile"
                 />
+            </button>
+
+            <button
+                v-if="$s.permissions.present"
+                class="btn btn-menu tooltip tooltip-left"
+                :class="{active: $s.devices.mic.enabled, error: !$s.devices.mic.enabled}"
+                :data-tooltip="`${$t('switch microphone')} ${$s.devices.mic.enabled ? $t('off') : $t('on')}`"
+                @click="toggleMicrophone"
+            >
+                <Icon class="icon-small" name="Mic" />
+            </button>
+
+            <button class="btn btn-menu no-feedback tooltip tooltip-left" :data-tooltip="`${volume.value}% ${$t('audio volume')}`">
+                <FieldSlider v-model="volume" />
             </button>
         </div>
     </nav>
