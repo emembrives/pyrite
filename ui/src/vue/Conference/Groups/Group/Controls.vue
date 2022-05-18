@@ -14,14 +14,6 @@
             >
                 <Icon class="icon-small" name="Mic" />
             </button>
-            <RouterLink
-                class="btn btn-menu tooltip"
-                :class="{active: $route.name === 'conference-group-settings'}"
-                :data-tooltip="$t('settings')"
-                :to="settingsRoute"
-            >
-                <Icon class="icon-small" name="Settings" />
-            </RouterLink>
 
             <button
                 v-if="$s.permissions.present"
@@ -46,7 +38,7 @@
 
             <button
                 v-if="$s.permissions.present"
-                class="btn btn-menu"
+                class="btn btn-menu mb-1"
                 :class="{active: $s.upMedia.video.length}"
             >
                 <FieldFile
@@ -82,13 +74,6 @@ export default {
                 formats.push('.mp4', 'webm', 'mkv')
             }
             return this.$t('stream video file ({formats})', {formats: formats.join(',')})
-        },
-        settingsRoute() {
-            if (this.$router.currentRoute.value.name ===  'conference-group-settings') {
-                return {groupId: this.$s.group.name, name: 'conference-groups-connected'}
-            } else {
-                return {name: 'conference-group-settings', params: {tabId: 'misc'}}
-            }
         },
     },
     data() {

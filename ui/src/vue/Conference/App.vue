@@ -2,14 +2,15 @@
     <div
         class="c-conference-app app" :class="{
             connected: $s.group.connected,
+            'panel-context-collapsed': $s.panels.context.collapsed,
             'chat-hidden': $s.chat.hidden,
             'chat-toggle': chatToggle,
             [`theme-${$s.theme.id}`]: true,
         }"
     >
-        <Header>
+        <PanelContext>
             <UsersList v-if="$s.group.connected" /><Groups v-else />
-        </Header>
+        </PanelContext>
 
         <ConferenceControls />
 
@@ -30,12 +31,11 @@ import ConferenceControls from './Controls/Controls.vue'
 import GroupChat from './Groups/Group/Chat.vue'
 import GroupControls from './Groups/Group/Controls.vue'
 import Groups from './Groups/List.vue'
-import Header from '@/vue/Elements/Header.vue'
-import Settings from '@/vue/Conference/Settings/Settings.vue'
+import PanelContext from '@/vue/Elements/PanelContext.vue'
 import UsersList from './Users/List/List.vue'
 
 export default {
-    components: {ConferenceControls, GroupChat, GroupControls, Groups, Header, Settings, UsersList},
+    components: {ConferenceControls, GroupChat, GroupControls, Groups, PanelContext, UsersList},
     data() {
         return {
             chatToggle: false,
@@ -84,14 +84,17 @@ export default {
 
 <style lang="scss">
 .c-conference-app {
-    // Presence, Controls, Login Screen
-    grid-template-columns: 300px var(--space-4) 1fr;
+    // --ctx-panel: 300px;
+    --c1-width: var(--space-4);
+    --c2-width: var(--space-4);
+
+    // Presence, General Controls, Login Screen
+    grid-template-columns: min-content var(--space-4) 1fr;
     height: 100vh;
     overflow: hidden;
 
     &.connected {
-        // Presence, Controls, Chat, Conference Space, Conference Controls
-        grid-template-columns: 300px var(--space-4) min-content 1fr var(--space-4);
+        grid-template-columns: min-content var(--c1-width) min-content 1fr var(--c2-width);
 
         .c-chat {
             min-width: 200px;
@@ -101,25 +104,25 @@ export default {
 
         &.chat-hidden {
             // Presence, Controls, Conference Space, Conference Controls
-            grid-template-columns: 300px var(--space-4) 1fr var(--space-4);
+            grid-template-columns: min-content var(--c1-width) 1fr var(--c2-width);
         }
 
         &.chat-toggle {
             // Toggling chat while being active the group
             // Blocks: Presence, Controls, Chat, Conference Space
-            grid-template-columns: 300px var(--space-4) min-content 1fr var(--space-4);
+            grid-template-columns: min-content var(--c1-width) min-content 1fr var(--c2-width);
         }
     }
 
     &.chat-toggle {
         // Toggling chat while leaving the group
         // Blocks: Presence, Controls, Chat, Login
-        grid-template-columns: 300px var(--space-4) min-content 1fr;
+        grid-template-columns: min-content var(--space-4) min-content 1fr;
         overflow: hidden;
         resize: none;
 
         .c-chat {
-            min-width: auto !important;
+            min-width: auto;
             opacity: 0.75;
 
             * {

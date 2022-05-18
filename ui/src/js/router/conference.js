@@ -50,6 +50,7 @@ export default [{
                         if (!app.$s.group.connected) {
                             next({name: 'conference-settings', params: {tabId: 'misc'}})
                         } else {
+                            app.$s.chat.hidden = true
                             next()
                         }
                     },

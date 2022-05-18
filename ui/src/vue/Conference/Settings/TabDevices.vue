@@ -9,11 +9,10 @@
                 :options="$s.devices.cam.options"
             />
 
-            <div v-if="$s.group.connected" class="field connected-warning">
-                <Icon class="icon icon-small" name="Warning" />
-                {{ $t('You are currently streaming to other people') }}
-            </div>
             <Stream v-if="description" v-model="description" :controls="false" />
+            <div v-else class="webcam-placeholder">
+                <Icon name="Webcam" />
+            </div>
         </div>
 
         <FieldSelect
@@ -176,11 +175,26 @@ export default {
         display: flex;
         flex-direction: column;
 
+        .webcam-placeholder,
         .c-stream {
             border: var(--border) solid var(--grey-5);
             margin: var(--spacer) 0;
             right: 0;
-            width: 180px;
+            width: 100%;
+        }
+
+        .webcam-placeholder {
+            align-items: center;
+            aspect-ratio: 4 / 3;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+
+            .icon {
+                filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 40%));
+                height: 50%;
+                width: 50%;
+            }
         }
     }
 

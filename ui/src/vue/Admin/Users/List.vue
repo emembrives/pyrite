@@ -1,5 +1,5 @@
 <template>
-    <section class="c-admin-users-list presence">
+    <section class="c-admin-users-list presence" :class="{collapsed: $s.panels.context.collapsed}">
         <div class="actions">
             <button
                 class="btn tooltip tooltip-right"

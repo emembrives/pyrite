@@ -6,7 +6,6 @@
 @import "./elements/content";
 @import "./elements/context-menu";
 @import "./elements/forms";
-@import "./elements/presence";
 @import "./elements/table";
 @import "./elements/tabs";
 @import "./elements/tooltip";
@@ -28,11 +27,11 @@
     --font-secondary: "Oswald", sans-serif;
     --border: 2px;
     --spacer: 8px;
-    --space-4: calc(var(--spacer) * 8);
-    --space-3: calc(var(--spacer) * 6);
-    --space-2: calc(var(--spacer) * 4);
-    --space-1: calc(var(--spacer) * 2);
-    --space-05: calc(var(--spacer) * 0.5);
+    --space-4: 64px;
+    --space-3: 48px;
+    --space-2: 32px;
+    --space-1: 16px;
+    --space-05: 4px;
     --warning-h: 23;
     --warning-color-d: hsl(var(--warning-h) var(--sat) var(--light-d));
     --warning-color: hsl(var(--warning-h) var(--sat) var(--light));

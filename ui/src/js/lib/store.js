@@ -76,6 +76,9 @@ const volatileState = {
     mediaReady: false,
     notifications: [],
     panels: {
+        context: {
+            collapsed: false,
+        },
         settings: {
             collapsed: false,
         },

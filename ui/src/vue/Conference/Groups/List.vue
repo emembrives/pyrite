@@ -14,7 +14,7 @@
                 {{ group.name }}
             </div>
 
-            <div class="count" :class="{active: group.clientCount > 0}">
+            <div class="stats" :class="{active: group.clientCount > 0}">
                 {{ group.clientCount }}
                 <Icon class="icon-small" name="User" />
             </div>
@@ -101,7 +101,7 @@ export default {
 
     .group {
 
-        .count {
+        .stats {
             align-items: center;
             display: flex;
             transition: all 0.25s ease-in;

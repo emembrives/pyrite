@@ -1,9 +1,9 @@
 <template>
     <div class="c-admin-app app" :class="`theme-${$s.theme.id}`">
-        <Header>
+        <PanelContext>
             <UsersList v-if="$route.name.startsWith('admin-users')" />
             <GroupsList v-else />
-        </Header>
+        </PanelContext>
         <Controls />
         <RouterView />
         <Notifications />
@@ -13,11 +13,11 @@
 <script>
 import Controls from './Controls.vue'
 import GroupsList from './Groups/List.vue'
-import Header from '@/vue/Elements/Header.vue'
+import PanelContext from '@/vue/Elements/PanelContext.vue'
 import UsersList from './Users/List.vue'
 
 export default {
-    components: {Controls, GroupsList, Header, UsersList},
+    components: {Controls, GroupsList, PanelContext, UsersList},
     data() {
         return {
             version: import.meta.env.VITE_VERSION,

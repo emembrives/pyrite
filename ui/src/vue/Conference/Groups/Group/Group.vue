@@ -167,9 +167,10 @@ export default {
 
     .c-settings {
         background: hsl(var(--grey-h) var(--grey-s) var(--light-4) / 80%);
+        left: 0;
         max-width: 100%;
+        max-width: 700px;
         position: absolute;
-        right: 0;
         top: 0;
         width: 100%;
         z-index: 10;

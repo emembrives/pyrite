@@ -75,18 +75,3 @@ export default {
     },
 }
 </script>
-
-<style lang="scss">
-.c-settings {
-
-    &.panel {
-        background: rgba(0 0 0 / 50%);
-        height: 100vh;
-        margin-right: var(--space-4);
-        min-width: 50%;
-        position: absolute;
-        right: 0;
-    }
-}
-
-</style>
