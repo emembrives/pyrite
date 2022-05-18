@@ -80,6 +80,14 @@ export default {
         },
     },
     components: {Context},
+    methods: {
+        toggleRaiseHand() {
+            this.$m.sfu.connection.userAction('setdata', this.$m.sfu.connection.id, {raisehand: !this.$s.user.data.raisehand})
+            if (!this.$s.user.data.raisehand) {
+                this.app.notifier.message('raisehand', {source: this.$s.user.name}, null, {chat: true, notification: false})
+            }
+        },
+    },
 }
 </script>
 

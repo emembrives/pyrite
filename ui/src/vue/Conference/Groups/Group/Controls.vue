@@ -102,12 +102,6 @@ export default {
                 this.$m.sfu.delUpMediaKind('video')
             }
         },
-        toggleRaiseHand() {
-            this.$m.sfu.connection.userAction('setdata', this.$m.sfu.connection.id, {raisehand: !this.$s.user.data.raisehand})
-            if (!this.$s.user.data.raisehand) {
-                this.app.notifier.message('raisehand', {source: this.$s.user.name}, null, {chat: true, notification: false})
-            }
-        },
         async toggleScreenshare() {
             if (this.$s.upMedia.screenshare.length) {
                 this.app.logger.debug('turn screenshare stream off')
