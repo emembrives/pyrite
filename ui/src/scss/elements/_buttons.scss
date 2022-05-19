@@ -12,7 +12,7 @@
         color: var(--warning-color);
     }
 
-    &[disabled] {
+    &[disabled="true"] {
         color: var(--grey-6);
     }
 
@@ -24,7 +24,7 @@
         outline: none;
     }
 
-    &:not([disabled]):hover {
+    &:not([disabled="true"]):hover {
         color: var(--primary-color);
         cursor: pointer;
     }
@@ -101,7 +101,7 @@
             width: auto;
         }
 
-        &[disabled] {
+        &[disabled="true"] {
             color: var(--grey-6);
 
             &:hover {
@@ -128,7 +128,7 @@
             width: var(--space-3);
         }
 
-        &:not([disabled]):hover {
+        &:not([disabled="true"]):hover {
 
             &::before {
                 transform: scaleX(1);
@@ -148,7 +148,7 @@
     &.no-feedback {
 
         &.active,
-        &:not([disabled]):hover {
+        &:not([disabled="true"]):hover {
             border-bottom: var(--border) solid transparent;
 
             &::before {

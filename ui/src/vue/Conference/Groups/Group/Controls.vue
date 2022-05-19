@@ -4,7 +4,17 @@
             <button
                 v-if="$s.permissions.present"
                 class="btn btn-menu tooltip tooltip-left"
-                :class="{active: $s.devices.cam.enabled, warning: !$s.devices.cam.enabled}"
+                :class="{active: $s.devices.mic.enabled, error: !$s.devices.mic.enabled}"
+                :data-tooltip="`${$t('switch microphone')} ${$s.devices.mic.enabled ? $t('off') : $t('on')}`"
+                @click="toggleMicrophone"
+            >
+                <Icon class="icon-small" name="Mic" />
+            </button>
+
+            <button
+                v-if="$s.permissions.present"
+                class="btn btn-menu tooltip tooltip-left"
+                :class="{active: $s.devices.cam.enabled, error: !$s.devices.cam.enabled}"
                 :data-tooltip="`${$t('switch camera')} ${$s.devices.cam.enabled ? $t('off') : $t('on')}`"
                 :disabled="!$s.mediaReady"
                 @click="toggleCam"
@@ -24,7 +34,7 @@
 
             <button
                 v-if="$s.permissions.present"
-                class="btn btn-menu mb-2"
+                class="btn btn-menu"
                 :class="{active: $s.upMedia.video.length}"
             >
                 <FieldFile
@@ -35,18 +45,18 @@
                 />
             </button>
 
-            <button
-                v-if="$s.permissions.present"
-                class="btn btn-menu tooltip tooltip-left"
-                :class="{active: $s.devices.mic.enabled, error: !$s.devices.mic.enabled}"
-                :data-tooltip="`${$t('switch microphone')} ${$s.devices.mic.enabled ? $t('off') : $t('on')}`"
-                @click="toggleMicrophone"
-            >
-                <Icon class="icon-small" name="Mic" />
-            </button>
-
             <button class="btn btn-menu no-feedback tooltip tooltip-left" :data-tooltip="`${volume.value}% ${$t('audio volume')}`">
                 <FieldSlider v-model="volume" />
+            </button>
+
+            <button
+                v-if="$s.group.connected"
+                class="btn btn-menu tooltip btn-collapse"
+                :class="{active: !$s.chat.hidden}"
+                :data-tooltip="$s.chat.hidden ? $t('show chat panel') : $t('hide chat panel')"
+                @click="$s.chat.hidden = !$s.chat.hidden"
+            >
+                <Icon class="icon-small" :name="$s.chat.hidden ? 'Chat' : 'CollapseRight'" />
             </button>
         </div>
     </nav>

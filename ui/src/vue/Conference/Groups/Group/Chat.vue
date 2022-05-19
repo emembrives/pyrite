@@ -249,9 +249,10 @@ export default {
     display: flex;
     flex-direction: column;
     height: 100vh;
+
+    // resize: horizontal;
+    min-width: 350px;
     overflow: auto;
-    resize: horizontal;
-    width: 350px;
 
     .chat-channels {
         background: var(--grey-2);

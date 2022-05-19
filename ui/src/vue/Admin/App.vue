@@ -39,6 +39,6 @@ export default {
     --primary-color-s: 40%;
     --primary-color: hsl(var(--primary-color-h) var(--primary-color-s) 65%);
 
-    grid-template-columns: 300px var(--space-4) 1fr;
+    grid-template-columns: min-content var(--space-4) 1fr;
 }
 </style>

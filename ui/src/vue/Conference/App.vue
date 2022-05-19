@@ -14,11 +14,11 @@
 
         <ConferenceControls />
 
+        <RouterView />
+
         <transition @enter="openChat" @leave="closeChat">
             <GroupChat v-if="$s.group.connected && !$s.chat.hidden" ref="chat" />
         </transition>
-
-        <RouterView />
 
         <GroupControls v-if="$s.group.connected" />
 
@@ -84,7 +84,6 @@ export default {
 
 <style lang="scss">
 .c-conference-app {
-    // --ctx-panel: 300px;
     --c1-width: var(--space-4);
     --c2-width: var(--space-4);
 
@@ -94,10 +93,10 @@ export default {
     overflow: hidden;
 
     &.connected {
-        grid-template-columns: min-content var(--c1-width) min-content 1fr var(--c2-width);
+        // Presence, General Controls, Group, Chat, Group Controls
+        grid-template-columns: min-content var(--c1-width) 1fr min-content var(--c2-width);
 
         .c-chat {
-            min-width: 200px;
             opacity: 1;
             transition: opacity 150ms;
         }
@@ -110,14 +109,14 @@ export default {
         &.chat-toggle {
             // Toggling chat while being active the group
             // Blocks: Presence, Controls, Chat, Conference Space
-            grid-template-columns: min-content var(--c1-width) min-content 1fr var(--c2-width);
+            grid-template-columns: min-content var(--c1-width) 1fr min-content var(--c2-width);
         }
     }
 
     &.chat-toggle {
         // Toggling chat while leaving the group
-        // Blocks: Presence, Controls, Chat, Login
-        grid-template-columns: min-content var(--space-4) min-content 1fr;
+        // Blocks: Presence, Controls, Login, Chat
+        grid-template-columns: min-content var(--space-4) 1fr min-content;
         overflow: hidden;
         resize: none;
 
@@ -133,6 +132,11 @@ export default {
                 white-space: nowrap;
             }
         }
+    }
+
+    .btn-collapse {
+        bottom: 0;
+        position: absolute;
     }
 }
 </style>

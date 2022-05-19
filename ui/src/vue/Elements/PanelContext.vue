@@ -19,14 +19,6 @@
             </RouterLink>
         </header>
         <slot />
-        <button
-            class="btn btn-collapse tooltip"
-            :class="{active: !$s.panels.context.collapsed}"
-            :data-tooltip="$s.panels.context.collapsed ? $t('expand panel') : $t('collapse panel')"
-            @click="toggleCollapse"
-        >
-            <Icon class="icon-small" :name="$s.panels.context.collapsed ? 'UncollapseHorizontal' : 'CollapseLeft'" />
-        </button>
     </div>
 </template>
 
@@ -85,7 +77,7 @@ export default defineComponent({
         toggleCollapse() {
             const space4 = Number(getComputedStyle(document.querySelector('.app')).getPropertyValue('--space-4').replace('px', ''))
 
-            this.$s.panels.context.collapsed = !this.$s.panels.context.collapsed
+            // this.$s.panels.context.collapsed = !this.$s.panels.context.collapsed
             this.app.animate({
                 duration: 350,
                 from: this.$s.panels.context.collapsed ? 300 : space4,
@@ -100,6 +92,11 @@ export default defineComponent({
 
         },
     },
+    watch: {
+        '$s.panels.context.collapsed': function() {
+            this.toggleCollapse()
+        },
+    },
 })
 </script>
 
@@ -107,17 +104,9 @@ export default defineComponent({
 .c-panel-context {
     display: flex;
     flex-direction: column;
+    min-width: var(--space-4);
     position: relative;
     width: 300px;
-
-    .btn-collapse {
-        bottom: 0;
-        color: var(--grey-6);
-        height: var(--space-4);
-        position: absolute;
-        right: 0;
-        width: var(--space-4);
-    }
 
     header {
         align-items: center;
@@ -173,6 +162,7 @@ export default defineComponent({
 
     .presence {
         display: flex;
+        flex: 1;
         flex-direction: column;
 
         .no-presence {
@@ -198,8 +188,10 @@ export default defineComponent({
         }
 
         .item {
+            align-items: center;
             color: var(--grey-7);
             display: flex;
+            height: var(--space-3);
             overflow: visible;
             padding: calc(var(--spacer) / 2) var(--spacer);
 
@@ -235,12 +227,12 @@ export default defineComponent({
     }
 
     &.collapsed {
+        width: var(--space-4);
 
         header {
             padding: 0;
 
             .logo {
-                // display: flex;
                 justify-content: center;
 
                 svg {
@@ -264,6 +256,12 @@ export default defineComponent({
 
         .presence {
 
+            .actions {
+                flex-direction: column;
+                gap: var(--spacer);
+                margin: var(--space-1) 0;
+            }
+
             .item {
                 justify-content: center;
 
@@ -280,6 +278,10 @@ export default defineComponent({
                 }
 
                 .stats {
+                    display: none;
+                }
+
+                .item-properties {
                     display: none;
                 }
             }

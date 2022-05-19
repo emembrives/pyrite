@@ -60,7 +60,7 @@ const volatileState = {
             },
         },
         hidden: false,
-        width: 350,
+        width: 400,
     },
     files: {
         playing: [],

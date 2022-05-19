@@ -19,30 +19,18 @@
             >
                 <Icon class="icon-small" name="Settings" />
             </RouterLink>
-
             <RouterLink
-                v-if="!$s.group.connected && $s.group.name" class="btn btn-menu tooltip"
+                class="btn btn-menu tooltip"
                 :class="{
                     active: ['conference-groups-connected', 'conference-groups-disconnected'].includes($route.name)
                 }"
                 :data-tooltip="$s.group.locked ? `${$t('current group')} (${$t('locked')})` : $t('current group')"
-                :to="{name: 'conference-groups', params: {groupId: $s.group.name}}"
+                :disabled="!$s.group.name"
+                :to="$s.group.name ? {name: 'conference-groups', params: {groupId: $s.group.name}} : {name: 'conference-main'}"
             >
                 <Icon v-if="!$s.group.locked" class="icon-small" name="Group" />
                 <Icon v-else class="icon-small" name="GroupLocked" />
             </RouterLink>
-
-            <button
-                v-if="$s.group.connected && $s.permissions.present"
-                class="btn btn-menu tooltip tooltip-left"
-                :class="{active: $s.user.data.raisehand}"
-                :data-tooltip="$s.user.data.raisehand ? $t('hinting for speaking time') : $t('request speaking time')"
-                @click="toggleRaiseHand"
-            >
-                <Icon class="hand icon-small" :class="{wave: $s.user.data.raisehand}" name="Hand" />
-            </button>
-
-            <Context v-if="$s.group.connected && $s.permissions.op" class="mb-2" />
 
             <button
                 v-if="$s.group.connected"
@@ -53,16 +41,26 @@
                 <Icon class="icon-small" name="Logout" />
             </button>
 
+            <Context v-if="$s.group.connected && $s.permissions.op" />
+
             <button
-                v-if="$s.group.connected"
-                class="btn btn-menu tooltip btn-collapse"
-                :class="{active: !$s.chat.hidden}"
-                :data-tooltip="$s.chat.hidden ? $t('show chat panel') : $t('hide chat panel')"
-                @click="$s.chat.hidden = !$s.chat.hidden"
+                v-if="$s.group.connected && $s.permissions.present"
+                class="btn btn-menu tooltip tooltip-left"
+                :class="{active: $s.user.data.raisehand}"
+                :data-tooltip="$s.user.data.raisehand ? $t('hinting for speaking time') : $t('request speaking time')"
+                @click="toggleRaiseHand"
             >
-                <Icon class="icon-small" :name="$s.chat.hidden ? 'UncollapseHorizontal' : 'CollapseLeft'" />
+                <Icon class="hand icon-small" :class="{wave: $s.user.data.raisehand}" name="Hand" />
             </button>
         </div>
+        <button
+            class="btn btn-collapse tooltip"
+            :class="{active: !$s.panels.context.collapsed}"
+            :data-tooltip="$s.panels.context.collapsed ? $t('expand panel') : $t('collapse panel')"
+            @click="$s.panels.context.collapsed = !$s.panels.context.collapsed"
+        >
+            <Icon class="icon-small" :name="$s.panels.context.collapsed ? 'ExpandRight' : 'CollapseLeft'" />
+        </button>
     </nav>
 </template>
 
@@ -100,8 +98,11 @@ export default {
     justify-content: space-between;
 
     .btn-collapse {
+        align-self: flex-end;
         bottom: 0;
-        position: absolute;
+        color: var(--grey-6);
+        height: var(--space-4);
+        width: var(--space-4);
     }
 }
 </style>
