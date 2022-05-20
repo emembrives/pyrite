@@ -2,6 +2,14 @@
     <nav class="c-room-controls">
         <div class="group-controls">
             <button
+                class="btn btn-menu tooltip"
+                :class="{active: !$s.panels.chat.collapsed}"
+                :data-tooltip="$s.panels.chat.collapsed ? $t('show chat panel') : $t('hide chat panel')"
+                @click="$s.panels.chat.collapsed = !$s.panels.chat.collapsed"
+            >
+                <Icon class="icon-small" :class="{active: $s.panels.chat.collapsed}" name="Chat" />
+            </button>
+            <button
                 v-if="$s.permissions.present"
                 class="btn btn-menu tooltip tooltip-left"
                 :class="{active: $s.devices.mic.enabled, error: !$s.devices.mic.enabled}"
@@ -47,16 +55,6 @@
 
             <button class="btn btn-menu no-feedback tooltip tooltip-left" :data-tooltip="`${volume.value}% ${$t('audio volume')}`">
                 <FieldSlider v-model="volume" />
-            </button>
-
-            <button
-                v-if="$s.group.connected"
-                class="btn btn-menu tooltip btn-collapse"
-                :class="{active: !$s.chat.hidden}"
-                :data-tooltip="$s.chat.hidden ? $t('show chat panel') : $t('hide chat panel')"
-                @click="$s.chat.hidden = !$s.chat.hidden"
-            >
-                <Icon class="icon-small" :name="$s.chat.hidden ? 'Chat' : 'CollapseRight'" />
             </button>
         </div>
     </nav>

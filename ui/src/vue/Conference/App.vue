@@ -3,8 +3,8 @@
         class="c-conference-app app" :class="{
             connected: $s.group.connected,
             'panel-context-collapsed': $s.panels.context.collapsed,
-            'chat-hidden': $s.chat.hidden,
-            'chat-toggle': chatToggle,
+            'panel-chat-collapsed': $s.panels.chat.collapsed,
+            'panel-chat-toggle': chatToggle,
             [`theme-${$s.theme.id}`]: true,
         }"
     >
@@ -17,7 +17,7 @@
         <RouterView />
 
         <transition @enter="openChat" @leave="closeChat">
-            <GroupChat v-if="$s.group.connected && !$s.chat.hidden" ref="chat" />
+            <PanelChat v-if="$s.group.connected && !$s.panels.chat.collapsed" ref="chat" />
         </transition>
 
         <GroupControls v-if="$s.group.connected" />
@@ -28,14 +28,14 @@
 
 <script>
 import ConferenceControls from './Controls/Controls.vue'
-import GroupChat from './Groups/Group/Chat.vue'
 import GroupControls from './Groups/Group/Controls.vue'
 import Groups from './Groups/List.vue'
+import PanelChat from './Groups/Group/PanelChat.vue'
 import PanelContext from '@/vue/Elements/PanelContext.vue'
 import UsersList from './Users/List/List.vue'
 
 export default {
-    components: {ConferenceControls, GroupChat, GroupControls, Groups, PanelContext, UsersList},
+    components: {ConferenceControls, GroupControls, Groups, PanelChat, PanelContext, UsersList},
     data() {
         return {
             chatToggle: false,
@@ -96,31 +96,31 @@ export default {
         // Presence, General Controls, Group, Chat, Group Controls
         grid-template-columns: min-content var(--c1-width) 1fr min-content var(--c2-width);
 
-        .c-chat {
+        .c-panel-chat {
             opacity: 1;
             transition: opacity 150ms;
         }
 
-        &.chat-hidden {
+        &.panel-chat-collapsed {
             // Presence, Controls, Conference Space, Conference Controls
             grid-template-columns: min-content var(--c1-width) 1fr var(--c2-width);
         }
 
-        &.chat-toggle {
+        &.panel-chat-toggle {
             // Toggling chat while being active the group
             // Blocks: Presence, Controls, Chat, Conference Space
             grid-template-columns: min-content var(--c1-width) 1fr min-content var(--c2-width);
         }
     }
 
-    &.chat-toggle {
+    &.panel-chat-toggle {
         // Toggling chat while leaving the group
         // Blocks: Presence, Controls, Login, Chat
         grid-template-columns: min-content var(--space-4) 1fr min-content;
         overflow: hidden;
         resize: none;
 
-        .c-chat {
+        .c-panel-chat {
             min-width: auto;
             opacity: 0.75;
 
@@ -132,11 +132,6 @@ export default {
                 white-space: nowrap;
             }
         }
-    }
-
-    .btn-collapse {
-        bottom: 0;
-        position: absolute;
     }
 }
 </style>

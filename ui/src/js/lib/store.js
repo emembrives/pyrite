@@ -59,7 +59,6 @@ const volatileState = {
                 unread: 0,
             },
         },
-        hidden: false,
         width: 400,
     },
     files: {
@@ -76,6 +75,9 @@ const volatileState = {
     mediaReady: false,
     notifications: [],
     panels: {
+        chat: {
+            collapsed: false,
+        },
         context: {
             collapsed: false,
         },

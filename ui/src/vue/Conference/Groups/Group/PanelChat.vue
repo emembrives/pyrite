@@ -1,5 +1,5 @@
 <template>
-    <div ref="view" class="c-chat">
+    <div ref="view" class="c-panel-chat">
         <div class="chat-channels">
             <div
                 v-for="(channel, key) in $s.chat.channels"
@@ -244,7 +244,7 @@ export default {
 </script>
 
 <style lang="scss">
-.c-chat {
+.c-panel-chat {
     border-right: var(--border) solid var(--grey-4);
     display: flex;
     flex-direction: column;

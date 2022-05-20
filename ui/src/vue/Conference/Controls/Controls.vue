@@ -57,7 +57,7 @@
             class="btn btn-collapse tooltip"
             :class="{active: !$s.panels.context.collapsed}"
             :data-tooltip="$s.panels.context.collapsed ? $t('expand panel') : $t('collapse panel')"
-            @click="$s.panels.context.collapsed = !$s.panels.context.collapsed"
+            @click="toggleCollapse"
         >
             <Icon class="icon-small" :name="$s.panels.context.collapsed ? 'ExpandRight' : 'CollapseLeft'" />
         </button>
@@ -79,6 +79,10 @@ export default {
     },
     components: {Context},
     methods: {
+        toggleCollapse() {
+            this.$s.panels.context.collapsed = !this.$s.panels.context.collapsed
+            app.store.save()
+        },
         toggleRaiseHand() {
             this.$m.sfu.connection.userAction('setdata', this.$m.sfu.connection.id, {raisehand: !this.$s.user.data.raisehand})
             if (!this.$s.user.data.raisehand) {
@@ -98,8 +102,6 @@ export default {
     justify-content: space-between;
 
     .btn-collapse {
-        align-self: flex-end;
-        bottom: 0;
         color: var(--grey-6);
         height: var(--space-4);
         width: var(--space-4);

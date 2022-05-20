@@ -74,10 +74,10 @@ export default defineComponent({
                 to: 0,
             })
         },
-        toggleCollapse() {
+    },
+    watch: {
+        '$s.panels.context.collapsed': function() {
             const space4 = Number(getComputedStyle(document.querySelector('.app')).getPropertyValue('--space-4').replace('px', ''))
-
-            // this.$s.panels.context.collapsed = !this.$s.panels.context.collapsed
             this.app.animate({
                 duration: 350,
                 from: this.$s.panels.context.collapsed ? 300 : space4,
@@ -89,12 +89,6 @@ export default defineComponent({
                 },
                 to: this.$s.panels.context.collapsed ? space4 : 300,
             })
-
-        },
-    },
-    watch: {
-        '$s.panels.context.collapsed': function() {
-            this.toggleCollapse()
         },
     },
 })
@@ -246,11 +240,6 @@ export default defineComponent({
                 .version {
                     display: none;
                 }
-            }
-
-            .btn-collapse {
-                height: 100%;
-                width: 100%;
             }
         }
 
