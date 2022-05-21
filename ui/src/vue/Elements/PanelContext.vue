@@ -2,8 +2,8 @@
     <div ref="panel" class="c-panel-context" :class="{collapsed: $s.panels.context.collapsed}">
         <header>
             <RouterLink
+                v-if="!$s.group.connected"
                 class="logo tooltip"
-                :class="{active: $route.name && $route.name.includes('manager')}"
                 :data-tooltip="$route.name.includes('conference-') ? $t('switch to admin') : $t('switch to conference')"
                 :to="toggleContext"
             >
@@ -17,6 +17,17 @@
                     </div>
                 </div>
             </RouterLink>
+            <span v-else class="logo tooltip">
+                <Icon class="icon" name="Logo" />
+                <div class="l-name">
+                    <div class="name">
+                        PYRITE
+                    </div>
+                    <div class="version">
+                        {{ version }}
+                    </div>
+                </div>
+            </span>
         </header>
         <slot />
     </div>
@@ -37,17 +48,19 @@ export default defineComponent({
                 const groupId = this.$route.params.groupId
                 return {name: 'admin-groups-settings', params: {groupId, tabId: 'misc'}}
             } else if (this.$route.name.startsWith('admin-group')) {
-                const groupId = this.$route.params.groupId
-
-                if (!groupId) {
-                    return {name: 'conference-splash'}
+                if (this.$s.group.connected) {
+                    const groupId = this.$s.group.name
+                    return {name: 'conference-groups-connected', params: {groupId}}
                 } else {
-                    if (!this.$s.group.connected) {
-                        return {name: 'conference-groups-disconnected', params: {groupId}}
+                    const groupId = this.$route.params.groupId
+
+                    if (!groupId) {
+                        return {name: 'conference-splash'}
                     } else {
-                        return {name: 'conference-groups-connected', params: {groupId}}
+                        return {name: 'conference-groups-disconnected', params: {groupId}}
                     }
                 }
+
             }
             return {name: 'conference-main'}
         },
@@ -109,25 +122,27 @@ export default defineComponent({
         display: flex;
         font-weight: bold;
         height: var(--space-4);
-        margin-bottom: var(--spacer);
         padding-right: var(--spacer);
         position: relative;
+
+        a.logo {
+            cursor: pointer;
+        }
+
+        span.logo {
+            cursor: default;
+        }
 
         .logo {
             align-items: center;
             color: var(--primary-color);
             display: flex;
-            flex: 1;
             font-family: var(--font-secondary);
             justify-content: flex-start;
 
             svg {
                 color: var(--primary-color);
                 margin-right: var(--spacer);
-            }
-
-            &.no-back-link:hover {
-                cursor: not-allowed;
             }
 
             .icon {
@@ -168,12 +183,17 @@ export default defineComponent({
         }
 
         .actions {
+            background: var(--grey-4);
             display: flex;
+            gap: var(--space-05);
+            justify-content: center;
 
             .btn {
+                background: var(--grey-3);
                 cursor: pointer;
-                margin: 0;
-                padding: 0;
+                height: var(--space-3);
+                margin: var(--spacer) 0;
+                width: var(--space-3);
 
                 &:disabled {
                     cursor: not-allowed;
@@ -227,6 +247,7 @@ export default defineComponent({
             padding: 0;
 
             .logo {
+                flex: 1;
                 justify-content: center;
 
                 svg {
@@ -246,9 +267,13 @@ export default defineComponent({
         .presence {
 
             .actions {
+                align-items: center;
                 flex-direction: column;
-                gap: var(--spacer);
-                margin: var(--space-1) 0;
+                padding-bottom: var(--spacer);
+
+                .btn {
+                    margin-bottom: var(--space-05) 0;
+                }
             }
 
             .item {

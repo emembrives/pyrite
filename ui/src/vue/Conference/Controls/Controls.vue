@@ -20,17 +20,25 @@
                 <Icon class="icon-small" name="Settings" />
             </RouterLink>
             <RouterLink
+                v-if="($s.group.name && !$s.group.connected) || $s.group.connected"
                 class="btn btn-menu tooltip"
                 :class="{
                     active: ['conference-groups-connected', 'conference-groups-disconnected'].includes($route.name)
                 }"
                 :data-tooltip="$s.group.locked ? `${$t('current group')} (${$t('locked')})` : $t('current group')"
-                :disabled="!$s.group.name"
                 :to="$s.group.name ? {name: 'conference-groups', params: {groupId: $s.group.name}} : {name: 'conference-main'}"
             >
                 <Icon v-if="!$s.group.locked" class="icon-small" name="Group" />
                 <Icon v-else class="icon-small" name="GroupLocked" />
             </RouterLink>
+            <button
+                v-else
+                class="btn btn-menu btn-logout tooltip"
+                :data-tooltip="$t('current group')"
+                :disabled="true"
+            >
+                <Icon class="icon-small" name="Group" />
+            </button>
 
             <button
                 v-if="$s.group.connected"
@@ -41,8 +49,6 @@
                 <Icon class="icon-small" name="Logout" />
             </button>
 
-            <Context v-if="$s.group.connected && $s.permissions.op" />
-
             <button
                 v-if="$s.group.connected && $s.permissions.present"
                 class="btn btn-menu tooltip tooltip-left"
@@ -52,6 +58,8 @@
             >
                 <Icon class="hand icon-small" :class="{wave: $s.user.data.raisehand}" name="Hand" />
             </button>
+
+            <Context v-if="$s.group.connected && $s.permissions.op" />
         </div>
         <button
             class="btn btn-collapse tooltip"

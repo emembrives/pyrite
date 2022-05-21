@@ -12,7 +12,7 @@
         color: var(--warning-color);
     }
 
-    &[disabled="true"] {
+    &[disabled] {
         color: var(--grey-6);
     }
 
@@ -24,7 +24,7 @@
         outline: none;
     }
 
-    &:not([disabled="true"]):hover {
+    &:not([disabled]):hover {
         color: var(--primary-color);
         cursor: pointer;
     }
@@ -101,7 +101,7 @@
             width: auto;
         }
 
-        &[disabled="true"] {
+        &[disabled] {
             color: var(--grey-6);
 
             &:hover {

@@ -9,7 +9,7 @@
         }"
     >
         <PanelContext>
-            <UsersList v-if="$s.group.connected" /><Groups v-else />
+            <UsersContext v-if="$s.group.connected" /><Groups v-else />
         </PanelContext>
 
         <ConferenceControls />
@@ -29,13 +29,13 @@
 <script>
 import ConferenceControls from './Controls/Controls.vue'
 import GroupControls from './Groups/Group/Controls.vue'
-import Groups from './Groups/List.vue'
+import Groups from './Groups/Context.vue'
 import PanelChat from './Groups/Group/PanelChat.vue'
 import PanelContext from '@/vue/Elements/PanelContext.vue'
-import UsersList from './Users/List/List.vue'
+import UsersContext from './Users/Context.vue'
 
 export default {
-    components: {ConferenceControls, GroupControls, Groups, PanelChat, PanelContext, UsersList},
+    components: {ConferenceControls, GroupControls, Groups, PanelChat, PanelContext, UsersContext},
     data() {
         return {
             chatToggle: false,

@@ -1,5 +1,5 @@
 <template>
-    <section class="c-users presence">
+    <section class="c-users-context presence">
         <div v-for="user of sortedUsers" :key="user.id" class="user item">
             <Icon
                 v-if="user.data.raisehand"
@@ -37,16 +37,16 @@
                 </div>
             </div>
 
-            <Context v-if="user.username !== 'RECORDING'" :user="user" />
+            <ContextOptions v-if="user.username !== 'RECORDING'" :user="user" />
         </div>
     </section>
 </template>
 
 <script>
-import Context from './Context.vue'
+import ContextOptions from './ContextOptions.vue'
 
 export default {
-    components: {Context},
+    components: {ContextOptions},
     computed: {
         sortedUsers() {
             const users = [...this.$s.users]
@@ -78,43 +78,46 @@ export default {
 </script>
 
 <style lang="scss">
-.user {
-    font-family: var(--font-secondary);
+.c-users-context {
 
-    .item-icon {
+    .user {
+        font-family: var(--font-secondary);
 
-        &.away {
-            color: var(--warning-color);
-        }
+        .item-icon {
 
-        &.busy {
-            color: var(--error-color);
-        }
-
-        &.hand {
-            animation-duration: 2.5s;
-            animation-iteration-count: infinite;
-            animation-name: wave-animation;
-            transform-origin: center bottom;
-        }
-    }
-
-    .name {
-        align-items: center;
-        display: flex;
-
-        .permissions {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-            margin-left: calc(var(--spacer) / 2);
-
-            .status {
-                margin-right: var(--spacer);
+            &.away {
+                color: var(--warning-color);
             }
 
-            span {
+            &.busy {
+                color: var(--error-color);
+            }
+
+            &.hand {
+                animation-duration: 2.5s;
+                animation-iteration-count: infinite;
+                animation-name: wave-animation;
+                transform-origin: center bottom;
+            }
+        }
+
+        .name {
+            align-items: center;
+            display: flex;
+
+            .permissions {
+                align-items: center;
                 display: flex;
+                justify-content: center;
+                margin-left: calc(var(--spacer) / 2);
+
+                .status {
+                    margin-right: var(--spacer);
+                }
+
+                span {
+                    display: flex;
+                }
             }
         }
     }

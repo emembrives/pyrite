@@ -1,5 +1,5 @@
 <template>
-    <section class="c-groups presence">
+    <section class="c-groups-context presence">
         <RouterLink
             v-for="group of $s.groups"
             :key="group.name"
@@ -97,7 +97,7 @@ export default {
 </script>
 
 <style lang="scss">
-.c-groups {
+.c-groups-context {
 
     .group {
 

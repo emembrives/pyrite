@@ -245,12 +245,10 @@ export default {
 
 <style lang="scss">
 .c-panel-chat {
-    border-right: var(--border) solid var(--grey-4);
+    border-left: var(--border) solid var(--grey-4);
     display: flex;
     flex-direction: column;
     height: 100vh;
-
-    // resize: horizontal;
     min-width: 350px;
     overflow: auto;
 

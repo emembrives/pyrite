@@ -41,7 +41,6 @@ export default [{
             },
         },
         {
-
             children: [
                 {
                     // Settings accessible when not in a group yet

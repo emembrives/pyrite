@@ -25,6 +25,17 @@ const persistantState = reactive({
         accept: {id: 'everything', name: ''},
         upstream: {id: 'normal', name: ''},
     },
+    panels: {
+        chat: {
+            collapsed: false,
+        },
+        context: {
+            collapsed: false,
+        },
+        settings: {
+            collapsed: false,
+        },
+    },
     theme: {id: 'system'},
     user: {
         data: {
@@ -59,7 +70,7 @@ const volatileState = {
                 unread: 0,
             },
         },
-        width: 400,
+        width: 350,
     },
     files: {
         playing: [],
@@ -74,17 +85,6 @@ const volatileState = {
     groups: [],
     mediaReady: false,
     notifications: [],
-    panels: {
-        chat: {
-            collapsed: false,
-        },
-        context: {
-            collapsed: false,
-        },
-        settings: {
-            collapsed: false,
-        },
-    },
     permissions: {
         op: false,
         // Assume present permission before connecting,

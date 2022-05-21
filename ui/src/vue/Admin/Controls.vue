@@ -1,31 +1,42 @@
 <template>
     <nav class="c-admin-controls">
-        <RouterLink
-            active-class="active-group"
-            class="btn btn-menu tooltip"
-            :class="{active: $route.name === 'admin-groups-settings'}"
-            :data-tooltip="$t('groups')"
-            :to="groupRoute('admin-groups-settings')"
-        >
-            <Icon class="icon-small" name="Group" />
-        </RouterLink>
+        <div class="navigational-controls">
+            <RouterLink
+                active-class="active-group"
+                class="btn btn-menu tooltip"
+                :class="{active: $route.name === 'admin-groups-settings'}"
+                :data-tooltip="$t('groups')"
+                :to="groupRoute('admin-groups-settings')"
+            >
+                <Icon class="icon-small" name="Group" />
+            </RouterLink>
 
-        <RouterLink
-            class="btn btn-menu tooltip"
-            :class="{active: $route.name.startsWith('admin-users')}"
-            :data-tooltip="$t('people')"
-            :to="userRoute('admin-users-settings')"
-        >
-            <Icon class="icon-small" name="User" />
-        </RouterLink>
+            <RouterLink
+                class="btn btn-menu tooltip"
+                :class="{active: $route.name.startsWith('admin-users')}"
+                :data-tooltip="$t('people')"
+                :to="userRoute('admin-users-settings')"
+            >
+                <Icon class="icon-small" name="User" />
+            </RouterLink>
+
+            <button
+                v-if="$s.admin.authenticated && $s.admin.permission"
+                class="btn btn-menu btn-logout tooltip"
+                :data-tooltip="$t('log out')"
+                @click="logout"
+            >
+                <Icon class="icon-small" name="Logout" />
+            </button>
+        </div>
 
         <button
-            v-if="$s.admin.authenticated && $s.admin.permission"
-            class="btn btn-menu btn-logout tooltip"
-            :data-tooltip="$t('log out')"
-            @click="logout"
+            class="btn btn-collapse tooltip"
+            :class="{active: !$s.panels.context.collapsed}"
+            :data-tooltip="$s.panels.context.collapsed ? $t('expand panel') : $t('collapse panel')"
+            @click="toggleCollapse"
         >
-            <Icon class="icon-small" name="Logout" />
+            <Icon class="icon-small" :name="$s.panels.context.collapsed ? 'ExpandRight' : 'CollapseLeft'" />
         </button>
     </nav>
 </template>
@@ -45,6 +56,10 @@ export default {
             Object.assign(this.$s.admin, context)
             this.$router.push({name: 'admin-login'})
         },
+        toggleCollapse() {
+            this.$s.panels.context.collapsed = !this.$s.panels.context.collapsed
+            app.store.save()
+        },
         userRoute(name) {
             if (this.$s.admin.user) {
                 return {name, params: {tabId: 'misc', userId: this.$s.admin.user.id}}
@@ -61,5 +76,13 @@ export default {
     background: var(--grey-4);
     display: flex;
     flex-direction: column;
+    height: 100vh;
+    justify-content: space-between;
+
+    .btn-collapse {
+        color: var(--grey-6);
+        height: var(--space-4);
+        width: var(--space-4);
+    }
 }
 </style>

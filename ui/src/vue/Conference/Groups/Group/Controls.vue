@@ -5,7 +5,7 @@
                 class="btn btn-menu tooltip"
                 :class="{active: !$s.panels.chat.collapsed}"
                 :data-tooltip="$s.panels.chat.collapsed ? $t('show chat panel') : $t('hide chat panel')"
-                @click="$s.panels.chat.collapsed = !$s.panels.chat.collapsed"
+                @click="toggleChat"
             >
                 <Icon class="icon-small" :class="{active: $s.panels.chat.collapsed}" name="Chat" />
             </button>
@@ -98,6 +98,10 @@ export default {
             this.app.logger.debug(`switching cam stream: ${this.$s.devices.cam.enabled}`)
             this.$m.sfu.delUpMediaKind('camera')
             this.$m.media.getUserMedia(this.$s.devices)
+        },
+        toggleChat() {
+            this.$s.panels.chat.collapsed = !this.$s.panels.chat.collapsed
+            app.store.save()
         },
         toggleMicrophone() {
             this.$m.sfu.muteMicrophone(this.$s.devices.mic.enabled)
