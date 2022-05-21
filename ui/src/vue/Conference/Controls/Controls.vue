@@ -59,7 +59,7 @@
                 <Icon class="hand icon-small" :class="{wave: $s.user.data.raisehand}" name="Hand" />
             </button>
 
-            <Context v-if="$s.group.connected && $s.permissions.op" />
+            <ContextMenu v-if="$s.group.connected && $s.permissions.op" />
         </div>
         <button
             class="btn btn-collapse tooltip"
@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import Context from './Context.vue'
+import ContextMenu from './ContextMenu.vue'
 
 export default {
     computed: {
@@ -85,7 +85,7 @@ export default {
             }
         },
     },
-    components: {Context},
+    components: {ContextMenu},
     methods: {
         toggleCollapse() {
             this.$s.panels.context.collapsed = !this.$s.panels.context.collapsed

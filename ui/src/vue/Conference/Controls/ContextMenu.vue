@@ -3,7 +3,7 @@
         <button class="btn btn-menu no-feedback">
             <Icon class="icon icon-small" name="Menu" @click="toggleMenu" />
         </button>
-        <div v-show="active" class="actions">
+        <div v-show="active" class="context-actions">
             <button
                 v-if="$s.permissions.record"
                 class="action"
