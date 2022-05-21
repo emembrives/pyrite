@@ -1,12 +1,6 @@
 <template>
-    <section v-if="$s.admin.authenticated && $s.admin.permission" class="c-admin-groups presence">
+    <section v-if="$s.admin.authenticated && $s.admin.permission" class="c-admin-groups-context presence">
         <div class="actions">
-            <button
-                class="btn tooltip tooltip-right"
-                :data-tooltip="$t('add new group')"
-            >
-                <Icon class="item-icon icon-small" name="Plus" @click="addGroup" />
-            </button>
             <button
                 class="btn tooltip tooltip-right"
                 :data-tooltip="$s.admin.group && $s.admin.group._delete ? $t('undo mark deletion') : $t('mark for deletion')"
@@ -16,11 +10,9 @@
             </button>
             <button
                 class="btn tooltip tooltip-right"
-                :data-tooltip="$t('store group')"
-                :disabled="!$s.admin.group"
-                @click="saveGroup"
+                :data-tooltip="$t('add new group')"
             >
-                <Icon class="icon-small" name="Save" />
+                <Icon class="item-icon icon-small" name="Plus" @click="addGroup" />
             </button>
             <button
                 class="btn tooltip tooltip-right"
@@ -29,6 +21,14 @@
                 @click="deleteGroups"
             >
                 <Icon class="icon-small" name="Trash" />
+            </button>
+            <button
+                class="btn tooltip tooltip-right"
+                :data-tooltip="$t('store group')"
+                :disabled="!$s.admin.group"
+                @click="saveGroup"
+            >
+                <Icon class="icon-small" name="Save" />
             </button>
         </div>
 
@@ -173,7 +173,7 @@ export default {
 </script>
 
 <style lang="scss">
-.c-admin-groups {
+.c-admin-groups-context {
 
     .row {
         color: var(--grey-7);

@@ -183,9 +183,11 @@ export default defineComponent({
         }
 
         .actions {
-            background: var(--grey-4);
+            background: var(--grey-2);
+            border-bottom: var(--border) solid var(--grey-4);
             display: flex;
-            gap: var(--space-05);
+            gap: var(--spacer);
+            height: var(--space-4);
             justify-content: center;
 
             .btn {
@@ -205,7 +207,7 @@ export default defineComponent({
             align-items: center;
             color: var(--grey-7);
             display: flex;
-            height: var(--space-3);
+            height: var(--space-4);
             overflow: visible;
             padding: calc(var(--spacer) / 2) var(--spacer);
 
@@ -268,16 +270,28 @@ export default defineComponent({
 
             .actions {
                 align-items: center;
+                background: none;
                 flex-direction: column;
-                padding-bottom: var(--spacer);
+                gap: 2px;
+                height: auto;
+                padding: 4px;
 
                 .btn {
-                    margin-bottom: var(--space-05) 0;
+                    height: 28px;
+                    margin: 0;
+                    width: 100%;
                 }
             }
 
             .item {
                 justify-content: center;
+
+                &.active {
+
+                    .item-icon {
+                        color: var(--primary-color);
+                    }
+                }
 
                 .item-icon {
                     margin: 0;
@@ -288,7 +302,15 @@ export default defineComponent({
                 }
 
                 .context-menu {
-                    display: none;
+                    margin-right: var(--spacer);
+                    position: absolute;
+                    right: 0;
+                    width: var(--spacer);
+
+                    svg {
+                        height: var(--space-1);
+                        width: var(--space-1);
+                    }
                 }
 
                 .stats {

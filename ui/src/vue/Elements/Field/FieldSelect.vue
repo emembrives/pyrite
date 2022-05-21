@@ -235,6 +235,7 @@ export default {
         width: 100%;
 
         .button-wrapper {
+            border-bottom: var(--border) solid var(--grey-5);
             display: flex;
             z-index: 1000;
 

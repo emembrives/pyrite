@@ -51,7 +51,7 @@
 
             <button
                 v-if="$s.group.connected && $s.permissions.present"
-                class="btn btn-menu tooltip tooltip-left"
+                class="btn btn-menu tooltip tooltip-right"
                 :class="{active: $s.user.data.raisehand}"
                 :data-tooltip="$s.user.data.raisehand ? $t('hinting for speaking time') : $t('request speaking time')"
                 @click="toggleRaiseHand"

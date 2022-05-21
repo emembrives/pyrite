@@ -1,7 +1,7 @@
 <template>
     <div v-click-outside="toggleMenu" class="c-user-context context-menu" :class="{active}">
         <Icon class="icon icon-small" name="Menu" @click="toggleMenu" />
-        <div v-if="active" class="actions">
+        <div v-if="active" class="context-actions">
             <button
                 v-if="user.id !== $s.user.id" class="action"
                 @click="activateUserChat"

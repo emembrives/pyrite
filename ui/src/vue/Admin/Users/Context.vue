@@ -1,12 +1,6 @@
 <template>
-    <section class="c-admin-users-list presence" :class="{collapsed: $s.panels.context.collapsed}">
+    <section class="c-admin-users-context presence" :class="{collapsed: $s.panels.context.collapsed}">
         <div class="actions">
-            <button
-                class="btn tooltip tooltip-right"
-                :data-tooltip="$t('add new user')"
-            >
-                <Icon class="item-icon icon-small" name="Plus" @click="addUser" />
-            </button>
             <button
                 class="btn tooltip tooltip-right"
                 :data-tooltip="$s.admin.user && $s.admin.user._delete ? $t('undo mark deletion') : $t('mark for deletion')"
@@ -16,10 +10,9 @@
             </button>
             <button
                 class="btn tooltip tooltip-right"
-                :data-tooltip="$t('store person')"
-                @click="saveUser"
+                :data-tooltip="$t('add new user')"
             >
-                <Icon class="icon-small" name="Save" />
+                <Icon class="item-icon icon-small" name="Plus" @click="addUser" />
             </button>
             <button
                 class="btn tooltip tooltip-right"
@@ -28,6 +21,13 @@
                 @click="deleteUsers"
             >
                 <Icon class="icon-small" name="Trash" />
+            </button>
+            <button
+                class="btn tooltip tooltip-right"
+                :data-tooltip="$t('store person')"
+                @click="saveUser"
+            >
+                <Icon class="icon-small" name="Save" />
             </button>
         </div>
         <RouterLink
@@ -145,7 +145,7 @@ export default {
 </script>
 
 <style lang="scss">
-.c-admin-users-list {
+.c-admin-users-context {
 
     .row {
         color: var(--grey-7);
