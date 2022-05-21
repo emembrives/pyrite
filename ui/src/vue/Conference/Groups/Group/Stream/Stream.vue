@@ -363,11 +363,11 @@ export default {
         }
     }
 
-    // No video-track; just use it to play audio, but show a
-    // mic icon to indicate this is audio-only.
-
     &.audio {
-        video: {
+        // No video-track; just use it to play audio, but show a
+        // mic icon to indicate this is audio-only.
+
+        .media {
             display: none;
         }
     }
