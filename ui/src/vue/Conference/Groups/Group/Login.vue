@@ -16,11 +16,12 @@
                         v-if="$s.group['allow-anonymous'] && false"
                         v-model="anonymousLogin" :label="$t('anonymous login')"
                     />
+
                     <FieldText
                         v-if="!anonymousLogin"
                         v-model="v$.user.username.$model"
                         autocomplete="username"
-                        :autofocus="$route.params.groupId"
+                        :autofocus="$s.login.autofocus && $route.params.groupId"
                         :label="$t('username')"
                         name="username"
                         placeholder="Alice, Bob, Carol..."

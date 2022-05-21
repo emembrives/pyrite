@@ -1,11 +1,22 @@
 <template>
     <section class="c-groups-context presence">
+        <div class="actions">
+            <div class="custom-group">
+                <Icon class="custom-group-icon icon-small" name="Group" />
+                <input
+                    v-model="$s.group.name" class="js-custom-group"
+                    placeholder="..."
+                    @focus="updateRoute"
+                >
+            </div>
+        </div>
         <RouterLink
             v-for="group of $s.groups"
             :key="group.name"
             class="group item"
             :class="{active: $s.group.name === group.name}"
             :to="groupLink(group.name)"
+            @click="setAutofocus"
         >
             <Icon v-if="!group.locked" class="item-icon icon-small" name="Group" />
             <Icon v-else class="item-icon icon-small" name="GroupLocked" />
@@ -24,16 +35,6 @@
             <div class="name">
                 {{ $t('no public groups') }}
             </div>
-        </div>
-        <div class="group group-input item">
-            <FieldText
-                v-model="$s.group.name"
-                class="custom-group"
-                :help="$t('use unlisted group')"
-                name="group"
-                placeholder="..."
-                @focus="updateRoute"
-            />
         </div>
     </section>
 </template>
@@ -56,10 +57,14 @@ export default {
                 }
             }
         },
+        setAutofocus() {
+            this.$s.login.autofocus = true
+        },
         updateRoute() {
+            this.$s.login.autofocus = false
             if (this.$s.group.name) {
                 // Assume unlocked, when there are no public groups
-                this.$s.group.locked = this.groups.find((i) => i.name === this.$s.group.name)?.locked || false
+                this.$s.group.locked = this.$s.groups.find((i) => i.name === this.$s.group.name)?.locked || false
 
                 // Update the group route when the user sets the group name.
                 this.$router.replace({name: 'conference-groups', params: {groupId: this.$s.group.name}})
@@ -86,7 +91,7 @@ export default {
         '$s.group.name': {
             immediate: false,
             handler() {
-                if (this.$router.currentRoute.value.name === 'user-groups-disconnected') {
+                if (this.$router.currentRoute.value.name === 'conference-groups-disconnected') {
                     this.app.logger.debug(`updating group route: ${this.$s.group.name}`)
                     this.updateRoute()
                 }
@@ -98,6 +103,41 @@ export default {
 
 <style lang="scss">
 .c-groups-context {
+
+    .actions {
+
+        .custom-group {
+            align-items: center;
+            display: flex;
+            flex: 1;
+            height: var(--space-4);
+            padding: calc(var(--spacer) / 2) var(--spacer);
+
+            .custom-group-icon {
+                align-items: center;
+                display: flex;
+                margin-right: var(--spacer);
+            }
+
+            input {
+                background: none;
+                border: none;
+                color: var(--grey-7);
+                flex: 1;
+                font-family: var(--font-secondary);
+                font-weight: 600;
+                padding: var(--spacer) 0;
+
+                &:active,
+                &:focus-visible,
+                &:focus {
+                    border: none;
+                    color: var(--primary-color);
+                    outline: none;
+                }
+            }
+        }
+    }
 
     .group {
 

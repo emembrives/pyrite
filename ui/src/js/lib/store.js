@@ -83,6 +83,9 @@ const volatileState = {
         recording: false,
     },
     groups: [],
+    login: {
+        autofocus: true,
+    },
     mediaReady: false,
     notifications: [],
     permissions: {
