@@ -37,16 +37,16 @@
                 </div>
             </div>
 
-            <ContextOptions v-if="user.username !== 'RECORDING'" :user="user" />
+            <ContextMenu v-if="user.username !== 'RECORDING'" :user="user" />
         </div>
     </section>
 </template>
 
 <script>
-import ContextOptions from './ContextOptions.vue'
+import ContextMenu from './ContextMenu.vue'
 
 export default {
-    components: {ContextOptions},
+    components: {ContextMenu},
     computed: {
         sortedUsers() {
             const users = [...this.$s.users]
