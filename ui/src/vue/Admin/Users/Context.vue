@@ -25,6 +25,7 @@
             <button
                 class="btn tooltip tooltip-right"
                 :data-tooltip="$t('store person')"
+                :disabled="!$s.admin.user"
                 @click="saveUser"
             >
                 <Icon class="icon-small" name="Save" />
