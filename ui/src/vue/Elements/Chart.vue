@@ -133,13 +133,13 @@ export default {
 
         .axis-y {
             fill: var(--grey-7);
-            font-family: var(--font-secondary);
+            font-family: var(--font-2);
             stroke: none;
         }
 
         .name {
             fill: var(--grey-6);
-            font-family: var(--font-secondary);
+            font-family: var(--font-2);
             font-size: var(--text-xs);
             stroke: none;
         }

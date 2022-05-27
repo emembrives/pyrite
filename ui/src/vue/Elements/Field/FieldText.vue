@@ -161,7 +161,7 @@ export default {
     }
 
     .field-label {
-        font-family: var(--font-secondary);
+        font-family: var(--font-2);
         text-transform: capitalize;
     }
 

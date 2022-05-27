@@ -203,7 +203,7 @@ export default {
         align-items: center;
         display: flex;
         flex: 1;
-        font-family: var(--font-secondary);
+        font-family: var(--font-2);
         font-size: var(--text-l);
         justify-content: center;
         margin-bottom: var(--space-3);

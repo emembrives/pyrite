@@ -164,7 +164,7 @@ export default defineComponent({
             align-items: center;
             color: var(--primary-color);
             display: flex;
-            font-family: var(--font-secondary);
+            font-family: var(--font-2);
             font-size: var(--text-s);
             user-select: none;
 

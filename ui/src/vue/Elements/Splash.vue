@@ -54,7 +54,7 @@ export default {
     align-items: center;
     display: flex;
     flex-direction: column;
-    font-family: var(--font-secondary);
+    font-family: var(--font-2);
     justify-content: center;
 
     .icon {

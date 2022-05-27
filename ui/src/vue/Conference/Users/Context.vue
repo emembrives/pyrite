@@ -81,7 +81,7 @@ export default {
 .c-users-context {
 
     .user {
-        font-family: var(--font-secondary);
+        font-family: var(--font-2);
 
         .item-icon {
 

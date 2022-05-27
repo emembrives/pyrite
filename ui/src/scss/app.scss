@@ -23,8 +23,8 @@
     --text-d: 1rem;
     --text-l: 1.15rem;
     --text-xl: 2rem;
-    --font-primary: "Roboto";
-    --font-secondary: "Oswald", sans-serif;
+    --font-1: "Roboto";
+    --font-2: "Oswald", sans-serif;
     --border: 2px;
     --spacer: 8px;
     --space-4: 64px;
@@ -33,15 +33,11 @@
     --space-1: 16px;
     --space-05: 4px;
     --warning-h: 23;
-    --warning-color-d: hsl(var(--warning-h) var(--sat) var(--light-d));
     --warning-color: hsl(var(--warning-h) var(--sat) var(--light));
     --warning-color-l: hsl(var(--warning-h) var(--sat) var(--light-l));
-    --warning-color-xl: hsl(var(--warning-h) var(--sat) var(--light-xl));
     --error-h: 0;
-    --error-color-d: hsl(var(--error-h) var(--sat) var(--light-d));
     --error-color: hsl(var(--error-h) var(--sat) var(--light));
     --error-color-l: hsl(var(--error-h) var(--sat) var(--light-l));
-    --error-color-xl: hsl(var(--error-h) var(--sat) var(--light-xl));
     --grey-h: 210;
 }
 
@@ -59,13 +55,31 @@
     }
 }
 
-.theme-dark {
-    @include theme-dark;
+.app {
+    --grey-1: hsl(var(--grey-h) var(--grey-s) var(--light-1));
+    --grey-2: hsl(var(--grey-h) var(--grey-s) var(--light-2));
+    --grey-3: hsl(var(--grey-h) var(--grey-s) var(--light-3));
+    --grey-4: hsl(var(--grey-h) var(--grey-s) var(--light-4));
+    --grey-5: hsl(var(--grey-h) var(--grey-s) var(--light-5));
+    --grey-6: hsl(var(--grey-h) var(--grey-s) var(--light-6));
+    --grey-7: hsl(var(--grey-h) var(--grey-s) var(--light-7));
+    --grey-8: hsl(var(--grey-h) var(--grey-s) var(--light-8));
+    --primary-color-h: 200;
+    --primary-color-s: 80%;
+    --primary-color-l: 65%;
+    --primary-color: hsl(var(--primary-color-h) var(--primary-color-s) var(--primary-color-l));
+
+    color: var(--grey-6);
+
+    &.theme-dark {
+        @include theme-dark;
+    }
+
+    &.theme-light {
+        @include theme-light;
+    }
 }
 
-.theme-light {
-    @include theme-light;
-}
 
 ::-webkit-scrollbar {
     width: 6px;
@@ -90,13 +104,13 @@
 
 html,
 body {
-    font-family: var(--font-primary);
+    font-family: var(--font-1);
     font-size: var(--text-d);
     font-weight: 400;
     margin: 0;
     outline: none;
 
-    /** The js  grid needs some time to catch up. */
+    /** The js grid needs some time to catch up. */
     overflow-x: hidden;
 }
 
@@ -106,7 +120,6 @@ a {
 }
 
 textarea {
-    height: var(--unit);
     padding: 0;
     resize: none;
 

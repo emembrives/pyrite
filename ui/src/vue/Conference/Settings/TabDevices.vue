@@ -163,7 +163,7 @@ export default {
     .connected-warning {
         align-items: center;
         display: flex;
-        font-family: var(--font-secondary);
+        font-family: var(--font-2);
 
         .icon {
             color: var(--warning-color);

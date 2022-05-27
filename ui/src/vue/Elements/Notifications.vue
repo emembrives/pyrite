@@ -41,7 +41,7 @@ export default {
     bottom: var(--spacer);
     display: flex;
     flex-direction: column-reverse;
-    font-family: var(--font-secondary);
+    font-family: var(--font-2);
     font-style: italic;
     font-weight: 400;
     max-width: 400px;
@@ -83,13 +83,13 @@ export default {
         }
 
         &.warning {
-            background: var(--warning-color-d);
-            color: var(--warning-color-xl);
+            background: hsl(var(--warning-h) var(--sat) var(--light-d));
+            color: hsl(var(--warning-h) var(--sat) var(--light-xl));
         }
 
         &.error {
-            background: var(--error-color-d);
-            color: var(--error-color-xl);
+            background: hsl(var(--error-h) var(--sat) var(--light-d));
+            color: hsl(var(--error-h) var(--sat) var(--light-xl));
         }
 
         .message {

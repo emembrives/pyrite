@@ -97,7 +97,7 @@ export default {
         }
 
         &::-moz-range-thumb {
-            background: var(--grey-10);
+            background: var(--grey-5);
             border: 0;
             border-radius: 0;
             box-shadow: -80px 0 0 80px var(--primary-color);
@@ -114,7 +114,7 @@ export default {
 
         &::-webkit-slider-thumb {
             appearance: none;
-            background: var(--grey-10);
+            background: var(--grey-5);
             box-shadow: -80px 0 0 80px var(--primary-color);
             height: var(--spacer);
             width: var(--space-1);

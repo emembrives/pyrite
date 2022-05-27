@@ -264,7 +264,7 @@ export default {
             border: var(--border) solid var(--grey-4);
             color: var(--grey-6);
             display: flex;
-            font-family: var(--font-secondary);
+            font-family: var(--font-2);
             margin: var(--spacer);
             padding: var(--spacer);
             user-select: none;
@@ -366,7 +366,6 @@ export default {
             align-items: center;
             background: var(--grey-2);
             display: flex;
-            height: var(--unit);
             justify-content: center;
             padding: 0;
             width: var(--space-3);

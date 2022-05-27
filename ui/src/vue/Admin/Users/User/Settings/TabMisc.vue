@@ -27,16 +27,3 @@ export default defineComponent({
     },
 })
 </script>
-
-<style lang="scss">
-.c-admin-group-tab-misc {
-
-    .read-only {
-
-        span {
-            color: var(--grey-9);
-            font-family: var(--font-secondary);
-        }
-    }
-}
-</style>

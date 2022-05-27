@@ -31,8 +31,8 @@ export default {
 </script>
 
 <style lang="scss">
-.c-admin-app {
-    // Tone down greys to keep it clean...
+.app.c-admin-app {
+    // Tone down greys to keep it clean
     --grey-h: 0;
     --grey-s: 5%;
     --primary-color-h: 0;

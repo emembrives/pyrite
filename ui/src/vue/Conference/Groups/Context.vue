@@ -124,7 +124,7 @@ export default {
                 border: none;
                 color: var(--grey-7);
                 flex: 1;
-                font-family: var(--font-secondary);
+                font-family: var(--font-2);
                 font-weight: 600;
                 padding: var(--spacer) 0;
 

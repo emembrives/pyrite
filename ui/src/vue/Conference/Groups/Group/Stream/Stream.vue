@@ -436,7 +436,7 @@ export default {
             color: var(--primary-color);
             display: flex;
             flex: 1;
-            font-family: var(--font-secondary);
+            font-family: var(--font-2);
             font-size: var(--text-s);
             font-weight: 600;
             height: var(--space-3);

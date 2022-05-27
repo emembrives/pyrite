@@ -242,7 +242,6 @@ export default {
             input {
                 background: none;
                 border: 0;
-                border-bottom: 1px solid var(--grey-5);
                 font-size: 1rem;
                 height: var(--space-2);
                 outline: none;
@@ -274,7 +273,7 @@ export default {
 
         .options {
             border: 1px solid transparent;
-            margin-top: calc(var(--space-2) + 1px);
+            margin-top: calc(var(--space-2) + 4px);
             max-height: 0;
             max-width: inherit;
             overflow-y: hidden;
@@ -285,7 +284,7 @@ export default {
 
             &.active {
                 background: var(--grey-4);
-                border: 1px solid var(--grey-5);
+                border: var(--border) solid var(--grey-5);
                 box-shadow: 0 0 var(--spacer) var(--space-05) var(--grey-2);
                 max-height: 200px;
                 overflow-y: scroll;

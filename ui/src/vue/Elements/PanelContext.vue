@@ -137,7 +137,7 @@ export default defineComponent({
             align-items: center;
             color: var(--primary-color);
             display: flex;
-            font-family: var(--font-secondary);
+            font-family: var(--font-2);
             justify-content: flex-start;
 
             svg {
@@ -161,7 +161,7 @@ export default defineComponent({
             .version {
                 bottom: 0;
                 color: var(--grey-7);
-                font-family: var(--font-secondary);
+                font-family: var(--font-2);
                 font-size: var(--text-xs);
                 font-style: italic;
                 position: absolute;
@@ -230,7 +230,7 @@ export default defineComponent({
                 align-items: center;
                 display: flex;
                 flex: 1;
-                font-family: var(--font-secondary);
+                font-family: var(--font-2);
                 font-weight: 600;
                 line-height: 100%;
             }

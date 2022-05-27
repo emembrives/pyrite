@@ -1,73 +1,37 @@
 @mixin theme-dark {
     --grey-s: 15%;
+
+    // Dark theme has more dark colors
     --light-1: 7%;
     --light-2: 11%;
     --light-3: 13%;
     --light-4: 16%;
     --light-5: 20%;
+
+    // Light shades
     --light-6: 50%;
     --light-7: 60%;
     --light-8: 65%;
-    --light-9: 80%;
-    --light-10: 89%;
-
-    // Dark shades; Dark => Light
-    --grey-1: hsl(var(--grey-h) var(--grey-s) var(--light-1));
-    --grey-2: hsl(var(--grey-h) var(--grey-s) var(--light-2));
-    --grey-3: hsl(var(--grey-h) var(--grey-s) var(--light-3));
-    --grey-4: hsl(var(--grey-h) var(--grey-s) var(--light-4));
-    --grey-5: hsl(var(--grey-h) var(--grey-s) var(--light-5));
-
-    // Light shades; Dark => Light
-    --grey-6: hsl(var(--grey-h) var(--grey-s) var(--light-6));
-    --grey-7: hsl(var(--grey-h) var(--grey-s) var(--light-7));
-    --grey-8: hsl(var(--grey-h) var(--grey-s) var(--light-8));
-    --grey-9: hsl(var(--grey-h) var(--grey-s) var(--light-9));
-    --grey-10: hsl(var(--grey-h) var(--grey-s) var(--light-10));
     --shadow: 0 0 6px rgb(0 0 0 / 50%);
-    --primary-color-h: 200;
-    --primary-color-s: 80%;
-    --primary-color-l: 65%;
-    --primary-color: hsl(var(--primary-color-h) var(--primary-color-s) var(--primary-color-l));
-
-    color: var(--grey-6);
+    --shadow-l: 6px 6px 12px hsl(var(--grey-h) var(--grey-s) 20%);
 }
 
 @mixin theme-light {
     // A bit more saturation on tinted greys gives a 'friendlier' look.
-    --grey-s: 40%;
-    --light-5: 83%;
-    --light-4: 86%;
-    --light-3: 99%;
-    --light-2: 92%;
-    --light-1: 96%;
-    --light-10: 20%;
-    --light-9: 40%;
-    --light-8: 45%;
-    --light-7: 50%;
-    --light-6: 60%;
+    --grey-s: 50%;
 
-    // Light shades; Light => Dark
-    --grey-5: hsl(var(--grey-h) var(--grey-s) var(--light-5));
-    --grey-4: hsl(var(--grey-h) var(--grey-s) var(--light-4));
-    --grey-3: hsl(var(--grey-h) var(--grey-s) var(--light-3));
-    --grey-2: hsl(var(--grey-h) var(--grey-s) var(--light-2));
-    --grey-1: hsl(var(--grey-h) var(--grey-s) var(--light-1));
+    // Light theme has more light colors
+    --light-1: 88%;
+    --light-2: 86%;
+    --light-3: 83%;
+    --light-4: 80%;
+    --light-5: 78%;
 
-    // Dark shades; Light => Dark
-    --grey-10: hsl(var(--grey-h) var(--grey-s) var(--light-10));
-    --grey-9: hsl(var(--grey-h) var(--grey-s) var(--light-9));
-    --grey-8: hsl(var(--grey-h) var(--grey-s) var(--light-8));
-    --grey-7: hsl(var(--grey-h) var(--grey-s) var(--light-7));
-    --grey-6: hsl(var(--grey-h) var(--grey-s) var(--light-6));
+    // Dark shades
+    --light-6: 45%;
+    --light-7: 40%;
+    --light-8: 33%;
     --shadow: 4px 4px 12px hsl(var(--grey-h) var(--grey-s) 80%);
-    --shadow-l: 6px 6px 12px hsl(var(--grey-h) var(--grey-s) 80%);
-
-    // The primary color needs a bit more contrast in a light theme...
-    --primary-color-h: 200;
-    --primary-color-s: 80%;
-    --primary-color-l: 50%;
-    --primary-color: hsl(var(--primary-color-h) var(--primary-color-s) var(--primary-color-l));
-
-    color: var(--grey-6);
+    --shadow-l: 6px 6px 12px hsl(var(--grey-h) var(--grey-s) 75%);
+    --primary-color-l: 45%;
 }
