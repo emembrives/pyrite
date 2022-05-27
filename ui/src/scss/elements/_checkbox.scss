@@ -3,11 +3,11 @@
 
     input[type="checkbox"],
     input[type="radio"] {
-        --active: var(--primary-color);
+        --active: var(--primary-c);
         --active-inner: #fff;
-        --focus: 2px hsl(var(--primary-color-h) var(--primary-color-s) 75%);
+        --focus: 2px hsl(var(--primary-h) var(--primary-s) 75%);
         --border: var(--grey-6);
-        --border-hover: var(--primary-color);
+        --border-hover: var(--primary-c);
         --background: #fff;
         --disabled: #f6f8ff;
         --disabled-inner: #e1e6f9;
@@ -19,7 +19,7 @@
         display: inline-block;
         height: 21px;
         margin: 0;
-        margin-right: var(--spacer);
+        margin-right: var(--spacer-1);
         outline: unset;
         position: relative;
         transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
@@ -91,7 +91,7 @@
             display: inline-block;
             font-size: 14px;
             line-height: 21px;
-            margin-left: var(--spacer);
+            margin-left: var(--spacer-1);
             user-select: none;
             vertical-align: top;
         }

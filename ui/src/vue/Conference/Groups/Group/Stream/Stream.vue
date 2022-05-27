@@ -408,7 +408,7 @@ export default {
     .loading-container {
 
         .icon {
-            color: var(--primary-color);
+            color: var(--primary-c);
         }
     }
 
@@ -422,7 +422,7 @@ export default {
         width: 100%;
 
         .soundmeter {
-            height: var(--space-3);
+            height: var(--spacer-6);
             margin: 0;
             width: 8px;
         }
@@ -433,17 +433,17 @@ export default {
 
         .user {
             align-items: center;
-            color: var(--primary-color);
+            color: var(--primary-c);
             display: flex;
             flex: 1;
             font-family: var(--font-2);
             font-size: var(--text-s);
             font-weight: 600;
-            height: var(--space-3);
+            height: var(--spacer-6);
             justify-content: flex-end;
 
             .name {
-                padding-right: calc(var(--spacer) * 2);
+                padding-right: calc(var(--spacer-1) * 2);
                 text-align: right;
                 text-transform: uppercase;
             }
@@ -451,13 +451,13 @@ export default {
             &.has-audio {
 
                 .name {
-                    margin-right: var(--spacer);
+                    margin-right: var(--spacer-1);
                 }
             }
 
             .volume-slider {
                 bottom: 2px;
-                height: var(--spacer);
+                height: var(--spacer-1);
                 position: absolute;
 
                 &.tooltip-left::after {
@@ -475,7 +475,7 @@ export default {
                     transform: rotate(-90deg) translate(18px, 20px);
 
                     // This is actually the height (rotated).
-                    width: var(--space-3);
+                    width: var(--spacer-6);
                 }
             }
         }

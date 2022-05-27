@@ -60,7 +60,7 @@ export default {
             border-bottom: var(--border) solid var(--grey-5);
             color: var(--grey-7);
             font-size: 1rem;
-            height: var(--space-2);
+            height: var(--spacer-4);
             outline: none;
             transition: border 0.5s ease;
             width: 100%;
@@ -70,7 +70,7 @@ export default {
             }
 
             &:focus {
-                border-bottom: var(--border) solid var(--primary-color);
+                border-bottom: var(--border) solid var(--primary-c);
             }
         }
 
@@ -81,14 +81,14 @@ export default {
             }
 
             &.active {
-                color: var(--primary-color);
+                color: var(--primary-c);
             }
         }
     }
 
     .field-label {
         font-family: var(--font-2);
-        margin: var(--spacer) 0;
+        margin: var(--spacer-1) 0;
         text-transform: capitalize;
     }
 

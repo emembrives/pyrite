@@ -64,7 +64,7 @@ export default {
     }
 
     .title {
-        color: var(--primary-color);
+        color: var(--primary-c);
         font-size: 3.7rem;
         font-weight: 600;
         height: 3.7rem;

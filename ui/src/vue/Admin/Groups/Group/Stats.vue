@@ -157,12 +157,12 @@ export default defineComponent({
 
     .client {
         background: var(--grey-1);
-        margin-bottom: var(--spacer);
-        padding: var(--spacer);
+        margin-bottom: var(--spacer-1);
+        padding: var(--spacer-1);
 
         .client-header {
             align-items: center;
-            color: var(--primary-color);
+            color: var(--primary-c);
             display: flex;
             font-family: var(--font-2);
             font-size: var(--text-s);
@@ -173,7 +173,7 @@ export default defineComponent({
             }
 
             svg {
-                margin-right: var(--spacer);
+                margin-right: var(--spacer-1);
             }
 
             &:hover {
@@ -182,12 +182,12 @@ export default defineComponent({
         }
 
         .stream {
-            padding: var(--space-05);
+            padding: var(--spacer-05);
 
             .track {
                 background: var(--grey-2);
-                margin-bottom: var(--space-1);
-                padding: var(--spacer);
+                margin-bottom: var(--spacer-2);
+                padding: var(--spacer-1);
             }
         }
     }

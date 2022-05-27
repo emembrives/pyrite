@@ -7,17 +7,17 @@
 
         button > svg,
         > svg {
-            color: var(--primary-color);
+            color: var(--primary-c);
         }
     }
 
     > .icon {
         align-self: center;
-        margin: var(--spacer);
+        margin: var(--spacer-1);
         transition: all 0.25s ease-in;
 
         &:hover {
-            color: var(--primary-color);
+            color: var(--primary-c);
             cursor: pointer;
         }
     }
@@ -29,7 +29,7 @@
         display: flex;
         flex-direction: column;
         left: 50%;
-        margin-left: var(--space-2);
+        margin-left: var(--spacer-4);
         position: absolute;
         z-index: 10000;
 
@@ -46,15 +46,15 @@
             font-family: var(--font-2);
             font-size: var(--text-s);
             margin: 0;
-            padding: calc(var(--spacer) / 2) 0;
+            padding: calc(var(--spacer-1) / 2) 0;
             text-align: left;
             user-select: none;
             width: 200px;
 
 
             svg {
-                color: var(--primary-color);
-                margin: var(--spacer);
+                color: var(--primary-c);
+                margin: var(--spacer-1);
             }
 
             &:hover {

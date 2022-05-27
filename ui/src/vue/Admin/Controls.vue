@@ -2,6 +2,15 @@
     <nav class="c-admin-controls">
         <div class="navigational-controls">
             <RouterLink
+                class="btn btn-menu tooltip"
+                :class="{active: $route.name.startsWith('admin-users')}"
+                :data-tooltip="$t('people')"
+                :to="userRoute('admin-users-settings')"
+            >
+                <Icon class="icon-small" name="User" />
+            </RouterLink>
+
+            <RouterLink
                 active-class="active-group"
                 class="btn btn-menu tooltip"
                 :class="{active: $route.name === 'admin-groups-settings'}"
@@ -9,15 +18,6 @@
                 :to="groupRoute('admin-groups-settings')"
             >
                 <Icon class="icon-small" name="Group" />
-            </RouterLink>
-
-            <RouterLink
-                class="btn btn-menu tooltip"
-                :class="{active: $route.name.startsWith('admin-users')}"
-                :data-tooltip="$t('people')"
-                :to="userRoute('admin-users-settings')"
-            >
-                <Icon class="icon-small" name="User" />
             </RouterLink>
 
             <button
@@ -81,8 +81,8 @@ export default {
 
     .btn-collapse {
         color: var(--grey-6);
-        height: var(--space-4);
-        width: var(--space-4);
+        height: var(--spacer-8);
+        width: var(--spacer-8);
     }
 }
 </style>

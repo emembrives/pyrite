@@ -39,12 +39,14 @@
             :class="{active: $route.params.groupId === group._name}"
             :to="groupLink(group._name)"
         >
-            <Icon v-if="group._delete" class="item-icon delete icon-small" name="Trash" />
-            <Icon
-                v-else class="item-icon icon-small"
-                :class="{unsaved: group._unsaved}"
-                name="Group"
-            />
+            <button class="tooltip tooltip-right" :data-tooltip="`${$t('group')} ${group._name}`">
+                <Icon v-if="group._delete" class="item-icon delete icon-small" name="Trash" />
+                <Icon
+                    v-else class="item-icon icon-small"
+                    :class="{unsaved: group._unsaved}"
+                    name="Group"
+                />
+            </button>
 
             <div class="flex-column">
                 <div class="name">

@@ -51,6 +51,13 @@ class Pyrite extends EventEmitter {
 
         this.logger.debug('loading store')
         this.store = new Store()
+        this.$m = {
+            group: new ModelGroup(),
+            media: new ModelMedia(),
+            sfu: new ModelSFU(),
+            user: new ModelUser(),
+        }
+
         this.$s = this.store.load()
         this.i18n = createI18n({
             formatFallbackMessages: true,
@@ -75,12 +82,6 @@ class Pyrite extends EventEmitter {
 
     async init() {
         // All model logic is grouped here:
-        this.$m = {
-            group: new ModelGroup(),
-            media: new ModelMedia(),
-            sfu: new ModelSFU(),
-            user: new ModelUser(),
-        }
 
         await this.adminContext()
         this.router = router(this)

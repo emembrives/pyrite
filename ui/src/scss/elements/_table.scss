@@ -1,11 +1,11 @@
 .table {
     border: 1px solid var(--grey-5);
-    padding: var(--spacer);
+    padding: var(--spacer-1);
 
 
     .header {
         background: var(--grey-1);
-        color: var(--primary-color);
+        color: var(--primary-c);
         display: flex;
         font-family: var(--font-2);
         font-weight: 600;
@@ -13,8 +13,8 @@
 
     .cell {
         flex: 1;
-        gap: var(--spacer);
-        padding: var(--spacer);
+        gap: var(--spacer-1);
+        padding: var(--spacer-1);
     }
 
     .row {

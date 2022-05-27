@@ -37,12 +37,14 @@
             class="user item"
             :class="{active: parseInt($route.params.userId) === user.id}" :to="userLink(user.id)"
         >
-            <Icon v-if="user._delete" class="item-icon delete icon-small" name="Trash" />
-            <Icon
-                v-else class="item-icon icon-small"
-                :class="{unsaved: user._unsaved}"
-                name="User"
-            />
+            <button class="tooltip tooltip-right" :data-tooltip="`${$t('person')} ${user.name}`">
+                <Icon v-if="user._delete" class="item-icon delete icon-small" name="Trash" />
+                <Icon
+                    v-else class="item-icon icon-small"
+                    :class="{unsaved: user._unsaved}"
+                    name="User"
+                />
+            </button>
 
             <div class="name">
                 {{ user.name }}

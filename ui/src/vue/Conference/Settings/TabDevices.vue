@@ -167,7 +167,7 @@ export default {
 
         .icon {
             color: var(--warning-color);
-            margin-right: var(--spacer);
+            margin-right: var(--spacer-1);
         }
     }
 
@@ -178,7 +178,7 @@ export default {
         .webcam-placeholder,
         .c-stream {
             border: var(--border) solid var(--grey-5);
-            margin: var(--spacer) 0;
+            margin: var(--spacer-1) 0;
             right: 0;
             width: 100%;
         }

@@ -111,8 +111,8 @@ export default {
 
     .btn-collapse {
         color: var(--grey-6);
-        height: var(--space-4);
-        width: var(--space-4);
+        height: var(--spacer-8);
+        width: var(--spacer-8);
     }
 }
 </style>

@@ -1,27 +1,5 @@
 <template>
     <div ref="view" class="c-panel-chat">
-        <div class="chat-channels">
-            <div
-                v-for="(channel, key) in $s.chat.channels"
-                :key="key" class="chat-channel"
-                :class="{active: channel.id === $s.chat.channel}"
-                @click="selectChannel(channel)"
-            >
-                <div class="channel-name">
-                    <Icon class="icon icon-mini" :icon-props="{unread: channel.unread}" name="Chat" />
-                </div>
-                <span v-if="key === 'main'" class="ucfl">
-                    {{ $t('general') }}
-                </span>
-                <span v-else>
-                    {{ channel.name }}
-                </span>
-
-                <button v-if="channel.id !== 'main'" class="btn btn-icon btn-close" @click.stop="closeChannel(channel)">
-                    <Icon class="icon icon-tiny" name="Close" />
-                </button>
-            </div>
-        </div>
         <div ref="messages" class="messages scroller">
             <div
                 v-for="message of sortedMessages" :key="message.message"
@@ -53,7 +31,36 @@
                 </template>
             </div>
         </div>
+        <div class="chat-channels">
+            <div
+                v-for="(channel, key) in $s.chat.channels"
+                :key="key" class="chat-channel"
+                :class="{active: channel.id === $s.chat.channel}"
+                @click="selectChannel(channel)"
+            >
+                <div class="channel-name">
+                    <Icon class="icon icon-mini" :icon-props="{unread: channel.unread}" name="Chat" />
+                </div>
+                <span v-if="key === 'main'" class="ucfl">
+                    {{ $t('general') }}
+                </span>
+                <span v-else>
+                    {{ channel.name }}
+                </span>
+
+                <button v-if="channel.id !== 'main'" class="btn btn-icon btn-close" @click.stop="closeChannel(channel)">
+                    <Icon class="icon icon-tiny" name="Close" />
+                </button>
+            </div>
+        </div>
         <div class="send">
+            <textarea
+                v-model="rawMessage"
+                autofocus
+                :placeholder="$t('type /help for help')"
+                @keydown.enter="$event.preventDefault()"
+                @keyup.enter="sendMessage"
+            />
             <button
                 class="btn btn-menu tooltip"
                 :data-tooltip="$t('send message')"
@@ -62,13 +69,6 @@
             >
                 <Icon class="icon icon-mini" name="Send" />
             </button>
-            <textarea
-                v-model="rawMessage"
-                autofocus
-                :placeholder="$t('type /help for help')"
-                @keydown.enter="$event.preventDefault()"
-                @keyup.enter="sendMessage"
-            />
         </div>
     </div>
 </template>
@@ -249,14 +249,13 @@ export default {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    min-width: 350px;
-    overflow: auto;
+    min-width: 375px;
 
     .chat-channels {
-        background: var(--grey-2);
-        border-bottom: 2px solid var(--grey-4);
+        background: var(--grey-3);
+        border-bottom: var(--border) solid var(--grey-4);
         display: flex;
-        height: var(--space-4);
+        height: var(--spacer-8);
         width: 100%;
 
         .chat-channel {
@@ -265,16 +264,20 @@ export default {
             color: var(--grey-6);
             display: flex;
             font-family: var(--font-2);
-            margin: var(--spacer);
-            padding: var(--spacer);
+            margin: var(--spacer-1);
+            padding: var(--spacer-1);
             user-select: none;
+
+            .author {
+                font-family: var(--font-1);
+            }
 
             .channel-name {
                 align-items: center;
                 display: flex;
 
                 .icon {
-                    margin-right: var(--spacer);
+                    margin-right: var(--spacer-1);
                 }
             }
 
@@ -284,11 +287,11 @@ export default {
 
             &.active {
                 background: var(--grey-2);
-                color: var(--primary-color);
+                color: var(--primary-c);
             }
 
             .btn-close {
-                margin-left: var(--spacer);
+                margin-left: var(--spacer-1);
             }
         }
     }
@@ -298,46 +301,72 @@ export default {
         flex: 1;
         overflow-x: hidden;
         overflow-y: scroll;
-        padding-top: calc(var(--spacer) * 2);
+        padding-top: var(--spacer-2);
 
         .message {
-            margin-bottom: calc(var(--spacer) * 2);
-            margin-left: calc(var(--spacer) * 2);
-            margin-right: var(--spacer);
-            padding: var(--spacer);
+            margin-bottom: var(--spacer-4);
+            margin-left: var(--spacer-1);
+            margin-right: var(--spacer-1);
+            padding: var(--spacer-2);
+            position: relative;
 
             &.default {
                 background: var(--grey-4);
-                border-radius: var(--spacer);
+                border-radius: var(--spacer-2);
                 color: var(--grey-7);
+
+                &::before {
+                    background: var(--grey-4);
+                    bottom: -20px;
+                    clip-path: polygon(20% 0, 100% 0, 0 100%);
+                    content: "";
+                    display: block;
+                    height: 20px;
+                    left: 12px;
+                    position: absolute;
+                    width: 20px;
+                }
 
                 & header {
                     align-items: center;
-                    color: var(--primary-color);
+                    color: var(--primary-c);
                     display: flex;
-                    font-size: var(--text-small);
+                    font-family: var(--font-2);
+                    font-size: var(--text-s);
                     font-weight: 600;
                     justify-content: space-between;
-                    margin-bottom: var(--spacer);
+                    margin-bottom: var(--spacer-05);
+
+                    .author {
+                        text-transform: uppercase;
+                    }
 
                     .time {
-                        font-size: var(--text-s);
+                        font-size: var(--text-xs);
                     }
+                }
+
+                & section {
+                    overflow: hidden;
                 }
             }
 
             &.command {
                 background: var(--grey-3);
                 color: var(--grey-6);
-                font-size: var(--text-small);
+                font-size: var(--text-s);
             }
 
             &.me {
+                background: var(--grey-3);
+                color: var(--grey-7);
                 display: flex;
+                font-family: var(--font-2);
+                font-size: var(--text-s);
                 font-style: italic;
                 margin-left: 0;
                 margin-right: 0;
-                padding: 0 calc(var(--spacer) * 2);
+                padding: var(--spacer-2) var(--spacer-3);
 
                 .text {
                     flex: 1;
@@ -357,18 +386,17 @@ export default {
 
     .send {
         background: var(--grey-3);
-        border-top: var(--border) solid var(--grey-4);
         display: flex;
-        padding-bottom: var(--space-1);
-        padding-top: var(--spacer);
+        padding-bottom: var(--border);
 
         button {
             align-items: center;
             background: var(--grey-2);
             display: flex;
+            height: var(--spacer-8);
             justify-content: center;
             padding: 0;
-            width: var(--space-3);
+            width: var(--spacer-6);
 
             &:not([disabled]):hover {
                 cursor: pointer;
@@ -376,13 +404,16 @@ export default {
         }
 
         textarea {
-            background: var(--grey-2);
-            border: var(--border) solid var(--grey-2);
-            color: var(--primary-color);
+            background: var(--grey-1);
+            border: none;
+            color: var(--primary-c);
             flex: 1;
+            font-family: var(--font-2);
+            height: var(--spacer-8);
+            margin: 0;
             outline: none;
             overflow-y: hidden;
-            padding: var(--spacer);
+            padding: var(--spacer-1);
 
             &::placeholder {
                 color: var(--grey-7);

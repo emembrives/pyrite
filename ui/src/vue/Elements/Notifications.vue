@@ -38,7 +38,7 @@ export default {
 
 <style lang="scss">
 .c-notifications {
-    bottom: var(--spacer);
+    bottom: var(--spacer-1);
     display: flex;
     flex-direction: column-reverse;
     font-family: var(--font-2);
@@ -47,7 +47,7 @@ export default {
     max-width: 400px;
     overflow: hidden;
     position: absolute;
-    right: var(--spacer);
+    right: var(--spacer-1);
     width: 100%;
     z-index: 100000;
 
@@ -74,12 +74,12 @@ export default {
         box-shadow: var(--shadow);
         display: flex;
         flex-direction: column;
-        margin: var(--spacer) calc(var(--spacer) / 2);
-        padding: calc(var(--spacer) * 1.5);
+        margin: var(--spacer-1) calc(var(--spacer-1) / 2);
+        padding: calc(var(--spacer-1) * 1.5);
 
         &.info {
             background: var(--grey-2);
-            color: var(--primary-color);
+            color: var(--primary-c);
         }
 
         &.warning {
@@ -97,9 +97,9 @@ export default {
             display: flex;
 
             .icon {
-                height: var(--space-2);
-                margin: var(--spacer);
-                width: var(--space-2);
+                height: var(--spacer-4);
+                margin: var(--spacer-1);
+                width: var(--spacer-4);
             }
         }
 

@@ -7,13 +7,13 @@
 [data-tooltip]::after,
 .tooltip::after {
     background: var(--grey-2);
-    border-radius: calc(var(--spacer) / 4);
+    border-radius: calc(var(--spacer-1) / 4);
     box-shadow: 0 0 8px var(--grey-3);
-    color: var(--primary-color);
+    color: var(--primary-c);
     content: attr(data-tooltip);
     font-size: var(--text-s);
     font-weight: 600;
-    padding: var(--spacer);
+    padding: var(--spacer-1);
     z-index: 10000000;
 }
 
@@ -23,6 +23,7 @@
 
 .tooltip {
     cursor: pointer;
+    font-family: var(--font-2);
     position: relative;
     text-transform: capitalize;
     white-space: nowrap;
@@ -30,7 +31,8 @@
     &::after {
         bottom: 25%;
         left: 100%;
-        margin-bottom: calc(-2 * var(spacer));
+
+        // margin-bottom: calc(-2 * var(--spacer-1));
         margin-left: 0;
         opacity: 0;
         pointer-events: none;

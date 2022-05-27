@@ -38,6 +38,14 @@
                         :validation="v$.user.password"
                     />
 
+                    <FieldText
+                        v-if="!isListedGroup"
+                        v-model="$s.group.name"
+                        :label="$t('group name')"
+                        name="groupname"
+                        :placeholder="$t('unlisted group')"
+                    />
+
                     <div class="verify ucfl">
                         <RouterLink :to="{name: 'conference-settings', params: {tabId: 'devices'}}">
                             {{ $t('verify') }}
@@ -117,6 +125,9 @@ export default {
             // Server validation should not disable the login button.
             const hasErrors = this.v$.$silentErrors.filter((v) => v.$validator !== '$externalResults').length > 0
             return hasErrors
+        },
+        isListedGroup() {
+            return !!app.$s.groups.find((i) => i.name === app.$s.group.name)
         },
     },
 
@@ -205,7 +216,7 @@ export default {
 .c-login {
 
     .verify {
-        margin-top: var(--space-2);
+        margin-top: var(--spacer-4);
     }
 }
 

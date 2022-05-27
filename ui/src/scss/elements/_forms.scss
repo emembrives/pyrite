@@ -1,10 +1,10 @@
 .field {
-    padding: var(--spacer) 0;
+    padding: var(--spacer-1) 0;
 
     .label-container {
         align-items: center;
         display: flex;
-        gap: var(--spacer);
+        gap: var(--spacer-1);
     }
 
     label,
@@ -12,7 +12,7 @@
         color: var(--grey-7);
         display: inline-block;
         font-family: var(--font-2);
-        margin-bottom: var(--space-05);
+        margin-bottom: var(--spacer-05);
         text-transform: capitalize;
     }
 
@@ -20,7 +20,7 @@
         color: var(--grey-6);
         font-size: var(--text-s);
         font-style: italic;
-        margin-top: var(--space-05);
+        margin-top: var(--spacer-05);
     }
 }
 
@@ -29,19 +29,19 @@
     border: 2px dashed var(--grey-5);
     flex: 1;
     font-size: var(--text-s);
-    margin: var(--spacer) 0;
-    padding: var(--spacer);
+    margin: var(--spacer-1) 0;
+    padding: var(--spacer-1);
     width: 100%;
 
     .explanation {
         display: flex;
         flex-direction: column;
-        gap: calc(var(--spacer) * 0.5);
+        gap: calc(var(--spacer-1) * 0.5);
     }
 }
 
 .env-warning {
     color: var(--warning-color);
     font-size: var(--text-s);
-    margin-top: var(--spacer);
+    margin-top: var(--spacer-1);
 }

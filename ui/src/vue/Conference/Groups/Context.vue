@@ -1,13 +1,20 @@
 <template>
-    <section class="c-groups-context presence">
+    <section class="c-groups-context presence" :class="{collapsed: $s.panels.context.collapsed}">
         <div class="actions">
-            <div class="custom-group">
-                <Icon class="custom-group-icon icon-small" name="Group" />
-                <input
-                    v-model="$s.group.name" class="js-custom-group"
-                    placeholder="..."
-                    @focus="updateRoute"
-                >
+            <div
+                class="group item unlisted-group"
+                :class="{active: $route.name !== 'conference-splash' && !isListedGroup}"
+                @click="toggleUnlisted"
+            >
+                <button class="tooltip tooltip-right" :data-tooltip="`${$t('join unlisted group')}`">
+                    <Icon class="icon-small item-icon" name="Incognito" />
+                </button>
+                <div v-if="isListedGroup || !$s.group.name" class="name">
+                    {{ $t('unlisted-group') }}
+                </div>
+                <div v-else class="name">
+                    {{ $s.group.name }}
+                </div>
             </div>
         </div>
         <RouterLink
@@ -18,8 +25,10 @@
             :to="groupLink(group.name)"
             @click="setAutofocus"
         >
-            <Icon v-if="!group.locked" class="item-icon icon-small" name="Group" />
-            <Icon v-else class="item-icon icon-small" name="GroupLocked" />
+            <button class="tooltip tooltip-right" :data-tooltip="`${$t('join group')}: ${group.name} (${group.clientCount})`">
+                <Icon v-if="!group.locked" class="item-icon icon-small" name="Group" />
+                <Icon v-else class="item-icon icon-small" name="GroupLocked" />
+            </button>
 
             <div class="name">
                 {{ group.name }}
@@ -41,6 +50,11 @@
 
 <script>
 export default {
+    computed: {
+        isListedGroup() {
+            return !!app.$s.groups.find((i) => i.name === app.$s.group.name)
+        },
+    },
     methods: {
         groupLink(groupId) {
             if (this.$s.group && this.$s.group.name === groupId) {
@@ -60,8 +74,16 @@ export default {
         setAutofocus() {
             this.$s.login.autofocus = true
         },
+        toggleUnlisted() {
+            if (!this.$s.group.name || this.isListedGroup) {
+                this.$s.group.name = this.$t('unlisted-group')
+            } else if (!this.isListedGroup) {
+                this.$s.group.name = ''
+            }
+        },
         updateRoute() {
             this.$s.login.autofocus = false
+
             if (this.$s.group.name) {
                 // Assume unlocked, when there are no public groups
                 this.$s.group.locked = this.$s.groups.find((i) => i.name === this.$s.group.name)?.locked || false
@@ -91,10 +113,10 @@ export default {
         '$s.group.name': {
             immediate: false,
             handler() {
-                if (this.$router.currentRoute.value.name === 'conference-groups-disconnected') {
-                    this.app.logger.debug(`updating group route: ${this.$s.group.name}`)
-                    this.updateRoute()
-                }
+
+                this.app.logger.debug(`updating group route: ${this.$s.group.name}`)
+                this.updateRoute()
+
             },
         },
     },
@@ -104,38 +126,11 @@ export default {
 <style lang="scss">
 .c-groups-context {
 
-    .actions {
+    &:not(.collapsed) {
 
-        .custom-group {
-            align-items: center;
-            display: flex;
-            flex: 1;
-            height: var(--space-4);
-            padding: calc(var(--spacer) / 2) var(--spacer);
-
-            .custom-group-icon {
-                align-items: center;
-                display: flex;
-                margin-right: var(--spacer);
-            }
-
-            input {
-                background: none;
-                border: none;
-                color: var(--grey-7);
-                flex: 1;
-                font-family: var(--font-2);
-                font-weight: 600;
-                padding: var(--spacer) 0;
-
-                &:active,
-                &:focus-visible,
-                &:focus {
-                    border: none;
-                    color: var(--primary-color);
-                    outline: none;
-                }
-            }
+        .tooltip::after {
+            // Hide the tooltips when not collapsed
+            display: none;
         }
     }
 

@@ -105,8 +105,8 @@ export default {
         align-items: center;
         background: var(--grey-1);
         display: flex;
-        margin-bottom: var(--spacer);
-        padding: var(--spacer);
+        margin-bottom: var(--spacer-1);
+        padding: var(--spacer-1);
 
         video {
             max-height: 90px;
@@ -114,7 +114,7 @@ export default {
 
         .actions {
             background: var(--grey-3);
-            margin-right: var(--spacer);
+            margin-right: var(--spacer-1);
         }
 
         .info {
@@ -126,17 +126,17 @@ export default {
             .line {
                 display: flex;
                 font-size: var(--text-s);
-                padding: var(--space-05) var(--spacer);
+                padding: var(--spacer-05) var(--spacer-1);
 
                 .key {
                     color: var(--grey-6);
-                    padding-right: var(--spacer);
+                    padding-right: var(--spacer-1);
                     text-align: right;
                     width: 75px;
                 }
 
                 .value {
-                    color: var(--primary-color);
+                    color: var(--primary-c);
                 }
             }
         }

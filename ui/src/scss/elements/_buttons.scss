@@ -17,7 +17,7 @@
     }
 
     &.active {
-        color: var(--primary-color);
+        color: var(--primary-c);
     }
 
     &:focus {
@@ -25,7 +25,7 @@
     }
 
     &:not([disabled]):hover {
-        color: var(--primary-color);
+        color: var(--primary-c);
         cursor: pointer;
     }
 
@@ -33,7 +33,7 @@
         padding: 0;
 
         &:hover {
-            color: var(--primary-color);
+            color: var(--primary-c);
             cursor: pointer;
         }
     }
@@ -41,9 +41,9 @@
     &.btn-menu {
         border-bottom: var(--border) solid transparent;
         border-top: var(--border) solid transparent;
-        height: var(--space-4);
+        height: var(--spacer-8);
         position: relative;
-        width: var(--space-4);
+        width: var(--spacer-8);
 
         &.warning {
 
@@ -88,8 +88,8 @@
         }
 
         &.btn-small {
-            height: var(--space-3);
-            width: var(--space-3);
+            height: var(--spacer-6);
+            width: var(--spacer-6);
         }
 
         svg {
@@ -110,7 +110,7 @@
         }
 
         &::before {
-            background: var(--primary-color);
+            background: var(--primary-c);
             bottom: calc(-1 * var(--border));
             content: "";
             height: var(--border);
@@ -124,8 +124,8 @@
         }
 
         &.small {
-            height: var(--space-3);
-            width: var(--space-3);
+            height: var(--spacer-6);
+            width: var(--spacer-6);
         }
 
         &:not([disabled="true"]):hover {
@@ -136,7 +136,7 @@
         }
 
         &.active {
-            color: var(--primary-color);
+            color: var(--primary-c);
 
             svg {
                 // Bring the active icon a bit to the front:
@@ -165,9 +165,9 @@
         display: flex;
         font-size: 0.9rem;
         font-weight: 500;
-        height: var(--space-3);
+        height: var(--spacer-6);
         justify-content: center;
-        padding: 0 var(--spacer);
+        padding: 0 var(--spacer-1);
         position: relative;
         text-transform: uppercase;
         width: 100%;
@@ -185,7 +185,7 @@
 
         &.active,
         &:not([disabled]):hover {
-            border-bottom: 2px solid var(--primary-color);
+            border-bottom: 2px solid var(--primary-c);
             color: var(--grey-7);
             cursor: pointer;
         }

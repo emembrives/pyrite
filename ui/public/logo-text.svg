@@ -41,7 +41,7 @@
         }
 
         100% {
-            fill: var(--primary-color);
+            fill: var(--primary-c);
             opacity: 1;
         }
     }
@@ -66,22 +66,22 @@
         }
 
         50% {fill: var(--grey-3);}
-        52% {fill: var(--primary-color);}
+        52% {fill: var(--primary-c);}
         60% {fill: var(--grey-3);}
-        65% {fill: var(--primary-color);}
+        65% {fill: var(--primary-c);}
         70% {fill: var(--grey-3);}
-        75% {fill: var(--primary-color);}
+        75% {fill: var(--primary-c);}
 
         80% {
             fill: var(--grey-3);
             opacity: 0.2;
         }
-        83% {fill: var(--primary-color);}
+        83% {fill: var(--primary-c);}
         85% {fill: var(--grey-3);}
-        87% {fill: var(--primary-color);}
+        87% {fill: var(--primary-c);}
 
         100% {
-            fill: var(--primary-color);
+            fill: var(--primary-c);
             opacity: 1;
         }
     }
@@ -91,7 +91,7 @@
         --grey-s: 15%;
         --grey-3: hsl(var(--grey-h), var(--grey-s), 13%);
         --grey-7: hsl(var(--grey-h), var(--grey-s), 60%);
-        --primary-color: hsl(200, 80%, 65%);
+        --primary-c: hsl(200, 80%, 65%);
     }
 
     .shard.dark {
@@ -99,12 +99,12 @@
     }
 
     .shard.primary {
-        fill: var(--primary-color);
+        fill: var(--primary-c);
     }
 
     .pupil,
     .title {
-        fill: var(--primary-color);
+        fill: var(--primary-c);
     }
 
     .subtitle {

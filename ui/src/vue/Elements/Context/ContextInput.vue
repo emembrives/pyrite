@@ -119,10 +119,10 @@ export default {
         }
 
         .btn {
-            bottom: calc(var(--spacer) * 1.5);
+            bottom: calc(var(--spacer-1) * 1.5);
             padding: 0;
             position: absolute;
-            right: var(--spacer);
+            right: var(--spacer-1);
         }
     }
 }

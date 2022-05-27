@@ -67,15 +67,15 @@ export default {
 .c-field-file {
     align-items: center;
     display: flex;
-    height: var(--space-4);
+    height: var(--spacer-8);
     justify-content: center;
     left: 0;
     position: absolute;
-    width: var(--space-4);
+    width: var(--spacer-8);
 
     input {
         color: var(--grey-6);
-        height: var(--space-4);
+        height: var(--spacer-8);
         left: 0;
         opacity: 0;
         outline: none;

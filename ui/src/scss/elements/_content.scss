@@ -8,14 +8,14 @@
         align-items: center;
         background: var(--grey-2);
         border-bottom: 2px solid var(--grey-4);
-        color: var(--primary-color);
+        color: var(--primary-c);
         display: flex;
         font-family: var(--font-2);
         font-weight: 600;
-        height: var(--space-4);
+        height: var(--spacer-8);
         justify-content: space-between;
-        padding: var(--space-1);
-        padding-right: calc(var(--spacer) * 1.5);
+        padding: var(--spacer-2);
+        padding-right: calc(var(--spacer-1) * 1.5);
         text-transform: uppercase;
 
         .title {
@@ -24,19 +24,19 @@
 
 
             span {
-                padding-right: calc(var(--spacer) * 2.5);
+                padding-right: calc(var(--spacer-1) * 2.5);
             }
 
             svg {
-                color: var(--primary-color);
+                color: var(--primary-c);
             }
         }
     }
 
     section {
-        height: calc(100vh - var(--space-4));
+        height: calc(100vh - var(--spacer-8));
         overflow-y: scroll;
-        padding: var(--space-1);
+        padding: var(--spacer-2);
 
         &.no-results {
             align-content: center;
@@ -45,7 +45,7 @@
             flex-direction: column;
             font-family: var(--font-2);
             font-size: var(--text-xl);
-            padding: var(--space-2);
+            padding: var(--spacer-4);
 
             svg {
                 color: var(--grey-4);

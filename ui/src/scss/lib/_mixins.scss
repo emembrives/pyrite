@@ -13,7 +13,7 @@
     --light-7: 60%;
     --light-8: 65%;
     --shadow: 0 0 6px rgb(0 0 0 / 50%);
-    --shadow-l: 6px 6px 12px hsl(var(--grey-h) var(--grey-s) 20%);
+    --shadow-l: 0 var(--spacer-05) var(--spacer-2) hsl(var(--grey-h) var(--grey-s) 15%);
 }
 
 @mixin theme-light {
@@ -32,6 +32,6 @@
     --light-7: 40%;
     --light-8: 33%;
     --shadow: 4px 4px 12px hsl(var(--grey-h) var(--grey-s) 80%);
-    --shadow-l: 6px 6px 12px hsl(var(--grey-h) var(--grey-s) 75%);
-    --primary-color-l: 45%;
+    --shadow-l: 0 var(--spacer-05) var(--spacer-2) hsl(var(--grey-h) var(--grey-s) 75%);
+    --primary-l: 45%;
 }

@@ -84,11 +84,11 @@ export default {
 
 <style lang="scss">
 .c-conference-app {
-    --c1-width: var(--space-4);
-    --c2-width: var(--space-4);
+    --c1-width: var(--spacer-8);
+    --c2-width: var(--spacer-8);
 
     // Presence, General Controls, Login Screen
-    grid-template-columns: min-content var(--space-4) 1fr;
+    grid-template-columns: min-content var(--spacer-8) 1fr;
     height: 100vh;
     overflow: hidden;
 
@@ -116,7 +116,7 @@ export default {
     &.panel-chat-toggle {
         // Toggling chat while leaving the group
         // Blocks: Presence, Controls, Login, Chat
-        grid-template-columns: min-content var(--space-4) 1fr min-content;
+        grid-template-columns: min-content var(--spacer-8) 1fr min-content;
         overflow: hidden;
         resize: none;
 

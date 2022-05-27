@@ -4,7 +4,7 @@
     display: flex;
     margin: 0;
     padding: 0;
-    padding-left: var(--space-1);
+    padding-left: var(--spacer-2);
 
     .tab {
         align-items: center;
@@ -12,14 +12,14 @@
         border-left: 0;
         border-right: 0;
         display: flex;
-        height: var(--space-4);
+        height: var(--spacer-8);
         justify-content: center;
-        width: var(--space-4);
+        width: var(--spacer-8);
 
         &.active {
             background: var(--grey-3);
-            border-bottom: var(--border) solid var(--primary-color);
-            color: var(--primary-color);
+            border-bottom: var(--border) solid var(--primary-c);
+            color: var(--primary-c);
         }
 
         &.disabled {
@@ -43,7 +43,7 @@
 .tab-content {
     display: none;
     flex: 1;
-    height: calc(100vh - var(--space-4) * 2);
+    height: calc(100vh - var(--spacer-8) * 2);
     overflow-y: scroll;
 
     &.active {

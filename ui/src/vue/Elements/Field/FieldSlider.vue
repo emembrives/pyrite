@@ -68,7 +68,7 @@ export default {
     .icon.locked {
         color: var(--warning-color);
         margin-left: -3px;
-        margin-top: calc(-2 * var(--spacer));
+        margin-top: calc(-2 * var(--spacer-1));
         position: absolute;
         z-index: 1000;
 
@@ -100,24 +100,24 @@ export default {
             background: var(--grey-5);
             border: 0;
             border-radius: 0;
-            box-shadow: -80px 0 0 80px var(--primary-color);
+            box-shadow: -80px 0 0 80px var(--primary-c);
             display: none;
             height: 100%;
-            width: var(--space-1);
+            width: var(--spacer-2);
         }
 
         &::-webkit-slider-runnable-track {
             appearance: none;
-            height: var(--spacer);
+            height: var(--spacer-1);
             margin-top: -1px;
         }
 
         &::-webkit-slider-thumb {
             appearance: none;
             background: var(--grey-5);
-            box-shadow: -80px 0 0 80px var(--primary-color);
-            height: var(--spacer);
-            width: var(--space-1);
+            box-shadow: -80px 0 0 80px var(--primary-c);
+            height: var(--spacer-1);
+            width: var(--spacer-2);
         }
 
         &:hover {

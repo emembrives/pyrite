@@ -243,7 +243,7 @@ export default {
                 background: none;
                 border: 0;
                 font-size: 1rem;
-                height: var(--space-2);
+                height: var(--spacer-4);
                 outline: none;
                 text-transform: capitalize;
                 user-select: none;
@@ -273,7 +273,7 @@ export default {
 
         .options {
             border: 1px solid transparent;
-            margin-top: calc(var(--space-2) + 4px);
+            margin-top: calc(var(--spacer-4) + 4px);
             max-height: 0;
             max-width: inherit;
             overflow-y: hidden;
@@ -285,14 +285,14 @@ export default {
             &.active {
                 background: var(--grey-4);
                 border: var(--border) solid var(--grey-5);
-                box-shadow: 0 0 var(--spacer) var(--space-05) var(--grey-2);
+                box-shadow: 0 0 var(--spacer-1) var(--spacer-05) var(--grey-2);
                 max-height: 200px;
                 overflow-y: scroll;
             }
 
             .option {
                 color: var(--grey-6);
-                padding: var(--spacer);
+                padding: var(--spacer-1);
                 text-align: left;
                 text-transform: capitalize;
                 user-select: none;
@@ -300,12 +300,12 @@ export default {
 
                 &.selected {
                     background: var(--grey-4);
-                    color: var(--primary-color);
+                    color: var(--primary-c);
                 }
 
                 &:hover {
                     background: var(--grey-4);
-                    color: var(--primary-color);
+                    color: var(--primary-c);
                     cursor: pointer;
                 }
             }

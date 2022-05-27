@@ -18,7 +18,7 @@
     --light: 50%;
     --light-l: 75%;
     --light-xl: 90%;
-    --text-xs: 0.5rem;
+    --text-xs: 0.65rem;
     --text-s: 0.8rem;
     --text-d: 1rem;
     --text-l: 1.15rem;
@@ -26,12 +26,13 @@
     --font-1: "Roboto";
     --font-2: "Oswald", sans-serif;
     --border: 2px;
-    --spacer: 8px;
-    --space-4: 64px;
-    --space-3: 48px;
-    --space-2: 32px;
-    --space-1: 16px;
-    --space-05: 4px;
+    --spacer-05: 4px;
+    --spacer-1: 8px;
+    --spacer-2: 16px;
+    --spacer-3: 24px;
+    --spacer-4: 32px;
+    --spacer-6: 48px;
+    --spacer-8: 64px;
     --warning-h: 23;
     --warning-color: hsl(var(--warning-h) var(--sat) var(--light));
     --warning-color-l: hsl(var(--warning-h) var(--sat) var(--light-l));
@@ -64,10 +65,10 @@
     --grey-6: hsl(var(--grey-h) var(--grey-s) var(--light-6));
     --grey-7: hsl(var(--grey-h) var(--grey-s) var(--light-7));
     --grey-8: hsl(var(--grey-h) var(--grey-s) var(--light-8));
-    --primary-color-h: 200;
-    --primary-color-s: 80%;
-    --primary-color-l: 65%;
-    --primary-color: hsl(var(--primary-color-h) var(--primary-color-s) var(--primary-color-l));
+    --primary-h: 200;
+    --primary-s: 80%;
+    --primary-l: 65%;
+    --primary-c: hsl(var(--primary-h) var(--primary-s) var(--primary-l));
 
     color: var(--grey-6);
 
@@ -90,11 +91,11 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
+    background: var(--primary-c);
 }
 
 .scroller {
-    scrollbar-color: var(--primary-color) transparent;
+    scrollbar-color: var(--primary-c) transparent;
     scrollbar-width: thin;
 }
 
@@ -115,7 +116,7 @@ body {
 }
 
 a {
-    color: var(--primary-color);
+    color: var(--primary-c);
     text-decoration: none;
 }
 
@@ -131,10 +132,11 @@ textarea {
 button {
     background: none;
     border: 0;
+    color: unset;
     font-size: var(--text-d);
 }
 
 ::selection {
-    background: var(--primary-color);
+    background: var(--primary-c);
     color: var(--grey-5);
 }

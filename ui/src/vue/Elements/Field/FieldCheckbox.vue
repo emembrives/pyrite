@@ -52,16 +52,16 @@ export default {
         flex-direction: column;
 
         label.switch {
-            height: calc(var(--spacer) * 3);
-            margin-right: var(--spacer);
-            margin-top: var(--space-05);
+            height: calc(var(--spacer-1) * 3);
+            margin-right: var(--spacer-1);
+            margin-top: var(--spacer-05);
             position: relative;
             user-select: none;
-            width: calc(var(--spacer) * 5);
+            width: calc(var(--spacer-1) * 5);
 
             .slider {
                 background-color: var(--grey-1);
-                border-radius: calc(var(--spacer) * 2);
+                border-radius: calc(var(--spacer-1) * 2);
                 bottom: 0;
                 cursor: pointer;
                 left: 0;
@@ -72,13 +72,13 @@ export default {
                 &::before {
                     background: var(--grey-6);
                     border-radius: 50%;
-                    bottom: calc(var(--spacer) / 2);
+                    bottom: calc(var(--spacer-1) / 2);
                     content: "";
-                    height: calc(var(--spacer) * 2);
-                    left: calc(var(--spacer) / 2);
+                    height: calc(var(--spacer-1) * 2);
+                    left: calc(var(--spacer-1) / 2);
                     position: absolute;
                     transition: 0.4s;
-                    width: calc(var(--spacer) * 2);
+                    width: calc(var(--spacer-1) * 2);
                 }
             }
 
@@ -95,11 +95,11 @@ export default {
                 }
 
                 &:checked + .slider {
-                    background: var(--primary-color);
+                    background: var(--primary-c);
 
                     &::before {
                         background: var(--grey-4);
-                        transform: translateX(calc(var(--spacer) * 2));
+                        transform: translateX(calc(var(--spacer-1) * 2));
                     }
                 }
             }

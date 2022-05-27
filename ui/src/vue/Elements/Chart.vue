@@ -124,7 +124,7 @@ export default {
     svg {
 
         .line {
-            stroke: var(--primary-color);
+            stroke: var(--primary-c);
         }
 
         .chart-area {

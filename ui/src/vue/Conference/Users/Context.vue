@@ -1,16 +1,22 @@
 <template>
     <section class="c-users-context presence">
-        <div v-for="user of sortedUsers" :key="user.id" class="user item">
-            <Icon
-                v-if="user.data.raisehand"
-                class="hand icon item-icon icon-small"
-                name="Hand"
-            />
-            <Icon
-                v-else class="item-icon icon-small"
-                :class="classes(user)"
-                name="User"
-            />
+        <div
+            v-for="user of sortedUsers"
+            :key="user.id"
+            class="user item"
+        >
+            <button class="tooltip tooltip-right" :data-tooltip="`${user.username}`">
+                <Icon
+                    v-if="user.data.raisehand"
+                    class="hand icon item-icon icon-small"
+                    name="Hand"
+                />
+                <Icon
+                    v-else class="item-icon icon-small"
+                    :class="classes(user)"
+                    name="User"
+                />
+            </button>
             <div class="name">
                 <template v-if="user.username">
                     {{ user.username }}
@@ -109,10 +115,10 @@ export default {
                 align-items: center;
                 display: flex;
                 justify-content: center;
-                margin-left: calc(var(--spacer) / 2);
+                margin-left: calc(var(--spacer-1) / 2);
 
                 .status {
-                    margin-right: var(--spacer);
+                    margin-right: var(--spacer-1);
                 }
 
                 span {

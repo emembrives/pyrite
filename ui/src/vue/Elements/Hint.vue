@@ -24,8 +24,8 @@ export default {
     display: flex;
 
     .icon {
-        color: var(--primary-color);
-        margin-right: var(--spacer);
+        color: var(--primary-c);
+        margin-right: var(--spacer-1);
     }
 
     .explanation {

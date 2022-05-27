@@ -1,6 +1,7 @@
 import {app} from '@/js/app.js'
 
 class ModelGroup {
+
     async saveGroup(groupId, data) {
         const group = await app.api.post(`/api/groups/${encodeURIComponent(groupId)}`, data)
 

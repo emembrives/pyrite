@@ -16,7 +16,7 @@
                 :data-tooltip="`${$t('switch microphone')} ${$s.devices.mic.enabled ? $t('off') : $t('on')}`"
                 @click="toggleMicrophone"
             >
-                <Icon class="icon-small" name="Mic" />
+                <Icon class="icon-small" :name="$s.devices.mic.enabled ? 'Mic' : 'MicMute'" />
             </button>
 
             <button

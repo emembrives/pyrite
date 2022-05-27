@@ -26,7 +26,7 @@ export default defineComponent({
     align-items: stretch;
     background: var(--grey-1);
     display: grid;
-    grid-template-columns: 300px var(--space-4) 1fr;
+    grid-template-columns: 300px var(--spacer-8) 1fr;
     height: 100vh;
     overflow: hidden;
 }

@@ -109,7 +109,7 @@ export default {
         this.canvasContext = this.$refs.meter.getContext('2d')
         const computedStyle = getComputedStyle(document.querySelector('.app'))
         this.colors = {
-            primary: computedStyle.getPropertyValue('--primary-color'),
+            primary: computedStyle.getPropertyValue('--primary-c'),
             warning: computedStyle.getPropertyValue('--warning-color'),
         }
 
@@ -148,8 +148,8 @@ export default {
 <style lang="scss">
 canvas {
     border: 1px solid var(--grey-5);
-    height: var(--spacer);
-    margin: var(--spacer);
+    height: var(--spacer-1);
+    margin: var(--spacer-1);
     width: 100%;
 
     &.vertical {

@@ -168,7 +168,7 @@ export default {
     }
 
     .title {
-        color: var(--primary-color);
+        color: var(--primary-c);
         font-weight: 600;
     }
 
@@ -176,10 +176,10 @@ export default {
         display: flex;
         flex-direction: column;
         font-size: var(--text-xs);
-        gap: var(--spacer);
-        margin-top: var(--spacer);
+        gap: var(--spacer-1);
+        margin-top: var(--spacer-1);
         overflow-y: scroll;
-        padding: var(--spacer);
+        padding: var(--spacer-1);
 
         .stat {
             display: flex;
@@ -206,7 +206,7 @@ export default {
         font-family: var(--font-2);
         font-size: var(--text-l);
         justify-content: center;
-        margin-bottom: var(--space-3);
+        margin-bottom: var(--spacer-6);
     }
 }
 </style>

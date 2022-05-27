@@ -121,6 +121,6 @@ export default defineComponent({
 
 <style lang="scss">
 .btn-save {
-    margin-bottom: var(--space-1);
+    margin-bottom: var(--spacer-2);
 }
 </style>

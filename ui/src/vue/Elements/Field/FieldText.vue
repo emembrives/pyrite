@@ -113,12 +113,12 @@ export default {
         }
 
         .validation-message {
-            bottom: calc(-1 * var(--spacer));
+            bottom: calc(-1 * var(--spacer-1));
             color: var(--error-color);
             flex: 1;
             font-size: var(--text-s);
             height: var(--space1);
-            min-height: var(--space-1);
+            min-height: var(--spacer-2);
             position: absolute;
         }
     }
@@ -134,7 +134,7 @@ export default {
             border-bottom: var(--border) solid var(--grey-5);
             color: var(--grey-7);
             font-size: 1rem;
-            height: var(--space-2);
+            height: var(--spacer-4);
             outline: none;
             transition: border 0.5s ease;
             width: 100%;
@@ -144,7 +144,7 @@ export default {
             }
 
             &:focus {
-                border-bottom: var(--border) solid var(--primary-color);
+                border-bottom: var(--border) solid var(--primary-c);
             }
         }
 
@@ -155,7 +155,7 @@ export default {
             }
 
             &.active {
-                color: var(--primary-color);
+                color: var(--primary-c);
             }
         }
     }

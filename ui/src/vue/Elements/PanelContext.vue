@@ -90,7 +90,7 @@ export default defineComponent({
     },
     watch: {
         '$s.panels.context.collapsed': function() {
-            const space4 = Number(getComputedStyle(document.querySelector('.app')).getPropertyValue('--space-4').replace('px', ''))
+            const space4 = Number(getComputedStyle(document.querySelector('.app')).getPropertyValue('--spacer-8').replace('px', ''))
             this.app.animate({
                 duration: 350,
                 from: this.$s.panels.context.collapsed ? 300 : space4,
@@ -111,7 +111,7 @@ export default defineComponent({
 .c-panel-context {
     display: flex;
     flex-direction: column;
-    min-width: var(--space-4);
+    min-width: var(--spacer-8);
     position: relative;
     width: 300px;
 
@@ -121,8 +121,8 @@ export default defineComponent({
         border-bottom: var(--border) solid var(--grey-4);
         display: flex;
         font-weight: bold;
-        height: var(--space-4);
-        padding-right: var(--spacer);
+        height: var(--spacer-8);
+        padding-right: var(--spacer-1);
         position: relative;
 
         a.logo {
@@ -135,14 +135,14 @@ export default defineComponent({
 
         .logo {
             align-items: center;
-            color: var(--primary-color);
+            color: var(--primary-c);
             display: flex;
             font-family: var(--font-2);
             justify-content: flex-start;
 
             svg {
-                color: var(--primary-color);
-                margin-right: var(--spacer);
+                color: var(--primary-c);
+                margin-right: var(--spacer-1);
             }
 
             .icon {
@@ -186,16 +186,16 @@ export default defineComponent({
             background: var(--grey-2);
             border-bottom: var(--border) solid var(--grey-4);
             display: flex;
-            gap: var(--spacer);
-            height: var(--space-4);
+            gap: var(--spacer-1);
+            height: var(--spacer-8);
             justify-content: center;
 
             .btn {
                 background: var(--grey-3);
                 cursor: pointer;
-                height: var(--space-3);
-                margin: var(--spacer) 0;
-                width: var(--space-3);
+                height: var(--spacer-6);
+                margin: var(--spacer-1) 0;
+                width: var(--spacer-6);
 
                 &:disabled {
                     cursor: not-allowed;
@@ -206,19 +206,21 @@ export default defineComponent({
         .item {
             align-items: center;
             color: var(--grey-7);
+            cursor: pointer;
             display: flex;
-            height: var(--space-4);
+            height: var(--spacer-8);
             overflow: visible;
-            padding: calc(var(--spacer) / 2) var(--spacer);
+            padding: calc(var(--spacer-1) / 2) var(--spacer-1);
+            width: 100%;
 
             &.active {
-                color: var(--primary-color);
+                color: var(--primary-c);
             }
 
             .item-icon {
                 align-items: center;
                 display: flex;
-                margin-right: var(--spacer);
+                margin-right: var(--spacer-1);
 
                 &.delete,
                 &.unsaved {
@@ -233,17 +235,20 @@ export default defineComponent({
                 font-family: var(--font-2);
                 font-weight: 600;
                 line-height: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
 
             .item-properties {
                 display: flex;
-                margin-top: var(--space-05);
+                margin-top: var(--spacer-05);
             }
         }
     }
 
     &.collapsed {
-        width: var(--space-4);
+        width: var(--spacer-8);
 
         header {
             padding: 0;
@@ -270,16 +275,16 @@ export default defineComponent({
 
             .actions {
                 align-items: center;
-                background: none;
-                flex-direction: column;
+                flex-flow: row wrap;
                 gap: 2px;
-                height: auto;
-                padding: 4px;
+                height: var(--spacer-8);
+                padding: 2px;
 
                 .btn {
-                    height: 28px;
+                    height: auto;
                     margin: 0;
-                    width: 100%;
+                    padding: 0;
+                    width: auto;
                 }
             }
 
@@ -289,7 +294,7 @@ export default defineComponent({
                 &.active {
 
                     .item-icon {
-                        color: var(--primary-color);
+                        color: var(--primary-c);
                     }
                 }
 
@@ -302,14 +307,14 @@ export default defineComponent({
                 }
 
                 .context-menu {
-                    margin-right: var(--spacer);
+                    margin-right: var(--spacer-1);
                     position: absolute;
                     right: 0;
-                    width: var(--spacer);
+                    width: var(--spacer-1);
 
                     svg {
-                        height: var(--space-1);
-                        width: var(--space-1);
+                        height: var(--spacer-2);
+                        width: var(--spacer-2);
                     }
                 }
 

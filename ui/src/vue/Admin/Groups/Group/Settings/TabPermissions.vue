@@ -95,7 +95,7 @@ export default defineComponent({
     .group {
         align-items: center;
         display: flex;
-        padding: var(--spacer) 0;
+        padding: var(--spacer-1) 0;
 
         .group-name {
             color: var(--grey-8);
@@ -104,7 +104,7 @@ export default defineComponent({
             user-select: none;
 
             &:hover {
-                color: var(--primary-color);
+                color: var(--primary-c);
             }
         }
 
@@ -117,14 +117,14 @@ export default defineComponent({
                 align-items: center;
                 display: flex;
                 justify-content: center;
-                margin: 0 var(--spacer);
+                margin: 0 var(--spacer-1);
                 width: 75px;
 
                 svg {
-                    width: calc(var(--space-1) + 21px);
+                    width: calc(var(--spacer-2) + 21px);
 
                     &:hover {
-                        color: var(--primary-color);
+                        color: var(--primary-c);
                     }
                 }
 

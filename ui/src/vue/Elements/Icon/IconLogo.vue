@@ -49,7 +49,7 @@
     }
 
     100% {
-        fill: var(--primary-color);
+        fill: var(--primary-c);
         opacity: 1;
     }
 }
@@ -74,22 +74,22 @@
     }
 
     50% { fill: var(--grey-3); }
-    52% { fill: var(--primary-color); }
+    52% { fill: var(--primary-c); }
     60% { fill: var(--grey-3); }
-    65% { fill: var(--primary-color); }
+    65% { fill: var(--primary-c); }
     70% { fill: var(--grey-3); }
-    75% { fill: var(--primary-color); }
+    75% { fill: var(--primary-c); }
 
     80% {
         fill: var(--grey-3);
         opacity: 0.2;
     }
-    83% { fill: var(--primary-color); }
+    83% { fill: var(--primary-c); }
     85% { fill: var(--grey-3); }
-    87% { fill: var(--primary-color); }
+    87% { fill: var(--primary-c); }
 
     100% {
-        fill: var(--primary-color);
+        fill: var(--primary-c);
         opacity: 1;
     }
 }
@@ -99,7 +99,7 @@
 }
 
 .primary {
-    fill: var(--primary-color);
+    fill: var(--primary-c);
 }
 
 .logo-animated {

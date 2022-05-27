@@ -2,7 +2,7 @@
   <style>
       :root {
          --grey-3: hsl(220, 14%, 11%);
-         --primary-color: hsl(200, 80%, 65%);
+         --primary-c: hsl(200, 80%, 65%);
       }
 
       .dark {
@@ -10,7 +10,7 @@
       }
 
       .primary {
-         fill: var(--primary-color);
+         fill: var(--primary-c);
       }
   </style>
 

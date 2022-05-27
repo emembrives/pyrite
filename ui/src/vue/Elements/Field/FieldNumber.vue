@@ -67,7 +67,7 @@ export default {
         color: var(--grey-7);
         max-width: 80px;
         outline: none;
-        padding: var(--space-05);
+        padding: var(--spacer-05);
     }
 }
 </style>

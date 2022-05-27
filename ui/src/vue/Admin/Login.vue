@@ -3,7 +3,7 @@
         <header>
             <div class="notice" />
             <div class="title">
-                <span>{{ $t('admin login') }}</span>
+                <span>{{ $t('management login') }}</span>
                 <Icon class="item-icon icon-small" name="Dashboard" />
             </div>
         </header>
