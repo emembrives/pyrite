@@ -5,18 +5,13 @@
             :key="user.id"
             class="user item"
         >
-            <button class="tooltip tooltip-right" :data-tooltip="`${user.username}`">
-                <Icon
-                    v-if="user.data.raisehand"
-                    class="hand icon item-icon icon-small"
-                    name="Hand"
-                />
-                <Icon
-                    v-else class="item-icon icon-small"
-                    :class="classes(user)"
-                    name="User"
-                />
-            </button>
+            <Icon
+                v-tip="{content: `${$t('user')} ${user.username}`}"
+                class="icon item-icon icon-small"
+                :class="className(user)"
+                :name="user.data.raisehand ? 'Hand' : 'User'"
+            />
+
             <div class="name">
                 <template v-if="user.username">
                     {{ user.username }}
@@ -34,11 +29,11 @@
                         <Icon v-else class="icon icon-mini error" name="MicMute" />
                     </div>
 
-                    <span v-if="user.permissions.present" class="tooltip" :data-tooltip="$t('presenter role')">
-                        <Icon class="icon icon-mini" name="Present" />
+                    <span v-if="user.permissions.present">
+                        <Icon v-tip="{content: $t('presenter role')}" class="icon icon-mini" name="Present" />
                     </span>
-                    <span v-if="user.permissions.op" class="tooltip" :data-tooltip="$t('operator role')">
-                        <Icon class="icon icon-mini" name="Operator" />
+                    <span v-if="user.permissions.op">
+                        <Icon v-tip="{content: $t('operator role')}" class="icon icon-mini" name="Operator" />
                     </span>
                 </div>
             </div>
@@ -69,14 +64,19 @@ export default {
         },
     },
     methods: {
-        classes(user) {
+        className(user) {
             const classes = {}
-            if (!user.data.availability) return classes
-            if (user.data.availability.id === 'away') {
-                classes.away = true
-            } else if (user.data.availability.id === 'busy') {
-                classes.busy = true
+            if (user.data.raisehand) {
+                classes.hand = true
             }
+            if (user.data.availability) {
+                if (user.data.availability.id === 'away') {
+                    classes.away = true
+                } else if (user.data.availability.id === 'busy') {
+                    classes.busy = true
+                }
+            }
+
             return classes
         },
     },
@@ -128,5 +128,4 @@ export default {
         }
     }
 }
-
 </style>

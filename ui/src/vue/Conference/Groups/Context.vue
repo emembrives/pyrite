@@ -6,8 +6,8 @@
                 :class="{active: $route.name !== 'conference-splash' && !isListedGroup}"
                 @click="toggleUnlisted"
             >
-                <button class="tooltip tooltip-right" :data-tooltip="`${$t('join unlisted group')}`">
-                    <Icon class="icon-small item-icon" name="Incognito" />
+                <button>
+                    <Icon v-tip="{content: $t('join unlisted group')}" class="icon-small item-icon" name="Incognito" />
                 </button>
                 <div v-if="isListedGroup || !$s.group.name" class="name">
                     {{ $t('unlisted-group') }}
@@ -25,9 +25,12 @@
             :to="groupLink(group.name)"
             @click="setAutofocus"
         >
-            <button class="tooltip tooltip-right" :data-tooltip="`${$t('join group')}: ${group.name} (${group.clientCount})`">
-                <Icon v-if="!group.locked" class="item-icon icon-small" name="Group" />
-                <Icon v-else class="item-icon icon-small" name="GroupLocked" />
+            <button>
+                <Icon
+                    v-tip="{content: `${$t('group')}: ${group.name} (${group.clientCount})`}"
+                    class="icon-small"
+                    :name="group.locked ? 'GroupLocked' : 'Group'"
+                />
             </button>
 
             <div class="name">
@@ -125,14 +128,6 @@ export default {
 
 <style lang="scss">
 .c-groups-context {
-
-    &:not(.collapsed) {
-
-        .tooltip::after {
-            // Hide the tooltips when not collapsed
-            display: none;
-        }
-    }
 
     .group {
 

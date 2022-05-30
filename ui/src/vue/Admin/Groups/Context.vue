@@ -1,34 +1,29 @@
 <template>
     <section v-if="$s.admin.authenticated && $s.admin.permission" class="c-admin-groups-context presence">
         <div class="actions">
-            <button
-                class="btn tooltip tooltip-right"
-                :data-tooltip="$s.admin.group && $s.admin.group._delete ? $t('undo mark deletion') : $t('mark for deletion')"
-                :disabled="!$s.admin.group" @click="toggleMarkDelete"
-            >
-                <Icon class="item-icon icon-small" name="Minus" />
+            <button class="btn" :disabled="!$s.admin.group" @click="toggleMarkDelete">
+                <Icon
+                    v-tip="{content: $s.admin.group && $s.admin.group._delete ? $t('undo mark deletion') : $t('mark for deletion')}"
+                    class="item-icon icon-small"
+                    name="Minus"
+                />
             </button>
-            <button
-                class="btn tooltip tooltip-right"
-                :data-tooltip="$t('add new group')"
-            >
-                <Icon class="item-icon icon-small" name="Plus" @click="addGroup" />
+            <button class="btn">
+                <Icon
+                    v-tip="{content: $t('add new group')}" class="item-icon icon-small"
+                    name="Plus"
+                    @click="addGroup"
+                />
             </button>
-            <button
-                class="btn tooltip tooltip-right"
-                :data-tooltip="`${$tc('confirm deletion of {amount} group | confirm deletion of {amount} groups', {amount: deletionGroups.length})}`"
-                :disabled="!deletionGroups.length"
-                @click="deleteGroups"
-            >
-                <Icon class="icon-small" name="Trash" />
+            <button class="btn" :disabled="!deletionGroups.length" @click="deleteGroups">
+                <Icon
+                    v-tip="{content: `${$tc('confirm deletion of {amount} group | confirm deletion of {amount} groups', {amount: deletionGroups.length})}`}"
+                    class="icon-small"
+                    name="Trash"
+                />
             </button>
-            <button
-                class="btn tooltip tooltip-right"
-                :data-tooltip="$t('store group')"
-                :disabled="!$s.admin.group"
-                @click="saveGroup"
-            >
-                <Icon class="icon-small" name="Save" />
+            <button class="btn" :disabled="!$s.admin.group" @click="saveGroup">
+                <Icon v-tip="{content: $t('store group')}" class="icon-small" name="Save" />
             </button>
         </div>
 
@@ -39,14 +34,12 @@
             :class="{active: $route.params.groupId === group._name}"
             :to="groupLink(group._name)"
         >
-            <button class="tooltip tooltip-right" :data-tooltip="`${$t('group')} ${group._name}`">
-                <Icon v-if="group._delete" class="item-icon delete icon-small" name="Trash" />
-                <Icon
-                    v-else class="item-icon icon-small"
-                    :class="{unsaved: group._unsaved}"
-                    name="Group"
-                />
-            </button>
+            <Icon
+                v-tip="{content: `${$t('group')} ${group._name}`}"
+                class="item-icon delete icon-small"
+                :class="{delete: group._delete, unsaved: group._unsaved}"
+                :name="group._delete ? 'Trash' : 'Group'"
+            />
 
             <div class="flex-column">
                 <div class="name">

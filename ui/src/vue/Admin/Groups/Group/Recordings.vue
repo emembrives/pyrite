@@ -3,19 +3,17 @@
         <div v-for="rec of recordings" :key="rec.filename" class="recording">
             <div class="actions">
                 <button
-                    class="btn btn-menu btn-small tooltip tooltip-right"
-                    :data-tooltip="`${$t('delete recording')}`"
+                    class="btn btn-menu btn-small"
                     @click="deleteRecording(rec)"
                 >
-                    <Icon class="icon-mini" name="Trash" />
+                    <Icon v-tip="{content: $t('delete recording')}" class="icon-mini" name="Trash" />
                 </button>
                 <a
-                    class="btn btn-menu btn-small tooltip tooltip-right"
-                    :data-tooltip="`${$t('download recording')}`"
+                    class="btn btn-menu btn-small"
                     :download="`${rec.filename}.${rec.extension}`"
                     :href="`/api/recordings/${$s.admin.group._name}/${rec.filename}.${rec.extension}`"
                 >
-                    <Icon class="icon-mini" name="Download" />
+                    <Icon v-tip="{content: $t('download recording')}" class="icon-mini" name="Download" />
                 </a>
             </div>
             <video controls :src="`/api/recordings/${$s.admin.group._name}/${rec.filename}.${rec.extension}`" type="video/webm" />

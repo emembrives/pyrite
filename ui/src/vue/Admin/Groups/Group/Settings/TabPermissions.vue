@@ -4,19 +4,13 @@
             <div class="group-name" />
             <div class="categories">
                 <div class="category" @click="toggleCategory('op')">
-                    <span class="tooltip tooltip-left" :data-tooltip="$t('operator permission')">
-                        <Icon class="icon-small" name="Operator" />
-                    </span>
+                    <Icon v-tip="{content: $t('operator permission')}" class="icon-small" name="Operator" />
                 </div>
                 <div class="category" @click="toggleCategory('presenter')">
-                    <span class="tooltip tooltip-left" :data-tooltip="$t('presenter permission')">
-                        <Icon class="icon-small" name="Present" />
-                    </span>
+                    <Icon v-tip="{content: $t('presenter permission')}" class="icon-small" name="Present" />
                 </div>
                 <div class="category" @click="toggleCategory('other')">
-                    <span class="tooltip tooltip-left" :data-tooltip="$t('misc permission')">
-                        <Icon class="icon-small" name="OtherPermissions" />
-                    </span>
+                    <Icon v-tip="{content: $t('misc permission')}" class="icon-small" name="OtherPermissions" />
                 </div>
             </div>
         </div>

@@ -69,6 +69,7 @@
     --primary-s: 80%;
     --primary-l: 65%;
     --primary-c: hsl(var(--primary-h) var(--primary-s) var(--primary-l));
+    --overlay-c: hsl(var(--grey-h) var(--grey-s) var(--light-3) / 90%);
 
     color: var(--grey-6);
 

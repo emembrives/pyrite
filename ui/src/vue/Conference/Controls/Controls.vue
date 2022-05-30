@@ -2,48 +2,30 @@
     <nav class="c-general-controls">
         <div class="navigational-controls">
             <RouterLink
-                v-if="!$s.group.connected"
-                class="btn btn-menu tooltip"
+                class="btn btn-menu"
                 :class="{active: $route.name === 'conference-settings'}"
-                :data-tooltip="$t('settings')"
-                :to="{name: 'conference-settings', params: {tabId: 'misc'}}"
-            >
-                <Icon class="icon-small" name="Settings" />
-            </RouterLink>
-            <RouterLink
-                v-else
-                class="btn btn-menu tooltip"
-                :class="{active: $route.name === 'conference-group-settings'}"
-                :data-tooltip="$t('settings')"
                 :to="settingsRoute"
             >
-                <Icon class="icon-small" name="Settings" />
+                <Icon v-tip="{content: $t('settings')}" class="icon-small" name="Settings" />
             </RouterLink>
             <RouterLink
-                v-if="($s.group.name && !$s.group.connected) || $s.group.connected"
-                class="btn btn-menu tooltip"
+                class="btn btn-menu"
                 :class="{
                     active: ['conference-groups-connected', 'conference-groups-disconnected'].includes($route.name)
                 }"
-                :data-tooltip="$s.group.locked ? `${$t('current group')} (${$t('locked')})` : $t('current group')"
-                :to="$s.group.name ? {name: 'conference-groups', params: {groupId: $s.group.name}} : {name: 'conference-main'}"
+                :disabled="(!$s.group.name && !$s.group.connected) ? true : null"
+                :to="groupRoute"
             >
-                <Icon v-if="!$s.group.locked" class="icon-small" name="Group" />
-                <Icon v-else class="icon-small" name="GroupLocked" />
+                <Icon
+                    v-tip="{content: $s.group.locked ? `${$t('current group')} (${$t('locked')})` : $t('current group')}"
+                    class="icon-small" :name="$s.group.locked ? 'GroupLocked' : 'Group'"
+                />
             </RouterLink>
-            <button
-                v-else
-                class="btn btn-menu btn-logout tooltip"
-                :data-tooltip="$t('current group')"
-                :disabled="true"
-            >
-                <Icon class="icon-small" name="Group" />
-            </button>
 
             <button
                 v-if="$s.group.connected"
-                class="btn btn-menu btn-logout tooltip"
-                :data-tooltip="$t('leave group')"
+                v-tip="{content: $t('leave group')}"
+                class="btn btn-menu btn-logout"
                 @click="$m.sfu.disconnect"
             >
                 <Icon class="icon-small" name="Logout" />
@@ -51,23 +33,29 @@
 
             <button
                 v-if="$s.group.connected && $s.permissions.present"
-                class="btn btn-menu tooltip tooltip-right"
+                class="btn btn-menu"
                 :class="{active: $s.user.data.raisehand}"
-                :data-tooltip="$s.user.data.raisehand ? $t('hinting for speaking time') : $t('request speaking time')"
                 @click="toggleRaiseHand"
             >
-                <Icon class="hand icon-small" :class="{wave: $s.user.data.raisehand}" name="Hand" />
+                <Icon
+                    v-tip="{content: $s.user.data.raisehand ? $t('hinting for speaking time') : $t('request speaking time')}" class="hand icon-small"
+                    :class="{wave: $s.user.data.raisehand}"
+                    name="Hand"
+                />
             </button>
 
             <ContextMenu v-if="$s.group.connected && $s.permissions.op" />
         </div>
         <button
-            class="btn btn-collapse tooltip"
+            v-if="$s.env.layout === 'desktop'"
+            class="btn btn-collapse"
             :class="{active: !$s.panels.context.collapsed}"
-            :data-tooltip="$s.panels.context.collapsed ? $t('expand panel') : $t('collapse panel')"
             @click="toggleCollapse"
         >
-            <Icon class="icon-small" :name="$s.panels.context.collapsed ? 'ExpandRight' : 'CollapseLeft'" />
+            <Icon
+                v-tip="{content: $s.panels.context.collapsed ? $t('expand panel') : $t('collapse panel')}"
+                class="icon-small" :name="$s.panels.context.collapsed ? 'ExpandRight' : 'CollapseLeft'"
+            />
         </button>
     </nav>
 </template>
@@ -77,7 +65,18 @@ import ContextMenu from './ContextMenu.vue'
 
 export default {
     computed: {
+        groupRoute() {
+            if (this.$s.group.name) {
+                return {name: 'conference-groups', params: {groupId: this.$s.group.name}}
+            } else {
+                return {name: 'conference-main'}
+            }
+        },
         settingsRoute() {
+            if (!this.$s.group.connected) {
+                return {name: 'conference-settings', params: {tabId: 'misc'}}
+            }
+
             if (this.$router.currentRoute.value.name ===  'conference-group-settings') {
                 return {groupId: this.$s.group.name, name: 'conference-groups-connected'}
             } else {

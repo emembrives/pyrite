@@ -3,8 +3,8 @@
         <header>
             <RouterLink
                 v-if="!$s.group.connected"
-                class="logo tooltip"
-                :data-tooltip="$route.name.includes('conference-') ? $t('switch to admin') : $t('switch to conference')"
+                v-tip="{content: $route.name.includes('conference-') ? $t('switch to admin') : $t('switch to conference')}"
+                class="logo"
                 :to="toggleContext"
             >
                 <Icon class="icon" name="Logo" />
@@ -17,7 +17,7 @@
                     </div>
                 </div>
             </RouterLink>
-            <span v-else class="logo tooltip">
+            <span v-else class="logo">
                 <Icon class="icon" name="Logo" />
                 <div class="l-name">
                     <div class="name">
@@ -102,6 +102,11 @@ export default defineComponent({
                 },
                 to: this.$s.panels.context.collapsed ? space4 : 300,
             })
+        },
+        '$s.env.layout': function(layout) {
+            if (layout === 'tablet') {
+                this.$s.panels.context.collapsed = true
+            }
         },
     },
 })
@@ -234,6 +239,7 @@ export default defineComponent({
                 flex: 1;
                 font-family: var(--font-2);
                 font-weight: 600;
+                height: 100%;
                 line-height: 100%;
                 overflow: hidden;
                 text-overflow: ellipsis;

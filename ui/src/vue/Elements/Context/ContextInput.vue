@@ -5,17 +5,17 @@
                 <FieldText v-model="text" :autofocus="inputTransition" @keyup.enter="submitMethod" />
 
                 <button
-                    v-if="required && text === ''" class="btn tooltip tooltip-right"
+                    v-if="required && text === ''" class="btn"
                     @click="input = !input"
                 >
-                    <Icon class="icon icon-mini" name="Close" />
+                    <Icon v-tip="{content: $t('close')}" class="icon icon-mini" name="Close" />
                 </button>
                 <button
-                    v-else class="btn tooltip tooltip-right"
-                    :data-tooltip="$t('submit')"
+                    v-else
+                    class="btn"
                     @click="submitMethod"
                 >
-                    <Icon class="icon icon-mini" name="Send" />
+                    <Icon v-tip="{content: $t('submit')}" class="icon icon-mini" name="Send" />
                 </button>
             </div>
             <button v-else class="action" @click="buttonAction">

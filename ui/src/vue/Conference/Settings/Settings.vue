@@ -9,25 +9,22 @@
         </header>
         <ul class="tabs">
             <RouterLink
-                class="btn btn-menu tab tooltip"
-                :data-tooltip="$t('devices')"
+                class="btn btn-menu tab"
                 :to="{name: settingsRoute, params: {tabId: 'devices'}}"
             >
-                <Icon class="icon-small" name="Webcam" />
+                <Icon v-tip="{content: $t('devices')}" class="icon-small" name="Webcam" />
             </RouterLink>
             <RouterLink
-                class="btn btn-menu tab tooltip"
-                :data-tooltip="$t('media')"
+                class="btn btn-menu tab"
                 :to="{name: settingsRoute, params: {tabId: 'media'}}"
             >
-                <Icon class="icon-small" name="Media" />
+                <Icon v-tip="{content: $t('media')}" class="icon-small" name="Media" />
             </RouterLink>
             <RouterLink
-                class="btn btn-menu tab tooltip"
-                :data-tooltip="$t('miscellaneous')"
+                class="btn btn-menu tab"
                 :to="{name: settingsRoute, params: {tabId: 'misc'}}"
             >
-                <Icon class="icon-small" name="Pirate" />
+                <Icon v-tip="{content: $t('miscellaneous')}" class="icon-small" name="Pirate" />
             </RouterLink>
         </ul>
 
@@ -38,11 +35,10 @@
 
             <div class="actions">
                 <button
-                    class="btn btn-menu tooltip tooltip-left"
-                    :data-tooltip="$t('save settings')"
+                    class="btn btn-menu"
                     @click="saveSettings"
                 >
-                    <Icon class="icon-small" name="Save" />
+                    <Icon v-tip="{content: $t('save settings')}" class="icon-small" name="Save" />
                 </button>
             </div>
         </div>

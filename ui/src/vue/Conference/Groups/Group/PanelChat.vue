@@ -1,5 +1,5 @@
 <template>
-    <div ref="view" class="c-panel-chat">
+    <div ref="view" class="c-panel-chat" :class="{[$s.env.layout]: true}">
         <div ref="messages" class="messages scroller">
             <div
                 v-for="message of sortedMessages" :key="message.message"
@@ -62,12 +62,11 @@
                 @keyup.enter="sendMessage"
             />
             <button
-                class="btn btn-menu tooltip"
-                :data-tooltip="$t('send message')"
+                class="btn btn-menu"
                 :disabled="rawMessage === ''"
                 @click="sendMessage"
             >
-                <Icon class="icon icon-mini" name="Send" />
+                <Icon v-tip="{content: $t('send message')}" class="icon icon-mini" name="Send" />
             </button>
         </div>
     </div>
@@ -418,6 +417,16 @@ export default {
             &::placeholder {
                 color: var(--grey-7);
             }
+        }
+    }
+
+    &.tablet {
+        position: absolute;
+        right: var(--spacer-8);
+        z-index: 1000;
+
+        .messages {
+            background: var(--overlay-c);
         }
     }
 }

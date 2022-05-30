@@ -33,11 +33,10 @@
             </section>
             <div class="actions">
                 <button
-                    class="btn btn-menu tooltip tooltip-left"
-                    :data-tooltip="$t('login as admin')"
+                    class="btn btn-menu"
                     @click="login"
                 >
-                    <Icon class="icon-small" name="Login" />
+                    <Icon v-tip="{content: $t('login as admin')}" class="icon-small" name="Login" />
                 </button>
             </div>
         </div>

@@ -13,10 +13,9 @@ class Logger {
 
     debug(...args) {
         if (this.level >= this.levels.debug) {
-            if (this.app.env.isBrowser) {
-                args[0] = `%c[pyrite] ${args[0]}`
-                args.push('color: #999')
-            }
+            args[0] = `%c[pyrite] ${args[0]}`
+            args.push('color: #999')
+
             // eslint-disable-next-line no-console
             console.info(...args)
         }

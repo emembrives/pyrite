@@ -79,10 +79,10 @@
                         </template>
                     </FieldSelect>
 
-                    <div v-if="!app.env.isFirefox" class="media-option">
+                    <div v-if="!$s.env.isFirefox" class="media-option">
                         <FieldSelect
                             v-model="$s.devices.audio.selected"
-                            :help="app.env.isFirefox ? `${app.env.browserName} ${$t('does not support this option')}` : $t('select the microphone device')"
+                            :help="$s.env.isFirefox ? `${$s.env.browserName} ${$t('does not support this option')}` : $t('select the microphone device')"
                             :label="$t('audio output')"
                             name="audio"
                             :options="$s.devices.audio.options"
@@ -92,20 +92,18 @@
             </section>
             <div class="actions">
                 <button
-                    class="btn btn-menu tooltip tooltip-left"
-                    :data-tooltip="$s.group.locked ? $t('join locked group') : $t('join group')"
+                    class="btn btn-menu"
                     :disabled="btnLoginDisabled"
                     @click="login"
                 >
-                    <Icon class="icon-small" name="Login" />
+                    <Icon v-tip="{content: $s.group.locked ? $t('join locked group') : $t('join group')}" class="icon-small" name="Login" />
                 </button>
                 <button
-                    class="btn btn-menu tooltip tooltip-left"
-                    :data-tooltip="$t('clear credentials')"
+                    class="btn btn-menu"
                     :disabled="!app.$s.user.username && !app.$s.user.password"
                     @click="clearCredentials"
                 >
-                    <Icon class="icon-small" name="Backspace" />
+                    <Icon v-tip="{content: $t('clear credentials')}" class="icon-small" name="Backspace" />
                 </button>
             </div>
         </div>

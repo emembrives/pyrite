@@ -23,22 +23,20 @@
         <div v-if="controls && !loading" class="stream-bar">
             <div class="buttons">
                 <button
-                    v-if="pip.enabled" class="btn btn-menu small tooltip"
-                    :data-tooltip="$t('picture-in-picture')"
+                    v-if="pip.enabled" class="btn btn-menu small"
                     @click="setPip"
                 >
-                    <Icon class="icon-mini" name="Pip" />
+                    <Icon v-tip="{content: $t('picture-in-picture')}" class="icon-mini" name="Pip" />
                 </button>
-                <button class="btn btn-menu small tooltip" :data-tooltip="$t('fullscreen')" @click="setFullscreen">
-                    <Icon class="icon-mini" name="Fullscreen" />
+                <button class="btn btn-menu small" @click="setFullscreen">
+                    <Icon v-tip="{content: $t('fullscreen')}" class="icon-mini" name="Fullscreen" />
                 </button>
                 <button
-                    v-if="!loading && controls" class="btn btn-menu small tooltip"
+                    v-if="!loading && controls" class="btn btn-menu small"
                     :class="{active: stats.visible}"
-                    :data-tooltip="$t('stream info')"
                     @click="toggleStats"
                 >
-                    <Icon class="icon-mini" name="Info" />
+                    <Icon v-tip="{content: $t('stream info')}" class="icon-mini" name="Info" />
                 </button>
             </div>
 
@@ -48,8 +46,8 @@
                 </div>
                 <div
                     v-if="audioEnabled && modelValue.direction === 'down'" key=""
-                    class="volume-slider tooltip tooltip-left"
-                    :data-tooltip="`${volume.value}% ${$t('audio volume')}`"
+                    v-tip="{content: `${volume.value}% ${$t('audio volume')}`}"
+                    class="volume-slider"
                 >
                     <FieldSlider v-model="volume" />
                 </div>
@@ -459,11 +457,6 @@ export default {
                 bottom: 2px;
                 height: var(--spacer-1);
                 position: absolute;
-
-                &.tooltip-left::after {
-                    margin-top: -100px;
-                    position: absolute;
-                }
 
                 input[type="range"] {
                     // Cut off the top/bottom borders.

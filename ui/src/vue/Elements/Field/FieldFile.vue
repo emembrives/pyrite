@@ -1,6 +1,6 @@
 <template>
-    <label class="c-field-file tooltip tooltip-left" :data-tooltip="tooltip">
-        <Icon class="icon icon-small" name="Play" />
+    <label class="c-field-file">
+        <Icon v-tip="{content: tooltip}" class="icon icon-small" name="Play" />
         <input
             ref="input"
             :accept="accept"

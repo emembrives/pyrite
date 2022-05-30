@@ -11,21 +11,19 @@
         <ul class="tabs">
             <RouterLink
                 active-class="active-group"
-                class="btn btn-menu tab tooltip"
+                class="btn btn-menu"
                 :class="{active: tabId === 'misc'}"
-                :data-tooltip="$t('user settings')"
                 :to="routeSettings('misc')"
             >
-                <Icon class="icon-small" name="Pirate" />
+                <Icon v-tip="{content: $t('user settings')}" class="icon-small" name="Pirate" />
             </RouterLink>
             <RouterLink
                 active-class="active-group"
-                class="btn btn-menu tab tooltip"
+                class="btn btn-menu tab"
                 :class="{active: tabId === 'permissions', disabled: $s.admin.groups.length === 0}"
-                :data-tooltip="$t('permissions')"
                 :to="$s.admin.groups.length > 0 ? routeSettings('permissions') : $router.currentRoute.value.href"
             >
-                <Icon class="icon-small" name="Operator" />
+                <Icon v-tip="{content: $t('permissions')}" class="icon-small" name="Operator" />
             </RouterLink>
         </ul>
 
@@ -34,12 +32,8 @@
             <TabPermissions v-else-if="tabId === 'permissions'" ref="" />
 
             <div class="actions">
-                <button
-                    class="btn btn-menu tooltip tooltip-left"
-                    :data-tooltip="$t('store person')"
-                    @click="saveUser"
-                >
-                    <Icon class="icon-small" name="Save" />
+                <button class="btn btn-menu" @click="saveUser">
+                    <Icon v-tip="{content: $t('store person')}" class="icon-small" name="Save" />
                 </button>
             </div>
         </div>

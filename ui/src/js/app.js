@@ -35,6 +35,7 @@ import Notifier from './lib/notifier.js'
 import router from './router/router.js'
 import SoundMeter from '@/vue/Elements/SoundMeter.vue'
 import Store from './lib/store.js'
+import VueTippy from 'vue-tippy'
 
 class Pyrite extends EventEmitter {
 
@@ -47,7 +48,6 @@ class Pyrite extends EventEmitter {
         this.logger.setLevel('debug')
 
         this.animate = animate
-        this.env = env
 
         this.logger.debug('loading store')
         this.store = new Store()
@@ -59,6 +59,8 @@ class Pyrite extends EventEmitter {
         }
 
         this.$s = this.store.load()
+        env(this.$s.env)
+
         this.i18n = createI18n({
             formatFallbackMessages: true,
             locale: this.$s.language.id,
@@ -141,6 +143,19 @@ class Pyrite extends EventEmitter {
             },
         })
 
+        this.vm.use(VueTippy, {
+
+            component: 'tip',
+            defaultProps: {
+                allowHTML: true,
+                appendTo: () => {
+                    return document.querySelector('.app')
+                },
+                delay: [750, 100],
+            },
+            directive: 'tip',
+            interactive: true,
+        }),
         this.vm.use(this.router).use(this.i18n)
         this.vm.mount('#app')
     }

@@ -1,34 +1,29 @@
 <template>
     <section class="c-admin-users-context presence" :class="{collapsed: $s.panels.context.collapsed}">
         <div class="actions">
-            <button
-                class="btn tooltip tooltip-right"
-                :data-tooltip="$s.admin.user && $s.admin.user._delete ? $t('undo mark deletion') : $t('mark for deletion')"
-                :disabled="!$s.admin.user" @click="toggleMarkDelete"
-            >
-                <Icon class="item-icon icon-small" name="Minus" />
+            <button class="btn" :disabled="!$s.admin.user" @click="toggleMarkDelete">
+                <Icon
+                    v-tip="{content: $s.admin.user && $s.admin.user._delete ? $t('undo mark deletion') : $t('mark for deletion')}"
+                    class="item-icon icon-small"
+                    name="Minus"
+                />
             </button>
-            <button
-                class="btn tooltip tooltip-right"
-                :data-tooltip="$t('add new user')"
-            >
-                <Icon class="item-icon icon-small" name="Plus" @click="addUser" />
+            <button class="btn">
+                <Icon
+                    v-tip="{content: $t('add new user')}" class="item-icon icon-small"
+                    name="Plus"
+                    @click="addUser"
+                />
             </button>
-            <button
-                class="btn tooltip tooltip-right"
-                :data-tooltip="`${$t('confirm deletion of {amount} person |confirm deletion of {amount} persons', {amount: deletionUsers.length})}`"
-                :disabled="!deletionUsers.length"
-                @click="deleteUsers"
-            >
-                <Icon class="icon-small" name="Trash" />
+            <button class="btn" :disabled="!deletionUsers.length" @click="deleteUsers">
+                <Icon
+                    v-tip="{content: `${$t('confirm deletion of {amount} person |confirm deletion of {amount} persons', {amount: deletionUsers.length})}`}"
+                    class="icon-small"
+                    name="Trash"
+                />
             </button>
-            <button
-                class="btn tooltip tooltip-right"
-                :data-tooltip="$t('store person')"
-                :disabled="!$s.admin.user"
-                @click="saveUser"
-            >
-                <Icon class="icon-small" name="Save" />
+            <button class="btn" :disabled="!$s.admin.user" @click="saveUser">
+                <Icon v-tip="{content: $t('store person')}" class="icon-small" name="Save" />
             </button>
         </div>
         <RouterLink
@@ -37,14 +32,12 @@
             class="user item"
             :class="{active: parseInt($route.params.userId) === user.id}" :to="userLink(user.id)"
         >
-            <button class="tooltip tooltip-right" :data-tooltip="`${$t('person')} ${user.name}`">
-                <Icon v-if="user._delete" class="item-icon delete icon-small" name="Trash" />
-                <Icon
-                    v-else class="item-icon icon-small"
-                    :class="{unsaved: user._unsaved}"
-                    name="User"
-                />
-            </button>
+            <Icon
+                v-tip="{content: `${$t('person')} ${user.name}`}"
+                class="item-icon delete icon-small"
+                :class="{delete: user._delete, unsaved: user._unsaved}"
+                :name="user._delete ? 'Trash' : 'User'"
+            />
 
             <div class="name">
                 {{ user.name }}

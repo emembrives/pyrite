@@ -72,6 +72,13 @@ const volatileState = {
         },
         width: 375,
     },
+    env: {
+        isBrowser: true,
+        isFirefox: false,
+        isSafari: false,
+        layout: 'desktop',
+        ua: '',
+    },
     files: {
         playing: [],
     },

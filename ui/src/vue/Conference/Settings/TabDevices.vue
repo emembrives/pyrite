@@ -31,7 +31,7 @@
             <!-- https://bugzilla.mozilla.org/show_bug.cgi?id=1498512 -->
             <!-- https://bugzilla.mozilla.org/show_bug.cgi?id=1152401 -->
             <FieldSelect
-                v-if="$s.devices.audio.options.length && !app.env.isFirefox"
+                v-if="$s.devices.audio.options.length && !$s.env.isFirefox"
                 v-model="$s.devices.audio.selected"
                 :help="$t('verify your audio configuration with the test sound')"
                 :label="$t('audio output')"

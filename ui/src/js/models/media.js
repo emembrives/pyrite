@@ -74,7 +74,7 @@ class ModelMedia {
         app.logger.info('querying for devices')
         // The device labels stay empty when there is no media permission.
         let devices
-        if (app.env.isFirefox) {
+        if (app.$s.env.isFirefox) {
             // The device labels are only available in Firefox while a stream is active.
             const stream = await navigator.mediaDevices.getUserMedia({audio: true, video: true})
             devices = await navigator.mediaDevices.enumerateDevices()

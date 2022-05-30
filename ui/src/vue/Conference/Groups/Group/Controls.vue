@@ -2,42 +2,54 @@
     <nav class="c-room-controls">
         <div class="group-controls">
             <button
-                class="btn btn-menu tooltip"
+                class="btn btn-menu"
                 :class="{active: !$s.panels.chat.collapsed}"
-                :data-tooltip="$s.panels.chat.collapsed ? $t('show chat panel') : $t('hide chat panel')"
                 @click="toggleChat"
             >
-                <Icon class="icon-small" :class="{active: $s.panels.chat.collapsed}" name="Chat" />
+                <Icon
+                    v-tip="{content: $s.panels.chat.collapsed ? $t('show chat panel') : $t('hide chat panel')}" class="icon-small"
+                    :class="{active: $s.panels.chat.collapsed}"
+                    name="Chat"
+                />
             </button>
             <button
                 v-if="$s.permissions.present"
-                class="btn btn-menu tooltip tooltip-left"
+                class="btn btn-menu"
                 :class="{active: $s.devices.mic.enabled, error: !$s.devices.mic.enabled}"
-                :data-tooltip="`${$t('switch microphone')} ${$s.devices.mic.enabled ? $t('off') : $t('on')}`"
                 @click="toggleMicrophone"
             >
-                <Icon class="icon-small" :name="$s.devices.mic.enabled ? 'Mic' : 'MicMute'" />
+                <Icon
+                    v-tip="{content: `${$t('switch microphone')} ${$s.devices.mic.enabled ? $t('off') : $t('on')}`}"
+                    class="icon-small" :name="$s.devices.mic.enabled ? 'Mic' : 'MicMute'"
+                />
             </button>
 
             <button
                 v-if="$s.permissions.present"
-                class="btn btn-menu tooltip tooltip-left"
+
+                class="btn btn-menu"
                 :class="{active: $s.devices.cam.enabled, error: !$s.devices.cam.enabled}"
-                :data-tooltip="`${$t('switch camera')} ${$s.devices.cam.enabled ? $t('off') : $t('on')}`"
                 :disabled="!$s.mediaReady"
                 @click="toggleCam"
             >
-                <Icon class="icon-small" name="Webcam" />
+                <Icon
+                    v-tip="{content: `${$t('switch camera')} ${$s.devices.cam.enabled ? $t('off') : $t('on')}`}"
+                    class="icon-small"
+                    name="Webcam"
+                />
             </button>
 
             <button
                 v-if="$s.permissions.present"
-                class="btn btn-menu tooltip tooltip-left"
+                class="btn btn-menu"
                 :class="{active: $s.upMedia.screenshare.length}"
-                :data-tooltip="`${$t('switch screensharing')} ${$s.upMedia.screenshare.length ? $t('off') : $t('on')}`"
                 @click="toggleScreenshare"
             >
-                <Icon class="icon-small" name="ScreenShare" />
+                <Icon
+                    v-tip="{content: `${$t('switch screensharing')} ${$s.upMedia.screenshare.length ? $t('off') : $t('on')}`}"
+                    class="icon-small"
+                    name="ScreenShare"
+                />
             </button>
 
             <button
@@ -53,7 +65,10 @@
                 />
             </button>
 
-            <button class="btn btn-menu no-feedback tooltip tooltip-left" :data-tooltip="`${volume.value}% ${$t('audio volume')}`">
+            <button
+                v-tip="{content: `${volume.value}% ${$t('audio volume')}`}"
+                class="btn btn-menu no-feedback"
+            >
                 <FieldSlider v-model="volume" />
             </button>
         </div>
@@ -64,7 +79,7 @@
 export default {
     computed: {
         fileMediaAccept() {
-            if (this.app.env.isFirefox) {
+            if (this.$s.env.isFirefox) {
                 return '.mp4'
             } else {
                 // Chromium supports at least these 3 formats:
@@ -76,7 +91,7 @@ export default {
                 return this.$t('streaming video file')
             }
             let formats = []
-            if (this.app.env.isFirefox) {
+            if (this.$s.env.isFirefox) {
                 formats.push('.mp4')
             } else {
                 formats.push('.mp4', 'webm', 'mkv')
@@ -117,10 +132,10 @@ export default {
         async toggleScreenshare() {
             if (this.$s.upMedia.screenshare.length) {
                 this.app.logger.debug('turn screenshare stream off')
-                this.$m.sfu.delUpMedia(this.screenStream)
+                this.$m.sfu.delUpMedia(this.$m.sfu.screenStream)
             } else {
                 this.app.logger.debug('turn screenshare stream on')
-                this.screenStream = await this.$m.sfu.addShareMedia()
+                this.$m.sfu.screenStream = await this.$m.sfu.addShareMedia()
             }
         },
     },

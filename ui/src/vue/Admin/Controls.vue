@@ -2,38 +2,35 @@
     <nav class="c-admin-controls">
         <div class="navigational-controls">
             <RouterLink
-                class="btn btn-menu tooltip"
+                class="btn btn-menu"
                 :class="{active: $route.name.startsWith('admin-users')}"
-                :data-tooltip="$t('people')"
                 :to="userRoute('admin-users-settings')"
             >
-                <Icon class="icon-small" name="User" />
+                <Icon v-tip="{content: $t('people')}" class="icon-small" name="User" />
             </RouterLink>
 
             <RouterLink
                 active-class="active-group"
-                class="btn btn-menu tooltip"
+                class="btn btn-menu"
                 :class="{active: $route.name === 'admin-groups-settings'}"
-                :data-tooltip="$t('groups')"
                 :to="groupRoute('admin-groups-settings')"
             >
-                <Icon class="icon-small" name="Group" />
+                <Icon v-tip="{content: $t('groups')}" class="icon-small" name="Group" />
             </RouterLink>
 
             <button
                 v-if="$s.admin.authenticated && $s.admin.permission"
-                class="btn btn-menu btn-logout tooltip"
-                :data-tooltip="$t('log out')"
+                class="btn btn-menu btn-logout"
                 @click="logout"
             >
-                <Icon class="icon-small" name="Logout" />
+                <Icon v-tip="{content: $t('log out')}" class="icon-small" name="Logout" />
             </button>
         </div>
 
         <button
-            class="btn btn-collapse tooltip"
+            v-tip="{content: $s.panels.context.collapsed ? $t('expand panel') : $t('collapse panel')}"
+            class="btn btn-collapse"
             :class="{active: !$s.panels.context.collapsed}"
-            :data-tooltip="$s.panels.context.collapsed ? $t('expand panel') : $t('collapse panel')"
             @click="toggleCollapse"
         >
             <Icon class="icon-small" :name="$s.panels.context.collapsed ? 'ExpandRight' : 'CollapseLeft'" />

@@ -11,53 +11,48 @@
         <ul class="tabs">
             <RouterLink
                 active-class="active-group"
-                class="btn btn-menu tab tooltip"
+                class="btn btn-menu tab"
                 :class="{active: tabId === 'misc'}"
-                :data-tooltip="$t('group settings')"
                 :to="routeSettings('misc')"
             >
-                <Icon class="icon-small" name="Pirate" />
+                <Icon v-tip="{content: $t('group settings')}" class="icon-small" name="Pirate" />
             </RouterLink>
 
             <RouterLink
                 active-class="active-group"
-                class="btn btn-menu tab tooltip"
+                class="btn btn-menu tab"
                 :class="{active: tabId === 'access'}"
-                :data-tooltip="$t('access')"
                 :to="routeSettings('access')"
             >
-                <Icon class="icon-small" name="Access" />
+                <Icon v-tip="{content: $t('access')}" class="icon-small" name="Access" />
             </RouterLink>
 
             <RouterLink
                 active-class="active-group"
-                class="btn btn-menu tab tooltip"
+                class="btn btn-menu tab"
                 :class="{active: tabId === 'permissions'}"
-                :data-tooltip="$t('permissions')"
                 :to="routeSettings('permissions')"
             >
-                <Icon class="icon-small" name="Operator" />
+                <Icon v-tip="{content: $t('permissions')}" class="icon-small" name="Operator" />
             </RouterLink>
 
             <RouterLink
                 active-class="active-group"
-                class="btn btn-menu tab tooltip"
+                class="btn btn-menu tab"
                 :class="{active: tabId === 'stats'}"
-                :data-tooltip="$t('connection statistics')"
                 :disabled="!$s.group._unsaved"
                 :to="routeSettings('stats')"
             >
-                <Icon class="icon-small" name="Stats" />
+                <Icon v-tip="{content: $t('connection statistics')}" class="icon-small" name="Stats" />
             </RouterLink>
 
             <RouterLink
                 active-class="active-group"
-                class="btn btn-menu tab tooltip"
+                class="btn btn-menu tab"
                 :class="{active: tabId === 'recordings'}"
-                :data-tooltip="$t('group recordings')"
                 :to="routeSettings('recordings')"
             >
-                <Icon class="icon-small" name="Record" />
+                <Icon v-tip="{content: $t('group recordings')}" class="icon-small" name="Record" />
             </RouterLink>
         </ul>
 
@@ -70,11 +65,10 @@
 
             <div v-if="$route.name === 'admin-groups-settings'" class="actions">
                 <button
-                    class="btn btn-menu btn-save tooltip tooltip-left"
-                    :data-tooltip="$t('store group')"
+                    class="btn btn-menu btn-save"
                     @click="saveGroup"
                 >
-                    <Icon class="icon-small" name="Save" />
+                    <Icon v-tip="{content: $t('store group')}" class="icon-small" name="Save" />
                 </button>
             </div>
         </div>
