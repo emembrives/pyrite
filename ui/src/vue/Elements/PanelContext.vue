@@ -89,6 +89,11 @@ export default defineComponent({
         },
     },
     watch: {
+        '$s.env.layout': function(layout) {
+            if (layout === 'tablet') {
+                this.$s.panels.context.collapsed = true
+            }
+        },
         '$s.panels.context.collapsed': function() {
             const space4 = Number(getComputedStyle(document.querySelector('.app')).getPropertyValue('--spacer-8').replace('px', ''))
             this.app.animate({
@@ -102,11 +107,6 @@ export default defineComponent({
                 },
                 to: this.$s.panels.context.collapsed ? space4 : 300,
             })
-        },
-        '$s.env.layout': function(layout) {
-            if (layout === 'tablet') {
-                this.$s.panels.context.collapsed = true
-            }
         },
     },
 })
@@ -193,7 +193,7 @@ export default defineComponent({
             display: flex;
             gap: var(--spacer-1);
             height: var(--spacer-8);
-            justify-content: center;
+            padding: 0 var(--spacer-1);
 
             .btn {
                 background: var(--grey-3);
@@ -233,22 +233,29 @@ export default defineComponent({
                 }
             }
 
+            .flex-column {
+                flex: 1;
+                height: 100%;
+                justify-content: center;
+
+                .name {
+                    height: 13px;
+                }
+
+                .item-properties {
+                    font-size: var(--text-s);
+                    height: 8px;
+                }
+            }
+
             .name {
                 align-items: center;
                 display: flex;
-                flex: 1;
                 font-family: var(--font-2);
                 font-weight: 600;
-                height: 100%;
-                line-height: 100%;
-                overflow: hidden;
+                margin-bottom: var(--spacer-05);
                 text-overflow: ellipsis;
                 white-space: nowrap;
-            }
-
-            .item-properties {
-                display: flex;
-                margin-top: var(--spacer-05);
             }
         }
     }

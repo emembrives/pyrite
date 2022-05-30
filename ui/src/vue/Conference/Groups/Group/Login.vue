@@ -18,9 +18,17 @@
                     />
 
                     <FieldText
+                        v-if="!isListedGroup"
+                        v-model="$s.group.name"
+                        :label="$t('group name')"
+                        name="groupname"
+                        :placeholder="$t('unlisted group')"
+                    />
+
+                    <FieldText
                         v-if="!anonymousLogin"
                         v-model="v$.user.username.$model"
-                        autocomplete="username"
+                        autocomplete="new-password"
                         :autofocus="$s.login.autofocus && $route.params.groupId"
                         :label="$t('username')"
                         name="username"
@@ -30,7 +38,7 @@
 
                     <FieldText
                         v-model="v$.user.password.$model"
-                        autocomplete="password"
+                        autocomplete="new-password"
                         :label="$t('password')"
                         name="pasword"
                         placeholder="Alice, Bob, Carol..."
@@ -38,13 +46,19 @@
                         :validation="v$.user.password"
                     />
 
-                    <FieldText
-                        v-if="!isListedGroup"
-                        v-model="$s.group.name"
-                        :label="$t('group name')"
-                        name="groupname"
-                        :placeholder="$t('unlisted group')"
-                    />
+                    <div v-if="$s.group.comment" class="group-comment field">
+                        <div class="field-label">
+                            {{ $t('about') }} {{ $s.group.name }}
+                        </div>
+                        <div class="comment">
+                            {{ $s.group.comment }}
+                        </div>
+                    </div>
+
+                    <div v-if="$s.group.contact" class="group-contact">
+                        <Icon v-tip="{content: $t('administrator contact')}" class="icon-small" name="Administrator" />
+                        {{ $s.group.contact }}
+                    </div>
 
                     <div class="verify ucfl">
                         <RouterLink :to="{name: 'conference-settings', params: {tabId: 'devices'}}">
@@ -213,8 +227,27 @@ export default {
 <style lang="scss">
 .c-login {
 
+    .group-comment {
+
+        .comment {
+            font-style: italic;
+        }
+    }
+
+    .group-contact {
+        align-items: center;
+        color: var(--grey-8);
+        display: flex;
+        font-family: var(--font-2);
+
+        .icon {
+            color: var(--primary-c);
+            margin-right: var(--spacer-05);
+        }
+    }
+
     .verify {
-        margin-top: var(--spacer-4);
+        margin-top: var(--spacer-2);
     }
 }
 

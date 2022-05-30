@@ -6,9 +6,7 @@
                 :class="{active: $route.name !== 'conference-splash' && !isListedGroup}"
                 @click="toggleUnlisted"
             >
-                <button>
-                    <Icon v-tip="{content: $t('join unlisted group')}" class="icon-small item-icon" name="Incognito" />
-                </button>
+                <Icon v-tip="{content: $t('join unlisted group')}" class="icon-small item-icon" name="Incognito" />
                 <div v-if="isListedGroup || !$s.group.name" class="name">
                     {{ $t('unlisted-group') }}
                 </div>
@@ -25,16 +23,19 @@
             :to="groupLink(group.name)"
             @click="setAutofocus"
         >
-            <button>
-                <Icon
-                    v-tip="{content: `${$t('group')}: ${group.name} (${group.clientCount})`}"
-                    class="icon-small"
-                    :name="group.locked ? 'GroupLocked' : 'Group'"
-                />
-            </button>
+            <Icon
+                v-tip="{content: `${$t('group')}: ${group.name} (${group.clientCount})`}"
+                class="icon item-icon icon-small"
+                :name="group.locked ? 'GroupLocked' : 'Group'"
+            />
 
-            <div class="name">
-                {{ group.name }}
+            <div class="flex-column">
+                <div class="name">
+                    {{ group.name }}
+                </div>
+                <div v-if="group.description" class="item-properties">
+                    {{ group.description }}
+                </div>
             </div>
 
             <div class="stats" :class="{active: group.clientCount > 0}">

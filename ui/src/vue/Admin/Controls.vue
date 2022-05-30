@@ -28,6 +28,7 @@
         </div>
 
         <button
+            v-if="$s.env.layout === 'desktop'"
             v-tip="{content: $s.panels.context.collapsed ? $t('expand panel') : $t('collapse panel')}"
             class="btn btn-collapse"
             :class="{active: !$s.panels.context.collapsed}"
