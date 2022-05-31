@@ -6,12 +6,14 @@
                 :class="{active: $route.name !== 'conference-splash' && !isListedGroup}"
                 @click="toggleUnlisted"
             >
-                <Icon v-tip="{content: $t('join unlisted group')}" class="icon-small item-icon" name="Incognito" />
-                <div v-if="isListedGroup || !$s.group.name" class="name">
-                    {{ $t('unlisted-group') }}
-                </div>
-                <div v-else class="name">
-                    {{ $s.group.name }}
+                <Icon v-tip="{content: $t('join unlisted group')}" class="icon item-icon icon-small" name="Incognito" />
+                <div class="flex-column">
+                    <div v-if="isListedGroup || !$s.group.name" class="name">
+                        {{ $t('unlisted-group') }}
+                    </div>
+                    <div v-else class="name">
+                        {{ $s.group.name }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -68,10 +70,22 @@ export default {
             }
         },
         async pollGroups() {
-            this.$s.groups = await this.app.api.get('/api/groups/public')
-            for (const group of this.$s.groups) {
-                if (group.name === this.$s.group.name) {
-                    Object.assign(this.$s.group, group)
+            const groups = await this.app.api.get('/api/groups/public')
+            if (!this.$s.groups.length) {
+                this.$s.groups = groups
+            } else {
+                for (const group of groups) {
+                    const _group = this.$s.groups.find((g) => g.name === group.name)
+                    if (_group) {
+                        Object.assign(_group, {
+                            clientCount: group.clientCount,
+                            comment: group.comment,
+                            locked: group.locked,
+                        })
+                    } else {
+                        this.$s.groups.push(group)
+                    }
+
                 }
             }
         },
@@ -117,7 +131,6 @@ export default {
         '$s.group.name': {
             immediate: false,
             handler() {
-
                 this.app.logger.debug(`updating group route: ${this.$s.group.name}`)
                 this.updateRoute()
 
@@ -128,7 +141,11 @@ export default {
 </script>
 
 <style lang="scss">
-.c-groups-context {
+.c-groups-context.presence {
+
+    .actions {
+        padding-left: 0;
+    }
 
     .group {
 

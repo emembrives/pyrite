@@ -1,25 +1,25 @@
 <template>
-    <div v-if="$s.group" class="c-login content" @keypress.enter="login">
+    <div v-if="currentGroup" class="c-login content" @keypress.enter="login">
         <header>
             <div class="notice">
-                <Hint v-if="$s.group.locked" class="field" :text="$t('Only maintainers may login locked groups')" />
+                <Hint v-if="currentGroup.locked" class="field" :text="$t('Only maintainers may login locked groups')" />
             </div>
             <div class="title">
                 <span>{{ $route.params.groupId }}</span>
-                <Icon class="icon icon-regular" :name="$s.group.locked ? 'GroupLocked' : 'Group'" />
+                <Icon class="icon icon-regular" :name="currentGroup.locked ? 'GroupLocked' : 'Group'" />
             </div>
         </header>
         <div class="panels">
             <section>
                 <form>
                     <FieldCheckbox
-                        v-if="$s.group['allow-anonymous'] && false"
+                        v-if="currentGroup['allow-anonymous'] && false"
                         v-model="anonymousLogin" :label="$t('anonymous login')"
                     />
 
                     <FieldText
                         v-if="!isListedGroup"
-                        v-model="$s.group.name"
+                        v-model="currentGroup.name"
                         :label="$t('group name')"
                         name="groupname"
                         :placeholder="$t('unlisted group')"
@@ -46,18 +46,18 @@
                         :validation="v$.user.password"
                     />
 
-                    <div v-if="$s.group.comment" class="group-comment field">
+                    <div v-if="currentGroup.comment" class="group-comment field">
                         <div class="field-label">
-                            {{ $t('about') }} {{ $s.group.name }}
+                            {{ $t('about') }} {{ currentGroup.name }}
                         </div>
                         <div class="comment">
-                            {{ $s.group.comment }}
+                            {{ currentGroup.comment }}
                         </div>
                     </div>
 
-                    <div v-if="$s.group.contact" class="group-contact">
+                    <div v-if="currentGroup.contact" class="group-contact">
                         <Icon v-tip="{content: $t('administrator contact')}" class="icon-small" name="Administrator" />
-                        {{ $s.group.contact }}
+                        {{ currentGroup.contact }}
                     </div>
 
                     <div class="verify ucfl">
@@ -110,7 +110,7 @@
                     :disabled="btnLoginDisabled"
                     @click="login"
                 >
-                    <Icon v-tip="{content: $s.group.locked ? $t('join locked group') : $t('join group')}" class="icon-small" name="Login" />
+                    <Icon v-tip="{content: currentGroup.locked ? $t('join locked group') : $t('join group')}" class="icon-small" name="Login" />
                 </button>
                 <button
                     class="btn btn-menu"
@@ -138,9 +138,11 @@ export default {
             const hasErrors = this.v$.$silentErrors.filter((v) => v.$validator !== '$externalResults').length > 0
             return hasErrors
         },
+        currentGroup: () => app.$m.group.currentGroup(),
         isListedGroup() {
             return !!app.$s.groups.find((i) => i.name === app.$s.group.name)
         },
+
     },
 
     data() {

@@ -2,6 +2,16 @@ import {app} from '@/js/app.js'
 
 class ModelGroup {
 
+    currentGroup() {
+        const currentGroup = app.$s.groups.find((i) => i.name === app.$s.group.name)
+        // Assume hidden group; use selected group fields as placeholders.
+        if (!currentGroup) {
+            return app.$s.group
+        }
+
+        return currentGroup
+    }
+
     async saveGroup(groupId, data) {
         const group = await app.api.post(`/api/groups/${encodeURIComponent(groupId)}`, data)
 

@@ -83,7 +83,10 @@ const volatileState = {
         playing: [],
     },
     group: {
+        'allow-anonymous': false,
+        comment: '',
         connected: false,
+        contact: '',
         locked: false,
         muted: false,
         name: '',
