@@ -84,7 +84,7 @@ export default {
 </script>
 
 <style lang="scss">
-.c-users-context {
+.c-users-context.presence {
 
     .user {
         font-family: var(--font-2);
@@ -108,16 +108,21 @@ export default {
         }
 
         .name {
-            align-items: center;
             display: flex;
+            height: 100%;
+            margin-bottom: 0;
 
             .permissions {
                 align-items: center;
                 display: flex;
+                height: 100%;
                 justify-content: center;
                 margin-left: calc(var(--spacer-1) / 2);
 
                 .status {
+                    align-items: center;
+                    display: flex;
+                    height: 100%;
                     margin-right: var(--spacer-1);
                 }
 

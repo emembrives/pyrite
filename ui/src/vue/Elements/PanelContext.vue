@@ -251,6 +251,7 @@ export default defineComponent({
             .name {
                 align-items: center;
                 display: flex;
+                flex: 1;
                 font-family: var(--font-2);
                 font-weight: 600;
                 margin-bottom: var(--spacer-05);
