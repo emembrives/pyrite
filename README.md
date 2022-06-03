@@ -6,8 +6,8 @@
 [Galène](https://galene.org/) is a videoconference server (an “SFU”) that is easy
 to deploy and that requires moderate server resources. [Pyrite](https://pyrite.video)
 is an alternative web client and management interface for Galène, based on the
-[Vue](https://v3.vuejs.org/) framework. Checkout Pyrite's [features](./docs/features.md)
-or read more about how to deploy Pyrite on a network [here](./docs/index.md).
+[Vue](https://v3.vuejs.org/) framework. Checkout the [documentation](./docs/index.md)
+to learn about Pyrite's [features](./docs/features.md) and deployment options.
 
 # Getting Started
 
