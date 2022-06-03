@@ -7,7 +7,7 @@
             <button
                 v-if="$s.permissions.record"
                 class="action"
-                @click="toggleRecording($s.group.recording)"
+                @click="toggleRecording()"
             >
                 <Icon class="icon icon-mini" name="Record" />
                 <span v-if="$s.group.recording" class="ucfl">{{ $t('stop recording') }}</span>
@@ -77,8 +77,12 @@ export default {
                 this.warning.input = false
             }
         },
-        toggleRecording(isRecording) {
-            this.$m.sfu.connection.groupAction(isRecording ? 'unrecord' : 'record')
+        toggleRecording() {
+            if (this.$s.group.recording) {
+                this.$m.sfu.connection.groupAction('unrecord')
+            } else {
+                this.$m.sfu.connection.groupAction('record')
+            }
         },
 
     },

@@ -464,7 +464,7 @@ class ModelSFU {
         if (kind ==='add') {
             // There might be a user with name 'RECORDING' that is an ordinary user;
             // only trigger the recording flag when it is a system user.
-            if (user.username === 'RECORDING' && user.permissions.system) {
+            if (user.username === 'RECORDING' && user.permissions.includes('system')) {
                 app.$s.group.recording = user.id
                 app.notifier.message('record', {group: app.$s.group.name})
             }
