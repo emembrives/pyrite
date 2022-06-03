@@ -48,7 +48,7 @@
                     {{ channel.name }}
                 </span>
 
-                <button v-if="channel.id !== 'main'" class="btn btn-icon btn-close" @click.stop="closeChannel(channel)">
+                <button v-if="channel.id !== 'main'" class="btn btn-icon btn-close" @click.stop="app.$m.chat.closeChannel(channel)">
                     <Icon class="icon icon-tiny" name="Close" />
                 </button>
             </div>
@@ -73,6 +73,11 @@
 </template>
 
 <script>
+/**
+ * Keep in mind that the chat component is destroyed
+ * in collapsed state. Non-UI specific logic should be
+ * placed in the chat model.
+ */
 import {nextTick} from 'vue'
 
 export default {
@@ -85,52 +90,12 @@ export default {
             return messages.sort((a, b) => a.time - b.time)
         },
     },
-    created() {
-        this.app.on('chat:message', async({channelId}) => {
-            if (channelId === this.$s.chat.channel) {
-                // A message was added to the active channel; update the chat scroller.
-                await nextTick()
-                if (this.$refs.messages) {
-                    this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
-                }
-            } else {
-                // User is currently watching another channel; bump unread.
-                this.$s.chat.channels[channelId].unread += 1
-            }
-        })
-        // User left; clean up the channel.
-        this.app.on('user', ({action, user}) => {
-            if (action === 'del' && this.$s.chat.channels[user.id]) {
-                // Change the active to-be-deleted channel to main
-                if (this.$s.chat.channel === user.id) {
-                    this.switchChannel('main')
-                }
-                delete this.$s.chat.channels[user.id]
-            }
-        })
-
-        this.app.on('channel', ({action, channelId, channel = null}) => {
-            this.app.logger.debug('switch chat channel to ', channelId)
-            if (action === 'switch') {
-                if (!this.$s.chat.channels[channelId]) {
-                    this.$s.chat.channels[channelId] = channel
-                }
-
-                this.switchChannel(channelId)
-            }
-        })
-    },
     data() {
         return {
             rawMessage: '',
         }
     },
     methods: {
-        async closeChannel(channel) {
-            // Return to the main channel when closing a direct user channel.
-            this.switchChannel('main')
-            delete this.$s.chat.channels[channel.id]
-        },
         formatMessage(message) {
             return message.split('\n')
         },
@@ -140,6 +105,7 @@ export default {
         },
         async sendMessage(e) {
             this.rawMessage = this.rawMessage.trim()
+            if (this.rawMessage === '') return false
 
             if (e instanceof KeyboardEvent) {
                 // ctrl/shift/meta +enter is next line.
@@ -149,79 +115,11 @@ export default {
                 }
             }
 
-            if (this.rawMessage === '') {
-                return false
-            }
-
-            let me, message
-
-            if (this.rawMessage[0] === '/') {
-                if (this.rawMessage.length > 1 && this.rawMessage[1] === '/') {
-                    message = this.rawMessage.slice(1)
-                    me = false
-                } else {
-                    let cmd, rest
-                    let space = this.rawMessage.indexOf(' ')
-                    if (space < 0) {
-                        cmd = this.rawMessage.slice(1)
-                        rest = ''
-                    } else {
-                        cmd = this.rawMessage.slice(1, space)
-                        rest = this.rawMessage.slice(space + 1)
-                    }
-
-                    this.rawMessage = ''
-
-                    if (cmd === 'me') {
-                        message = rest
-                        me = true
-                    } else {
-                        let c = this.$m.sfu.commands[cmd]
-                        if (!c) {
-                            this.app.notifier.notify({
-                                level: 'error',
-                                message: `Uknown command /${cmd}, type /help for help`,
-                            })
-                            return
-                        }
-                        if (c.predicate) {
-                            const message = c.predicate()
-                            if (message) {
-                                this.app.notifier.notify({level: 'error', message})
-                                return
-                            }
-                        }
-                        try {
-                            c.f(cmd, rest)
-                        } catch (e) {
-                            this.app.notifier.notify({level: 'error', message: e})
-                        }
-                        return
-                    }
-                }
-            } else {
-                message = this.rawMessage
-                me = false
-            }
-
-            // Sending to the main channel uses an empty string;
-            // a direct message uses the user (connection) id.
-            if (this.$s.chat.channel === 'main') {
-                this.$m.sfu.connection.chat(me ? 'me' : '', '', message)
-            } else {
-                // A direct message is not replayed locally through
-                // onChat, so we need to add the message ourselves.
-                this.$m.sfu.connection.chat(me ? 'me' : '', this.$s.chat.channel, message)
-            }
-
-            // Adjust the chat window scroller
+            let message =  this.rawMessage
+            app.$m.chat.sendMessage(message)
             await nextTick()
             this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
             this.rawMessage = ''
-        },
-        switchChannel(name) {
-            this.$s.chat.channel = name
-            this.$s.chat.channels[name].unread = 0
         },
     },
     mounted() {
@@ -232,7 +130,6 @@ export default {
         })
 
         this.resizeObserver.observe(this.$refs.view)
-
         this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
     },
 }

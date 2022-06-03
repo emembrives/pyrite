@@ -62,6 +62,7 @@ export default {
     },
     methods: {
         activateUserChat() {
+
             this.app.emit('channel', {
                 action: 'switch',
                 channel: {
@@ -72,7 +73,7 @@ export default {
                 },
                 channelId: this.user.id,
             })
-
+            app.$s.panels.chat.collapsed = false
             this.toggleMenu()
         },
         kickUser(text) {

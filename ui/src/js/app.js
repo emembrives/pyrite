@@ -63,10 +63,6 @@ class Pyrite extends EventEmitter {
             user: modelUser,
         }
 
-        // for (const model of Object.values(this.$)) {
-        //     if (model.events) model.events
-        // }
-
         this.$s = this.store.load()
         env(this.$s.env)
 
@@ -92,8 +88,6 @@ class Pyrite extends EventEmitter {
     }
 
     async init() {
-        // All model logic is grouped here:
-
         await this.adminContext()
         this.router = router(this)
         this.router.beforeResolve((to, from, next) => {
@@ -172,4 +166,9 @@ class Pyrite extends EventEmitter {
 }
 
 export let app = new Pyrite()
+
+for (const model of Object.values(app.$m)) {
+    if (model._events) model._events()
+}
+
 if (import.meta.env.DEV) globalThis.app = app

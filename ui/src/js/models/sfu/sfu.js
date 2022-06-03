@@ -309,11 +309,6 @@ function newUpStream(_id, state) {
 function onClose(code, reason) {
     app.logger.debug('connection closed')
     app.emit('disconnected')
-
-    // Reset some state.
-    app.$s.users = []
-    app.$s.chat.channels.main.messages = []
-    app.$s.chat.channels.main.unread = 0
     app.$s.group.connected = false
 
     delUpMediaKind(null)
@@ -485,7 +480,7 @@ function onUserMessage(id, dest, username, time, privileged, kind, message) {
     if (kind === 'mute') {
         muteMicrophone(true)
     } else if (kind === 'clearchat') {
-        app.$s.chat.channels.main.messages = []
+        app.$m.chat.clearChat()
     }
 }
 
