@@ -37,12 +37,12 @@ class ModelMedia {
         app.logger.debug(`using cam ${app.$s.devices.cam.selected.name}`)
         app.logger.debug(`using mic ${app.$s.devices.mic.selected.name}`)
 
-        if(selectedVideoDevice) {
+        if (selectedVideoDevice) {
             if (app.$s.devices.cam.resolution.id === '720p') {
                 app.logger.debug(`using 720p resolution`)
                 selectedVideoDevice.width = {ideal: 1280, min: 640}
                 selectedVideoDevice.height = {ideal: 720, min: 400}
-            } else if(app.$s.devices.cam.resolution.id === '1080p') {
+            } else if (app.$s.devices.cam.resolution.id === '1080p') {
                 app.logger.debug(`using 1080p resolution`)
                 selectedVideoDevice.width = {ideal: 1920, min: 640}
                 selectedVideoDevice.height = {ideal: 1080, min: 400}
@@ -56,7 +56,7 @@ class ModelMedia {
 
         try {
             this.localStream = await navigator.mediaDevices.getUserMedia(constraints)
-        } catch(message) {
+        } catch (message) {
             app.notifier.notify({level: 'error', message})
             return
         }
@@ -100,17 +100,17 @@ class ModelMedia {
             }
             let name = device.label
 
-            if(device.kind === 'videoinput') {
-                if(!name) name = `Camera ${labelnr.cam}`
+            if (device.kind === 'videoinput') {
+                if (!name) name = `Camera ${labelnr.cam}`
                 app.$s.devices.cam.options.push({id: device.deviceId, name})
                 labelnr.cam++
-            } else if(device.kind === 'audioinput') {
-                if(!name) name = `Microphone ${labelnr.mic}`
+            } else if (device.kind === 'audioinput') {
+                if (!name) name = `Microphone ${labelnr.mic}`
                 app.$s.devices.mic.options.push({id: device.deviceId, name})
                 labelnr.mic++
             } else if (device.kind === 'audiooutput') {
                 // Firefox doesn't support audiooutput enumeration and setSinkid
-                if(!name) name = `Output ${labelnr.audio}`
+                if (!name) name = `Output ${labelnr.audio}`
                 app.$s.devices.audio.options.push({id: device.deviceId, name})
                 labelnr.audio++
             }

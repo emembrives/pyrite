@@ -26,6 +26,8 @@ class ModelSFU {
 
     constructor() {
         this.commands = commands
+        // Reference to the screensharing stream; assume only one stream.
+        this.screenStream = null
     }
 
     async addFileMedia(file) {
@@ -48,11 +50,11 @@ class ModelSFU {
         app.logger.info('add share media')
         let stream = null
         try {
-            if(!('getDisplayMedia' in navigator.mediaDevices))
+            if (!('getDisplayMedia' in navigator.mediaDevices))
                 throw new Error('Your browser does not support screen sharing')
             /** @ts-ignore */
             stream = await navigator.mediaDevices.getDisplayMedia({audio: true, video: true})
-        } catch(e) {
+        } catch (e) {
             app.notifier.notify({level: 'error', message: e})
             return
         }
@@ -83,7 +85,7 @@ class ModelSFU {
         let localStreamId = this.findUpMedia('camera')
         let oldStream = localStreamId && this.connection.up[localStreamId]
 
-        if(oldStream) {
+        if (oldStream) {
             app.logger.debug(`removing old stream`)
             this.stopUpMedia(oldStream)
         }
@@ -96,15 +98,15 @@ class ModelSFU {
         app.$s.upMedia[glnStream.label].push(glnStream.id)
 
         app.$m.media.localStream.getTracks().forEach(t => {
-            if(t.kind === 'audio') {
+            if (t.kind === 'audio') {
                 streamState.hasAudio = true
-                if(!app.$s.devices.mic.enabled) {
+                if (!app.$s.devices.mic.enabled) {
                     app.logger.info('muting local stream')
                     t.enabled = false
                 }
-            } else if(t.kind === 'video') {
+            } else if (t.kind === 'video') {
                 streamState.hasVideo = true
-                if(app.$s.devices.cam.resolution.id === '1080p') {
+                if (app.$s.devices.cam.resolution.id === '1080p') {
                     t.contentHint = 'detail'
                 }
             }
@@ -126,7 +128,7 @@ class ModelSFU {
     }
 
     async connect(username, password) {
-        if(this.connection && this.connection.socket) {
+        if (this.connection && this.connection.socket) {
             this.connection.close()
         }
         this.connection = new protocol.ServerConnection()
@@ -153,7 +155,7 @@ class ModelSFU {
             await this.connection.connect(url)
             // Share initial status with other users.
             this.connection.userAction('setdata', this.connection.id, app.$s.user.data)
-        } catch(e) {
+        } catch (e) {
             app.notifier.notify({
                 level: 'error',
                 message: e.message ? e.message : "Couldn't connect to " + url,
@@ -167,6 +169,10 @@ class ModelSFU {
     }
 
     delLocalMedia() {
+        if (this.screenStream) {
+            app.logger.info(`disconnect screen share stream`)
+            this.delUpMedia(this.screenStream)
+        }
         if (!app.$m.media.localStream) return
 
         app.logger.info('delete local media share media')
@@ -199,9 +205,9 @@ class ModelSFU {
 
     delUpMediaKind(label) {
         app.logger.debug(`remove all up media with label: ${label}`)
-        for(let id in this.connection.up) {
+        for (let id in this.connection.up) {
             const c = this.connection.up[id]
-            if(label && c.label !== label) {
+            if (label && c.label !== label) {
                 continue
             }
             c.close()
@@ -222,15 +228,15 @@ class ModelSFU {
     }
 
     findUpMedia(label) {
-        for(let id in this.connection.up) {
-            if(this.connection.up[id].label === label)
+        for (let id in this.connection.up) {
+            if (this.connection.up[id].label === label)
                 return id
         }
         return null
     }
 
     getMaxVideoThroughput() {
-        switch(app.$s.media.upstream.id) {
+        switch (app.$s.media.upstream.id) {
         case 'lowest':
             return 150000
         case 'low':
@@ -245,7 +251,7 @@ class ModelSFU {
     }
 
     mapRequest(what) {
-        switch(what) {
+        switch (what) {
         case '':
             return {}
         case 'audio':
@@ -266,11 +272,11 @@ class ModelSFU {
     muteMicrophone(muted) {
         app.$s.devices.mic.enabled = !muted
         app.logger.debug(`microphone enabled: ${app.$s.devices.mic.enabled}`)
-        for(let id in this.connection.up) {
+        for (let id in this.connection.up) {
             const glnStream = this.connection.up[id]
-            if(glnStream.label === 'camera') {
+            if (glnStream.label === 'camera') {
                 glnStream.stream.getTracks().forEach(t => {
-                    if(t.kind === 'audio') {
+                    if (t.kind === 'audio') {
                         t.enabled = !muted
                     }
                 })
@@ -326,7 +332,7 @@ class ModelSFU {
 
         this.delUpMediaKind(null)
 
-        if(code != 1000) {
+        if (code != 1000) {
             app.notifier.notify({level: 'error', message: `Socket close ${code}: ${reason}`})
         }
 
@@ -336,7 +342,7 @@ class ModelSFU {
     onDownStream(c) {
         app.logger.debug(`[onDownStream] ${c.id}`)
         c.onclose = (replace) => {
-            if(!replace) {
+            if (!replace) {
                 app.logger.debug(`[onclose] downstream ${c.id}`)
                 this.delMedia(c.id)
             }
@@ -367,7 +373,7 @@ class ModelSFU {
     async onJoined(kind, group, permissions, status, data, message) {
         app.logger.debug(`[onJoined] ${kind}/${group}: ${message}`)
         let _permissions = {}
-        switch(kind) {
+        switch (kind) {
         case 'fail':
             this.promiseConnect.reject(message)
             this.promiseConnect = null
@@ -405,7 +411,7 @@ class ModelSFU {
             }
 
             app.logger.debug(`permissions: ${JSON.stringify(permissions)}`)
-            if(kind === 'change')
+            if (kind === 'change')
                 return
             break
         default:
@@ -417,7 +423,7 @@ class ModelSFU {
         app.logger.debug(`request Galène media types: ${app.$s.media.accept.id}`)
         this.connection.request(this.mapRequest(app.$s.media.accept.id))
 
-        if(app.$s.permissions.present && !this.findUpMedia('camera')) {
+        if (app.$s.permissions.present && !this.findUpMedia('camera')) {
             await app.$m.media.getUserMedia(app.$s.devices)
         }
     }
@@ -475,7 +481,7 @@ class ModelSFU {
             if (id === app.$s.user.id) {
                 const $user = app.$s.users.find((i) => i.id === user.id)
                 // Shutdown the local stream when the Present permission is taken away.
-                if($user.permissions.present && !user.permissions.present) {
+                if ($user.permissions.present && !user.permissions.present) {
                     this.delUpMedia(this.localGlnStream)
                     app.$s.devices.cam.enabled = false
                     app.$s.devices.mic.enabled = false
@@ -516,7 +522,7 @@ class ModelSFU {
         // Handle incoming notifications here...
         app.notifier.onUserMessage({id, kind, message, privileged, source})
         // Remote actions are only allowed for operators.
-        if(!privileged) return
+        if (!privileged) return
 
         // Handle related actions here...
         if (kind === 'mute') {
@@ -543,14 +549,14 @@ class ModelSFU {
         const unlimitedRate = 1000000000
 
         let senders = c.pc.getSenders()
-        for(let i = 0; i < senders.length; i++) {
+        for (let i = 0; i < senders.length; i++) {
             let s = senders[i]
-            if(!s.track || s.track.kind !== 'video')
+            if (!s.track || s.track.kind !== 'video')
                 continue
             let p = s.getParameters()
-            if(!p.encodings) p.encodings = [{}]
+            if (!p.encodings) p.encodings = [{}]
             p.encodings.forEach(e => {
-                if(!e.rid || e.rid === 'h') e.maxBitrate = bps || unlimitedRate
+                if (!e.rid || e.rid === 'h') e.maxBitrate = bps || unlimitedRate
 
             })
             app.logger.debug(`set video throughput at max ${bps} bps`)

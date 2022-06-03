@@ -24,7 +24,7 @@ export default class Sound {
             }, false)
         }
 
-        try{
+        try {
             await this.audio.play()
         } catch (err) {
             // The play() request was interrupted by a call to pause()

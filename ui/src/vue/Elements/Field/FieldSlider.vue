@@ -28,7 +28,7 @@ export default {
 
             if (doubleClick) {
                 // Simulate double-click in order to toggle locking a channel.
-                if(!this.timeoutId) {
+                if (!this.timeoutId) {
                     this.timeoutId = setTimeout(() => { this.timeoutId = null }, 500)
                 } else {
                     clearTimeout(this.timeoutId)

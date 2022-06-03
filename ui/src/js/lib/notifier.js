@@ -121,7 +121,7 @@ export default function() {
         onUserMessage({kind, message, privileged, source}) {
             app.logger.debug(`incoming notify: ${kind}`)
             // All notifications are triggered from privileged actions at the moment.
-            if(!privileged) return
+            if (!privileged) return
 
             if (kind === 'error') {
                 // Ignore this message; this happens when a stream can

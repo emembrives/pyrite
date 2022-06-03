@@ -172,7 +172,7 @@ export default {
                 if (track.kind === 'audio') {
                     this.app.logger.debug(`stream ondowntrack - enable audio controls`)
                     this.$emit('update:modelValue', {...this.modelValue, hasAudio: true})
-                } else if(track.kind === 'video') {
+                } else if (track.kind === 'video') {
                     this.$emit('update:modelValue', {...this.modelValue, hasVideo: true})
                 }
             }
@@ -182,7 +182,7 @@ export default {
             }
 
             this.glnStream.onstatus = async(status) => {
-                if(['connected', 'completed'].includes(status)) {
+                if (['connected', 'completed'].includes(status)) {
 
                     this.$refs.media.srcObject = this.stream
                     if (this.audioEnabled) {

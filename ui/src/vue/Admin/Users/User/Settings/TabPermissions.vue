@@ -55,7 +55,7 @@ export default defineComponent({
         toggleCategory(category) {
             let allSelected = true
             const groups = []
-            for(const group of this.$s.admin.groups) {
+            for (const group of this.$s.admin.groups) {
                 groups.push(group._name)
                 if (!this.$s.admin.user.groups[category].includes(group._name)) {
                     allSelected = false

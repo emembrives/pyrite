@@ -97,7 +97,7 @@ export default {
     },
     methods: {
         axisValue(value) {
-            if(value < 10) {
+            if (value < 10) {
                 return value.decimals(2)
             } else {
                 return Math.ceil(value)

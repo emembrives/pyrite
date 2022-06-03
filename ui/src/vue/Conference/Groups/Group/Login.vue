@@ -176,7 +176,7 @@ export default {
                     await this.$m.sfu.connect(this.$s.user.username, this.$s.user.password)
                 }
 
-            } catch(err) {
+            } catch (err) {
                 if (err === 'group is locked') {
                     this.app.notifier.notify({
                         level: 'error',

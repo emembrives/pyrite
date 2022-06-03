@@ -17,6 +17,7 @@ const settings = rc('pyrite', {
     },
     logger: {
         level: 'info',
+        transports: ['console'],  // valid options are: console, file
     },
     session: {
         cookie: {maxAge: 1000 * 60 * 60 * 24}, // One day
@@ -50,13 +51,9 @@ app.logger = winston.createLogger({
     colorize: true,
     format: winston.format.json(),
     level: settings.logger.level,
-    transports: [
-        new winston.transports.File({filename: 'error.log', level: 'error'}),
-        new winston.transports.File({filename: 'combined.log'}),
-    ],
 })
 
-if (process.env.NODE_ENV !== 'production') {
+if (settings.logger.transports.includes('console')) {
     app.logger.add(new winston.transports.Console({
         format: winston.format.combine(
             winston.format.timestamp(),
@@ -64,6 +61,12 @@ if (process.env.NODE_ENV !== 'production') {
         ),
         level: 'debug',
     }))
+    app.logger.info('console logger added')
+}
+
+if (settings.logger.transports.includes('file')) {
+    app.logger.info('file logger added')
+    app.logger.add(new winston.transports.File({filename: 'pyrite.log'}))
 }
 
 app.settings = settings

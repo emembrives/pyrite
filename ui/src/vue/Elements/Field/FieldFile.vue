@@ -26,7 +26,7 @@ export default {
     methods: {
         previewFiles(event) {
             const files = event.target.files
-            for(let i = 0; i < files.length; i++) {
+            for (let i = 0; i < files.length; i++) {
                 this.$emit('file', files[i])
                 this.files.push(files[i].name)
                 this.$emit('update:modelValue', [...this.files])

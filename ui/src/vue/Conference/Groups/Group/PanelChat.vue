@@ -145,7 +145,7 @@ export default {
         async sendMessage(e) {
             this.rawMessage = this.rawMessage.trim()
 
-            if(e instanceof KeyboardEvent) {
+            if (e instanceof KeyboardEvent) {
                 // ctrl/shift/meta +enter is next line.
                 if (!(e.key === 'Enter' && !e.ctrlKey && !e.shiftKey && !e.metaKey)) {
                     this.rawMessage += '\r\n'
@@ -159,14 +159,14 @@ export default {
 
             let me, message
 
-            if(this.rawMessage[0] === '/') {
-                if(this.rawMessage.length > 1 && this.rawMessage[1] === '/') {
+            if (this.rawMessage[0] === '/') {
+                if (this.rawMessage.length > 1 && this.rawMessage[1] === '/') {
                     message = this.rawMessage.slice(1)
                     me = false
                 } else {
                     let cmd, rest
                     let space = this.rawMessage.indexOf(' ')
-                    if(space < 0) {
+                    if (space < 0) {
                         cmd = this.rawMessage.slice(1)
                         rest = ''
                     } else {
@@ -176,28 +176,28 @@ export default {
 
                     this.rawMessage = ''
 
-                    if(cmd === 'me') {
+                    if (cmd === 'me') {
                         message = rest
                         me = true
                     } else {
                         let c = this.$m.sfu.commands[cmd]
-                        if(!c) {
+                        if (!c) {
                             this.app.notifier.notify({
                                 level: 'error',
                                 message: `Uknown command /${cmd}, type /help for help`,
                             })
                             return
                         }
-                        if(c.predicate) {
+                        if (c.predicate) {
                             const message = c.predicate()
-                            if(message) {
+                            if (message) {
                                 this.app.notifier.notify({level: 'error', message})
                                 return
                             }
                         }
                         try {
                             c.f(cmd, rest)
-                        } catch(e) {
+                        } catch (e) {
                             this.app.notifier.notify({level: 'error', message: e})
                         }
                         return

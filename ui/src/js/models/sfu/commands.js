@@ -20,8 +20,8 @@
 import {app} from '@/js/app.js'
 
 function findUserId(username) {
-    for(const user of app.$s.users) {
-        if(user.username === username) {
+    for (const user of app.$s.users) {
+        if (user.username === username) {
             return user.id
         }
     }
@@ -30,30 +30,30 @@ function findUserId(username) {
 
 function userCommand(c, r) {
     let p = parseCommand(r)
-    if(!p[0]) throw new Error(`/${c} requires parameters`)
+    if (!p[0]) throw new Error(`/${c} requires parameters`)
     let id = findUserId(p[0])
-    if(!id) throw new Error(`Unknown user ${p[0]}`)
+    if (!id) throw new Error(`Unknown user ${p[0]}`)
     app.$m.sfu.connection.userAction(c, id, p[1])
 }
 
 function userMessage(c, r) {
     let p = parseCommand(r)
-    if(!p[0]) throw new Error(`/${c} requires parameters`)
+    if (!p[0]) throw new Error(`/${c} requires parameters`)
     let id = findUserId(p[0])
-    if(!id) throw new Error(`Unknown user ${p[0]}`)
+    if (!id) throw new Error(`Unknown user ${p[0]}`)
     app.$m.sfu.connection.userMessage(c, id, p[1])
 }
 
 let commands = {}
 
 function operatorPredicate() {
-    if(app.$m.sfu.connection && app.$s.permissions.op)
+    if (app.$m.sfu.connection && app.$s.permissions.op)
         return null
     return 'You are not an operator'
 }
 
 function recordingPredicate() {
-    if(app.$m.sfu.connection && app.$s.permissions.record)
+    if (app.$m.sfu.connection && app.$s.permissions.record)
         return null
     return 'You are not allowed to record'
 }
@@ -63,17 +63,17 @@ commands.help = {
     f: () => {
         /** @type {string[]} */
         let cs = []
-        for(let cmd in commands) {
+        for (let cmd in commands) {
             let c = commands[cmd]
-            if(!c.description)
+            if (!c.description)
                 continue
-            if(c.predicate && c.predicate())
+            if (c.predicate && c.predicate())
                 continue
             cs.push(`/${cmd}${c.parameters?' ' + c.parameters:''}: ${c.description}`)
         }
         cs.sort()
         let s = ''
-        for(let i = 0; i < cs.length; i++)
+        for (let i = 0; i < cs.length; i++)
             s = s + cs[i] + '\n'
         app.$s.chat.channels.main.messages.push({message: s, nick: null, time: Date.now()})
     },
@@ -89,7 +89,7 @@ commands.me = {
 commands.leave = {
     description: "leave group",
     f: () => {
-        if(!app.$m.sfu.connection)
+        if (!app.$m.sfu.connection)
             throw new Error('Not connected')
         app.$m.sfu.connection.close()
     },
@@ -147,10 +147,10 @@ commands.subgroups = {
 commands.renegotiate = {
     description: 'renegotiate media streams',
     f: () => {
-        for(let id in app.$m.sfu.connection.up) {
+        for (let id in app.$m.sfu.connection.up) {
             app.$m.sfu.connection.up[id].restartIce()
         }
-        for(let id in app.$m.sfu.connection.down) {
+        for (let id in app.$m.sfu.connection.down) {
             app.$m.sfu.connection.down[id].restartIce()
         }
     },
@@ -218,7 +218,7 @@ commands.warn = {
 commands.wall = {
     description: 'send a warning to all users',
     f: (c, r) => {
-        if(!r) throw new Error('empty message')
+        if (!r) throw new Error('empty message')
         app.$m.sfu.connection.userMessage('warning', '', r)
     },
     parameters: 'message',
@@ -234,27 +234,27 @@ commands.wall = {
  */
 function parseCommand(line) {
     let i = 0
-    while(i < line.length && line[i] === ' ')
+    while (i < line.length && line[i] === ' ')
         i++
     let start = ' '
-    if(i < line.length && line[i] === '"' || line[i] === "'") {
+    if (i < line.length && line[i] === '"' || line[i] === "'") {
         start = line[i]
         i++
     }
     let first = ""
-    while(i < line.length) {
-        if(line[i] === start) {
-            if(start !== ' ')
+    while (i < line.length) {
+        if (line[i] === start) {
+            if (start !== ' ')
                 i++
             break
         }
-        if(line[i] === '\\' && i < line.length - 1)
+        if (line[i] === '\\' && i < line.length - 1)
             i++
         first = first + line[i]
         i++
     }
 
-    while(i < line.length && line[i] === ' ')
+    while (i < line.length && line[i] === ' ')
         i++
     return [first, line.slice(i)]
 }
