@@ -3,7 +3,7 @@ export default {
     access: 'accès',
     'add a short description to the group listing page': 'ajouter une brève description à la page de liste de groupe',
     'add a short text to the group login page': 'ajouter un court texte à la page de connexion du groupe',
-    'add new group': 'ajouter un nouveau groupe',
+    'add group': 'ajouter un groupe',
     'add new user': 'ajouter un nouvel utilisateur',
     'add operator role': 'ajouter un opérateur',
     'add presenter role': 'ajouter un présentateur',

@@ -34,7 +34,7 @@
         >
             <Icon
                 v-tip="{content: `${$t('person')} ${user.name}`}"
-                class="item-icon delete icon-small"
+                class="item-icon icon-small"
                 :class="{delete: user._delete, unsaved: user._unsaved}"
                 :name="user._delete ? 'Trash' : 'User'"
             />

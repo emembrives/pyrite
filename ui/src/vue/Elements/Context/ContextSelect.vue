@@ -1,7 +1,7 @@
 <template>
     <div class="c-context-select">
         <button class="action" @click.stop="buttonAction">
-            <Icon class="icon icon-mini" :name="icon" /><span class="ucfl">{{ title }} ({{ model.name }})</span>
+            <Icon class="icon icon-mini" :name="icon" /><span class="ucfl">{{ description }}</span>
         </button>
 
         <FieldSelect
@@ -17,6 +17,11 @@
 
 export default {
     computed: {
+        description() {
+            let title = this.title
+            if (this.model.name) title += `(${this.model.name})`
+            return title
+        },
         model: {
             get() {return this.modelValue},
             set(modelValue) {this.$emit('update:modelValue', modelValue)},

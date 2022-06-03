@@ -26,6 +26,10 @@ module.exports = {
         'import/first': [2],
         'import/newline-after-import': [2, {count: 1}],
         indent: ['error', 4],
+        'keyword-spacing': [2, {
+            after: true,
+            before: true,
+        }],
         'lines-between-class-members': [2, 'always'],
         'no-cond-assign': ['error', 'always'],
         'no-console': [2],

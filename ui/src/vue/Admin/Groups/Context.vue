@@ -10,7 +10,7 @@
             </button>
             <button class="btn">
                 <Icon
-                    v-tip="{content: $t('add new group')}" class="item-icon icon-small"
+                    v-tip="{content: $t('add group')}" class="item-icon icon-small"
                     name="Plus"
                     @click="addGroup"
                 />
@@ -36,8 +36,11 @@
         >
             <Icon
                 v-tip="{content: `${$t('group')} ${group._name}`}"
-                class="item-icon delete icon-small"
-                :class="{delete: group._delete, unsaved: group._unsaved}"
+                class="item-icon icon-small"
+                :class="{
+                    delete: group._delete,
+                    unsaved: group._unsaved
+                }"
                 :name="group._delete ? 'Trash' : 'Group'"
             />
 

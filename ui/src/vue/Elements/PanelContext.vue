@@ -142,7 +142,9 @@ export default defineComponent({
             align-items: center;
             color: var(--primary-c);
             display: flex;
+            flex: 1;
             font-family: var(--font-2);
+            height: 100%;
             justify-content: flex-start;
 
             svg {
@@ -164,7 +166,7 @@ export default defineComponent({
             }
 
             .version {
-                bottom: 0;
+                bottom: var(--spacer-1);
                 color: var(--grey-7);
                 font-family: var(--font-2);
                 font-size: var(--text-xs);
@@ -188,7 +190,7 @@ export default defineComponent({
         }
 
         .actions {
-            background: var(--grey-2);
+            background: var(--grey-3);
             border-bottom: var(--border) solid var(--grey-4);
             display: flex;
             gap: var(--spacer-1);
@@ -196,7 +198,9 @@ export default defineComponent({
             padding: 0 var(--spacer-1);
 
             .btn {
-                background: var(--grey-3);
+                background: var(--grey-2);
+                border: var(--border) solid var(--grey-4);
+                border-radius: 50%;
                 cursor: pointer;
                 height: var(--spacer-6);
                 margin: var(--spacer-1) 0;
@@ -204,6 +208,10 @@ export default defineComponent({
 
                 &:disabled {
                     cursor: not-allowed;
+                }
+
+                &:hover {
+                    background: var(--grey-4);
                 }
             }
         }
@@ -229,22 +237,16 @@ export default defineComponent({
 
                 &.delete,
                 &.unsaved {
-                    color: var(--grey-6);
+                    color: var(--grey-4);
                 }
             }
 
             .flex-column {
                 flex: 1;
-                height: 100%;
                 justify-content: center;
-
-                .name {
-                    height: 13px;
-                }
 
                 .item-properties {
                     font-size: var(--text-s);
-                    height: 8px;
                 }
             }
 
@@ -254,7 +256,6 @@ export default defineComponent({
                 flex: 1;
                 font-family: var(--font-2);
                 font-weight: 600;
-                margin-bottom: var(--spacer-05);
                 text-overflow: ellipsis;
                 white-space: nowrap;
             }
@@ -297,8 +298,13 @@ export default defineComponent({
                 .btn {
                     height: auto;
                     margin: 0;
-                    padding: 0;
+                    padding: 4px;
                     width: auto;
+
+                    svg {
+                        height: var(--spacer-2);
+                        width: var(--spacer-2);
+                    }
                 }
             }
 
@@ -310,6 +316,10 @@ export default defineComponent({
                     .item-icon {
                         color: var(--primary-c);
                     }
+                }
+
+                .flex-column {
+                    display: none;
                 }
 
                 .item-icon {

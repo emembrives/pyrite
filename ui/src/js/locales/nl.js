@@ -3,7 +3,7 @@ export default {
     access: 'toegang',
     'add a short description to the group listing page': 'voegt een korte beschrijving toe aan de groep lijst pagina',
     'add a short text to the group login page': 'voegt een korte tekst toe aan de login pagina',
-    'add new group': 'voeg nieuwe groep toe',
+    'add group': 'voeg groep toe',
     'add new user': 'voeg nieuwe gebruiker toe',
     'add operator role': 'operator rol toevoegen',
     'add presenter role': 'presentatie rol toevoegen',
