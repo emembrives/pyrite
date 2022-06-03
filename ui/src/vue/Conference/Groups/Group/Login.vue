@@ -197,6 +197,7 @@ export default {
             if (this.v$.$invalid) return
 
             // Save credentials for the next time.
+
             this.app.store.save()
 
             this.$s.group.connected = true

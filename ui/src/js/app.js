@@ -4,6 +4,12 @@ import '@/scss/app.scss'
 import "@fontsource/oswald"
 import "@fontsource/roboto"
 
+import * as modelChat from './models/chat.js'
+import * as modelGroup from './models/group.js'
+import * as modelMedia from './models/media.js'
+import * as modelSFU from './models/sfu/sfu.js'
+import * as modelUser from './models/user.js'
+
 import animate from './lib/animate.js'
 import Api from './lib/api.js'
 import App from '@/vue/Elements/App.vue'
@@ -26,10 +32,6 @@ import Icon from '@/vue/Elements/Icon/Icon.vue'
 import localeFR from './locales/fr.js'
 import localeNL from './locales/nl.js'
 import Logger from './lib/logger.js'
-import ModelGroup from './models/group.js'
-import ModelMedia from './models/media.js'
-import ModelSFU from './models/sfu/sfu.js'
-import ModelUser from './models/user.js'
 import Notifications from '@/vue/Elements/Notifications.vue'
 import Notifier from './lib/notifier.js'
 import router from './router/router.js'
@@ -51,12 +53,19 @@ class Pyrite extends EventEmitter {
 
         this.logger.debug('loading store')
         this.store = new Store()
+        // Usage on the import level (e.g. define computed properties)
+        // still requires separate model imports.
         this.$m = {
-            group: new ModelGroup(),
-            media: new ModelMedia(),
-            sfu: new ModelSFU(),
-            user: new ModelUser(),
+            chat: modelChat,
+            group: modelGroup,
+            media: modelMedia,
+            sfu: modelSFU,
+            user: modelUser,
         }
+
+        // for (const model of Object.values(this.$)) {
+        //     if (model.events) model.events
+        // }
 
         this.$s = this.store.load()
         env(this.$s.env)

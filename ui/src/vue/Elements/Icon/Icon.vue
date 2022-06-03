@@ -110,6 +110,7 @@ export default {
 .icon {
     fill: currentcolor;
     height: 40px;
+    outline: none;
     width: 40px;
 
     &.warning {

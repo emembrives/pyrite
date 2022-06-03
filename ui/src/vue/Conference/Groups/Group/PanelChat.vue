@@ -36,7 +36,7 @@
                 v-for="(channel, key) in $s.chat.channels"
                 :key="key" class="chat-channel"
                 :class="{active: channel.id === $s.chat.channel}"
-                @click="selectChannel(channel)"
+                @click="$m.chat.selectChannel(channel)"
             >
                 <div class="channel-name">
                     <Icon class="icon icon-mini" :icon-props="{unread: channel.unread}" name="Chat" />
@@ -137,10 +137,6 @@ export default {
         formatTime(ts) {
             const date = new Date(ts)
             return date.toLocaleTimeString()
-        },
-        selectChannel(channel) {
-            this.$s.chat.channel = channel.id
-            this.$s.chat.channels[channel.id].unread = 0
         },
         async sendMessage(e) {
             this.rawMessage = this.rawMessage.trim()

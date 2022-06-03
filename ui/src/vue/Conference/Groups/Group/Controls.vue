@@ -9,6 +9,7 @@
                 <Icon
                     v-tip="{content: $s.panels.chat.collapsed ? $t('show chat panel') : $t('hide chat panel')}" class="icon-small"
                     :class="{active: $s.panels.chat.collapsed}"
+                    :icon-props="{unread: unreadMessages}"
                     name="Chat"
                 />
             </button>
@@ -76,6 +77,8 @@
 </template>
 
 <script>
+import {unreadMessages} from '@/js/models/chat.js'
+
 export default {
     computed: {
         fileMediaAccept() {
@@ -98,6 +101,7 @@ export default {
             }
             return this.$t('stream video file ({formats})', {formats: formats.join(',')})
         },
+        unreadMessages,
     },
     data() {
         return {
@@ -132,10 +136,11 @@ export default {
         async toggleScreenshare() {
             if (this.$s.upMedia.screenshare.length) {
                 this.app.logger.debug('turn screenshare stream off')
-                this.$m.sfu.delUpMedia(this.$m.sfu.screenStream)
+                this.$m.sfu.delUpMedia(this.$m.media.screenStream)
             } else {
                 this.app.logger.debug('turn screenshare stream on')
-                this.$m.sfu.screenStream = await this.$m.sfu.addShareMedia()
+                const stream = await this.$m.sfu.addShareMedia()
+                this.$m.media.setScreenStream(stream)
             }
         },
     },
