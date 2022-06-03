@@ -185,7 +185,9 @@ export default {
                 if (['connected', 'completed'].includes(status)) {
 
                     this.$refs.media.srcObject = this.stream
-                    if (this.audioEnabled) {
+                    // Firefox doesn't have a working setSinkId
+                    // See https://bugzilla.mozilla.org/show_bug.cgi?id=1498512
+                    if (this.audioEnabled && this.$refs.media.setSinkId) {
                         this.app.logger.debug(`set stream sink: ${this.$s.devices.audio.selected.id}`)
                         this.$refs.media.setSinkId(this.$s.devices.audio.selected.id)
                     }
