@@ -1,6 +1,6 @@
 <template>
-    <section class="c-admin-user-tab-permissions tab-content active">
-        <div class="group">
+    <section class="c-admin-user-tab-permissions tab-content permissions active">
+        <div class="permission-group">
             <div class="group-name" />
             <div class="categories">
                 <div class="category" @click="toggleCategory('op')">
@@ -18,7 +18,7 @@
         <div
             v-for="group of $s.admin.groups"
             :key="group._name"
-            class="group item"
+            class="permission-group item"
         >
             <div class="group-name" @click="toggleGroup(group._name)">
                 {{ group._name }}
@@ -89,51 +89,3 @@ export default defineComponent({
     },
 })
 </script>
-
-<style lang="scss">
-.c-admin-user-tab-permissions {
-
-    .group {
-        align-items: center;
-        display: flex;
-        padding: var(--spacer-1) 0;
-
-        .group-name {
-            color: var(--grey-8);
-            cursor: pointer;
-            flex: 1;
-            user-select: none;
-
-            &:hover {
-                color: var(--primary-c);
-            }
-        }
-
-        .categories {
-            align-items: center;
-            display: flex;
-            flex: 2;
-
-            .category {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-                margin: 0 var(--spacer-1);
-                width: 75px;
-
-                svg {
-                    width: calc(var(--spacer-2) + 21px);
-
-                    &:hover {
-                        color: var(--primary-c);
-                    }
-                }
-
-                input {
-                    margin-right: 0;
-                }
-            }
-        }
-    }
-}
-</style>
