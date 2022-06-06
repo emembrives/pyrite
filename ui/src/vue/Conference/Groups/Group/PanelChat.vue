@@ -85,6 +85,9 @@ export default {
         this.resizeObserver.disconnect()
     },
     computed: {
+        channelMessages() {
+            return this.$s.chat.channels[[this.$s.chat.channel]].messages
+        },
         sortedMessages() {
             const messages = this.$s.chat.channels[this.$s.chat.channel].messages
             return messages.sort((a, b) => a.time - b.time)
@@ -117,8 +120,6 @@ export default {
 
             let message =  this.rawMessage
             app.$m.chat.sendMessage(message)
-            await nextTick()
-            this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
             this.rawMessage = ''
         },
     },
@@ -131,6 +132,17 @@ export default {
 
         this.resizeObserver.observe(this.$refs.view)
         this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+    },
+    watch: {
+        channelMessages: {
+            deep: true,
+            async handler() {
+                await nextTick()
+                if (this.$refs.messages) {
+                    this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+                }
+            },
+        },
     },
 }
 </script>

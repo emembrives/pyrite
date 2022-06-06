@@ -484,7 +484,7 @@ function onUserMessage(id, dest, username, time, privileged, kind, message) {
     }
 }
 
-function removeTrack(glnStream, kind) {
+export function removeTrack(glnStream, kind) {
     const tracks = glnStream.stream.getTracks()
     tracks.forEach(track => {
         if (track.kind === kind) {
