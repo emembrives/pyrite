@@ -31,8 +31,8 @@ export default function() {
                 },
                 notification: {
                     level: 'info',
-                    source: 'notification sent to participant {target}: {message}',
-                    target: 'incoming notification from operator {source}: {message}',
+                    source: 'notification sent to participant {target}',
+                    target: 'incoming notification from operator {source}',
                 },
                 op: {
                     level: 'info',

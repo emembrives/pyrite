@@ -417,12 +417,23 @@ async function onJoined(kind, group, permissions, status, data, message) {
 
 function onUser(id, kind) {
     let user = {...connection.users[id], id}
+    let _permissions = {}
+    if (user.permissions) {
+        for (const permission of user.permissions) {
+            _permissions[permission] = true
+        }
+    } else {
+        user.permissions = {}
+    }
+
+    user.permissions = _permissions
+
     app.logger.debug(`[onUser] ${kind}/${id}/${user.username}`)
 
     if (kind ==='add') {
         // There might be a user with name 'RECORDING' that is an ordinary user;
         // only trigger the recording flag when it is a system user.
-        if (user.username === 'RECORDING' && user.permissions.includes('system')) {
+        if (user.username === 'RECORDING' && user.permissions.system) {
             app.$s.group.recording = user.id
             app.notifier.message('record', {group: app.$s.group.name})
         }
