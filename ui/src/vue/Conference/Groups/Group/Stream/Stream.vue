@@ -1,26 +1,32 @@
 <template>
-    <div ref="root" class="c-stream" :class="{'audio': !modelValue.hasVideo}">
+    <div
+        ref="root" class="c-stream"
+        :class="{
+            'audio': modelValue.hasAudio && !modelValue.hasVideo,
+            'loading': !modelValue.playing
+        }"
+    >
         <video
             ref="media"
             :autoplay="true"
             class="media"
-            :class="{'loading': loading, 'media-failed': mediaFailed, mirror: modelValue.mirror}"
+            :class="{'media-failed': mediaFailed, mirror: modelValue.mirror}"
             :muted="modelValue.direction === 'up'"
             :playsinline="true"
         />
 
         <Transition name="loading-transition">
-            <div v-if="loading" class="loading-container">
+            <div v-if="!modelValue.playing" class="loading-container">
                 <Icon class="spinner" name="Spinner" />
             </div>
-            <div v-else-if="!modelValue.hasVideo" class="audio-container">
-                <Icon name="Mic" />
+            <div v-else-if="!modelValue.hasVideo" class="media-container">
+                <Icon name="Logo" />
             </div>
         </Transition>
 
         <Reports v-if="stats.visible" :description="modelValue" @click="toggleStats" />
 
-        <div v-if="controls && !loading" class="stream-bar">
+        <div v-if="controls && modelValue.playing" class="stream-bar">
             <div class="buttons">
                 <button
                     v-if="pip.enabled" class="btn btn-menu small"
@@ -32,7 +38,7 @@
                     <Icon v-tip="{content: $t('fullscreen')}" class="icon-mini" name="Fullscreen" />
                 </button>
                 <button
-                    v-if="!loading && controls" class="btn btn-menu small"
+                    v-if="hasSettings" class="btn btn-menu small"
                     :class="{active: stats.visible}"
                     @click="toggleStats"
                 >
@@ -42,7 +48,7 @@
 
             <div class="user" :class="{'has-audio': audioEnabled}">
                 <div class="name">
-                    {{ label }}
+                    {{ modelValue.username }}
                 </div>
                 <div
                     v-if="audioEnabled && modelValue.direction === 'down'" key=""
@@ -64,6 +70,7 @@
 </template>
 
 <script>
+import {nextTick} from 'vue'
 import Reports from './Reports.vue'
 
 export default {
@@ -89,6 +96,14 @@ export default {
             }
             return false
         },
+        hasSettings() {
+            // Firefox MediaStream settings are empty.
+            // See https://bugzilla.mozilla.org/show_bug.cgi?id=1537986
+            return (
+                Object.keys(this.modelValue.settings.audio).length ||
+                Object.keys(this.modelValue.settings.video).length
+            )
+        },
         pipEnabled() {
             if (this.$refs.media) {
                 return this.$refs.media.requestPictureInPicture
@@ -102,8 +117,6 @@ export default {
     },
     data() {
         return {
-            label: '',
-            loading: true,
             media: null,
             mediaFailed: false,
             muted: false,
@@ -120,25 +133,28 @@ export default {
     },
     emits: ['update:modelValue'],
     methods: {
-        loadTrackStats() {
-            this.app.logger.debug('retrieving stream settings')
-            const settings = {}
+        async loadSettings() {
+            this.app.logger.debug('loading stream settings')
+            const settings = {audio: {}, video: {}}
+
             const audioTracks = this.stream.getAudioTracks()
-            if (audioTracks.length) settings.audio = audioTracks[0].getSettings()
 
-            const videoTracks = this.stream.getVideoTracks()
-            if (videoTracks.length) settings.video = videoTracks[0].getSettings()
-
-            if (!audioTracks.length && !videoTracks.length) {
-                this.app.logger.warn('no audio & video settings found; stream not ready yet?')
+            if (audioTracks.length) {
+                settings.audio = audioTracks[0].getSettings()
             }
 
+            const videoTracks = this.stream.getVideoTracks()
+            if (videoTracks.length) {
+                settings.video = videoTracks[0].getSettings()
+            }
+
+            await nextTick()
             this.$emit('update:modelValue', {...this.modelValue, settings})
         },
         /**
          * Handle mounting a remote 'down' stream.
          */
-        mountDownstream() {
+        async mountDownstream() {
             this.glnStream = this.$m.sfu.connection.down[this.modelValue.id]
 
             if (!this.glnStream) {
@@ -153,14 +169,9 @@ export default {
             // No need for further setup; this is an existing stream.
             if (this.$m.sfu.connection.down[this.modelValue.id].stream) {
                 this.$refs.media.srcObject = this.$m.sfu.connection.down[this.modelValue.id].stream
-                this.$refs.media.play().catch(() => {
-                    this.app.logger.warn(`stream ${this.glnStream.id} terminated due to failing play`)
-                    this.$m.sfu.delMedia(this.glnStream.id)
-                })
+                await this.playStream()
                 return
             }
-
-            this.label = this.glnStream.username
 
             this.glnStream.ondowntrack = (track) => {
                 if (!this.stream) {
@@ -177,8 +188,8 @@ export default {
                 }
             }
 
-            this.glnStream.onlabel = (label) => {
-                this.label = label
+            this.glnStream.onclose = () => {
+                this.$m.sfu.delMedia(this.glnStream.id)
             }
 
             this.glnStream.onstatus = async(status) => {
@@ -192,30 +203,23 @@ export default {
                         this.$refs.media.setSinkId(this.$s.devices.audio.selected.id)
                     }
 
-                    try {
-                        await this.$refs.media.play()
-                        this.loadTrackStats()
-                    } catch (message) {
-                        this.app.logger.warn(`stream ${this.glnStream.id} terminated due to failing play`)
-                        this.$m.sfu.delMedia(this.glnStream.id)
-                    }
+                    await this.playStream()
                 }
             }
         },
-        mountUpstream() {
+        async mountUpstream() {
             // Mute local streams, so people don't hear themselves talk.
             if (!this.muted) {
                 this.toggleMuteVolume()
             }
             this.app.logger.debug(`mount upstream ${this.modelValue.id}`)
-            this.label = `${this.$s.user.username} (${this.$t('you')})`
 
             if (!this.modelValue.src) {
                 // Local media stream from a device.
                 this.glnStream = this.$m.sfu.connection.up[this.modelValue.id]
                 this.stream = this.glnStream.stream
                 this.$refs.media.srcObject = this.stream
-                this.loadTrackStats()
+                await this.playStream()
             } else {
                 // Local media stream playing from a file...
                 if (this.modelValue.src instanceof File) {
@@ -254,7 +258,7 @@ export default {
 
                     this.glnStream.onstatus = async(status) => {
                         if (status === 'connected') {
-                            this.loadTrackStats()
+                            await this.loadSettings()
                         }
                     }
 
@@ -267,10 +271,20 @@ export default {
                 }
             }
 
-            // A local stream that's not networked (e.g. cam preview in ettings)
+            // A local stream that's not networked (e.g. cam preview in settings)
             if (!this.glnStream) return
 
             this.glnStream.stream = this.stream
+        },
+        async playStream() {
+            try {
+                await this.$refs.media.play()
+                await this.loadSettings()
+                this.$emit('update:modelValue', {...this.modelValue, playing: true})
+            } catch (message) {
+                this.app.logger.warn(`stream ${this.glnStream.id} terminated (play failed)`)
+                this.$m.sfu.delMedia(this.glnStream.id)
+            }
         },
         setFullscreen() {
             this.$refs.media.requestFullscreen()
@@ -300,10 +314,6 @@ export default {
         }
 
         this.muted = this.$refs.media.muted
-
-        this.$refs.media.addEventListener('playing', () => {
-            this.loading = false
-        })
 
         if (this.modelValue.direction === 'up') this.mountUpstream()
         else this.mountDownstream()
@@ -345,14 +355,14 @@ export default {
 
 .c-stream {
     background: var(--grey-3);
+    border: 2px solid var(--grey-4);
     display: flex;
     flex-direction: column;
     justify-items: center;
     position: relative;
 
     video {
-        aspect-ratio: 4 / 3;
-        border: 2px solid var(--grey-4);
+        border: none;
         max-height: 100%;
         object-fit: cover;
         opacity: 1;
@@ -365,14 +375,14 @@ export default {
 
     &.audio {
         // No video-track; just use it to play audio, but show a
-        // mic icon to indicate this is audio-only.
+        // branding icon to indicate this is audio-only.
 
         .media {
             display: none;
         }
     }
 
-    .audio-container,
+    .media-container,
     .loading-container {
         align-items: center;
         aspect-ratio: 4 / 3;
@@ -398,7 +408,7 @@ export default {
         }
     }
 
-    .audio-container {
+    .media-container {
 
         .icon {
             color: var(--grey-6);

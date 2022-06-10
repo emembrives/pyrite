@@ -11,6 +11,7 @@
             :ref="el => { if (el) { streamsRef[index] = el } else {streamsRef.splice(index, 1)}}"
             v-model="$s.streams[index]"
         />
+
         <Icon v-if="!$s.streams.length" class="icon logo-animated" name="Logo" />
     </div>
 </template>
@@ -20,10 +21,20 @@ import {nextTick} from 'vue'
 
 import Stream from './Stream/Stream.vue'
 /**
- * Grid-layout made possible by https://github.com/salbatore
+ * Optimized grid-layout thanks to https://github.com/salbatore
  * See: https://alicunde.github.io/Videoconference-Dish-CSS-JS/
  */
 export default {
+    computed: {
+        streamsCount() {
+            // All streams; loading & playing
+            return this.$s.streams.length
+        },
+        streamsPlayingCount() {
+            // Only playing streams
+            return this.$s.streams.filter((s) => s.playing).length
+        },
+    },
     components: {Stream},
     beforeUnmount() {
         this.resizeObserver.disconnect()
@@ -36,8 +47,8 @@ export default {
             requestAnimationFrame(this.setView.bind(this))
         })
 
-        this.setView()
         this.resizeObserver.observe(this.$refs.view)
+        this.setView()
     },
     methods: {
         area(increment, streamCount, width, height, margin = 8) {
@@ -57,9 +68,10 @@ export default {
             else return increment
         },
         setView() {
-            const margin = 8
             if (!this.$refs.view) return
+            const margin = 8
 
+            // Dimensions
             const width = this.$refs.view.offsetWidth - (margin * 2)
             const height = this.$refs.view.offsetHeight - (margin * 2)
 
@@ -80,15 +92,15 @@ export default {
             } else {
                 max = max - (margin * 2)
             }
-            this.setWidth(max, margin)
+            this.streamDimensions(max, margin)
         },
-        setWidth(width, margin) {
+        streamDimensions(width, margin) {
             for (const streamRef of this.streamsRef) {
                 // While disconnecting, the DOM node may be gone.
                 if (!streamRef.$refs.root) continue
 
                 let aspectRatio
-                if (streamRef.modelValue.settings.video) {
+                if (streamRef.modelValue.settings.video && streamRef.modelValue.settings.video.aspectRatio) {
                     aspectRatio = 1 / streamRef.modelValue.settings.video.aspectRatio
                 } else if (streamRef.$refs.media.videoHeight) {
                     aspectRatio = streamRef.$refs.media.videoHeight / streamRef.$refs.media.videoWidth
@@ -108,33 +120,26 @@ export default {
         }
     },
     watch: {
-        '$s.streams': {
-            deep: true,
-            async handler() {
-                await nextTick()
-                this.setView()
-            },
+        async streamsCount() {
+            await nextTick()
+            this.setView()
+            await nextTick()
+        },
+        async streamsPlayingCount() {
+            await nextTick()
+            this.setView()
+            await nextTick()
         },
     },
 }
 </script>
 
 <style lang='scss'>
-.v-enter-active,
-.v-leave-active {
-    transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-    opacity: 0;
-}
-
 @keyframes show {
 
     0% {
         opacity: 0;
-        transform: scale(0) translateY(20px);
+        transform: scale(0);
     }
 
     100% {
@@ -154,8 +159,7 @@ export default {
     position: relative;
 
     .c-stream {
-        align-self: center;
-        animation: show 0.25s ease-in-out;
+        animation: show 0.4s ease;
         box-shadow: var(--shadow-l);
         position: relative;
     }

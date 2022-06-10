@@ -224,6 +224,14 @@ export default {
             },
         }
     },
+    watch: {
+        '$s.devices.cam.enabled'() {
+            app.store.save()
+        },
+        '$s.devices.mic.enabled'() {
+            app.store.save()
+        },
+    },
 }
 </script>
 

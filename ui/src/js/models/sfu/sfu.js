@@ -176,7 +176,7 @@ export function delMedia(id) {
     if (delStreamIndex === -1) return
 
     const delStream = app.$s.streams[delStreamIndex]
-    app.logger.debug(`[delMedia] remove stream ${delStream.id} from stream state (${delStreamIndex})`)
+    app.logger.info(`[delMedia] remove stream ${delStream.id} from stream state (${delStreamIndex})`)
     app.$s.streams.splice(delStreamIndex, 1)
 }
 
@@ -278,18 +278,19 @@ function newUpStream(_id, state) {
         hasVideo: false,
         id: glnStream.id,
         mirror: true,
+        playing: false,
         settings: {audio: {}, video: {}},
+        username: app.$s.user.username,
         volume: {
             locked: false,
             value: 100,
         },
     }
 
+    // Override properties; e.g. disable mirror for file streams.
     if (state) {
         Object.assign(streamState, state)
     }
-
-    app.$s.streams.push(streamState)
 
     glnStream.onerror = (e) => {
         app.notifier.notify({level: 'error', message: e})
@@ -301,6 +302,7 @@ function newUpStream(_id, state) {
     glnStream.onnegotiationcompleted = () => {
         const maxThroughput = getMaxVideoThroughput()
         setMaxVideoThroughput(glnStream, maxThroughput)
+        app.$s.streams.push(streamState)
     }
 
     return {glnStream, streamState}
@@ -335,20 +337,24 @@ function onDownStream(c) {
         app.notifier.notify({level: 'error', message})
     }
 
-    const streamState = {
-        direction: 'down',
-        hasAudio: false,
-        hasVideo: false,
-        id: c.id,
-        mirror: true,
-        settings: {audio: {}, video: {}},
-        volume: {
-            locked: false,
-            value: 100,
-        },
+    // When other-end Firefox replaces a stream (e.g. toggles webcam),
+    // the onDownStream method is called twice.
+    if (!app.$s.streams.find((s) => s.id === c.id)) {
+        app.$s.streams.push({
+            direction: 'down',
+            hasAudio: false,
+            hasVideo: false,
+            id: c.id,
+            mirror: true,
+            playing: false,
+            settings: {audio: {}, video: {}},
+            username: c.username,
+            volume: {
+                locked: false,
+                value: 100,
+            },
+        })
     }
-
-    app.$s.streams.push(streamState)
 }
 
 async function onJoined(kind, group, permissions, status, data, message) {
