@@ -5,7 +5,9 @@ export function _events() {
 
     watch(app.$s.panels.chat, ({collapsed}) => {
         if (!collapsed) {
-            app.$s.chat.channels[app.$s.chat.channel].unread= 0
+            if (app.$s.chat.channels[app.$s.chat.channel]) {
+                app.$s.chat.channels[app.$s.chat.channel].unread= 0
+            }
         }
     })
 
@@ -84,8 +86,15 @@ export async function onMessage(sourceId, destinationId, nick, time, privileged,
         }
     }
 
-    // Notify user of a new message when the channel is not visible yet.
-    if (channelId !== app.$s.chat.channel || app.$s.panels.chat.collapsed) {
+    // Notifies user of a new message when the active channel
+    // is not visible, because the chat panel is closed or a different
+    // channel is active. Not that the chat history is also replayed through
+    // onMessage. This is why no chat channel is selected initially;
+    // we don't want to show those messages while entering the group.
+    if (
+        app.$s.chat.channels[app.$s.chat.channel] &&
+        ((channelId !== app.$s.chat.channel) || app.$s.panels.chat.collapsed)
+    ) {
         app.$s.chat.channels[channelId].unread += 1
     }
 

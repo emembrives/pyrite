@@ -86,11 +86,17 @@ export default {
     },
     computed: {
         channelMessages() {
-            return this.$s.chat.channels[[this.$s.chat.channel]].messages
+            if (this.$s.chat.channels[this.$s.chat.channel]) {
+                return this.$s.chat.channels[this.$s.chat.channel].messages
+            }
+            return []
         },
         sortedMessages() {
-            const messages = this.$s.chat.channels[this.$s.chat.channel].messages
-            return messages.sort((a, b) => a.time - b.time)
+            if (this.$s.chat.channels[this.$s.chat.channel]) {
+                const messages = this.$s.chat.channels[this.$s.chat.channel].messages
+                return messages.sort((a, b) => a.time - b.time)
+            }
+            return []
         },
     },
     data() {

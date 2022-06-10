@@ -49,6 +49,10 @@ export default {
 
         this.resizeObserver.observe(this.$refs.view)
         this.setView()
+        // At this point, the chat history is already loaded and
+        // we set the active channel. This circumvents unwanted
+        // unread messages (see chat model's onMessage).
+        app.$s.chat.channel = 'main'
     },
     methods: {
         area(increment, streamCount, width, height, margin = 8) {

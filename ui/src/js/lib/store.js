@@ -62,7 +62,7 @@ const volatileState = {
         users: [],
     },
     chat: {
-        channel: 'main',
+        channel: '',
         channels: {
             main: {
                 id: 'main',
