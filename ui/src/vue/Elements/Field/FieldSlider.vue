@@ -5,21 +5,46 @@
             name="Lock"
             @click="onClick(false)"
         />
-        <input
-            :class="{ locked: modelValue.locked }"
-            :disabled="modelValue.locked"
-            step="1"
-            type="range"
-            :value="modelValue.value"
-            @click="onClick(true)"
-            @input="updateModel($event)"
-        >
-        <div class="event-catcher" @click="onClick(true)" />
+        <div ref="track" class="track" @click="onClick(true)">
+            <div ref="thumb" class="thumb" :style="{ marginTop: `${marginTop}px`}" />
+        </div>
     </div>
 </template>
 
 <script>
 export default {
+    computed: {
+        marginTop() {
+            const thumbY = this.track.height - (this.track.height) * (this.modelValue.value / 100)  - this.thumb.height
+            if (thumbY > this.track.height) {
+                return this.track.height - this.thumb.height
+            } else if (thumbY - this.thumb.height < 0) {
+                return 0
+            } else {
+                return thumbY
+            }
+        },
+        positionToValue() {
+            return 100 - Math.trunc((this.thumb.y / this.track.height) * 100)
+        },
+    },
+    data() {
+        return {
+            drag: {
+                y: null,
+            },
+            thumb: {
+                height: null,
+                width: null,
+                y: null,
+            },
+            track: {
+                height: null,
+                y: null,
+            },
+            value: null,
+        }
+    },
     emits: ['update:modelValue'],
     methods: {
         onClick(doubleClick) {
@@ -45,13 +70,57 @@ export default {
                 })
             }
         },
-        updateModel(event) {
-            if (this.modelValue.locked) return
+        setPosition() {
+            if (
+                this.drag.y >= this.track.y + this.thumb.height &&
+                this.drag.y <= (this.track.y  + this.track.height - this.thumb.height)
+            ) {
+                this.thumb.y = this.drag.y - this.track.y
+            } else if (this.drag.y < this.track.y + this.thumb.height) {
+                this.thumb.y = 0
+            } else if (this.drag.y > this.track.y + this.thumb.height) {
+                this.thumb.y = this.track.height
+            }
+        },
+    },
+    mounted() {
+        this.track.height = this.$refs.track.offsetHeight
+        this.thumb.height =  this.$refs.thumb.offsetHeight
+        this.thumb.width = this.$refs.thumb.offsetWidth
+
+        this.$refs.track.addEventListener("mousedown", (e) => {
+            document.body.style.cursor = 'ns-resize'
+            this.drag.y = e.pageY
+            this.down = true
+            this.setPosition()
             this.$emit('update:modelValue', {
                 locked: this.modelValue.locked,
-                value: parseInt(event.target.value, 10),
+                value: this.positionToValue,
             })
-        },
+
+        })
+
+        this.mouseMove = (e) => {
+            if (!this.down) return
+            this.track.y = this.$refs.track.getBoundingClientRect().top + document.documentElement.scrollTop
+            this.drag.y = e.pageY
+            this.setPosition()
+            this.$emit('update:modelValue', {
+                locked: this.modelValue.locked,
+                value: this.positionToValue,
+            })
+        }
+        this.mouseUp = () => {
+            document.body.style.cursor = 'default'
+            this.down = false
+        }
+
+        document.addEventListener('mousemove', this.mouseMove)
+        document.addEventListener('mouseup', this.mouseUp)
+    },
+    unmounted() {
+        document.removeEventListener('mousemove', this.mouseMove)
+        document.removeEventListener('mouseup', this.mouseUp)
     },
     props: {
         modelValue: {
@@ -64,83 +133,42 @@ export default {
 
 <style lang="scss">
 .c-field-slider {
+    height: var(--spacer-6);
+    outline: none;
+    overflow: hidden;
+
+    .track {
+        background: var(--grey-2);
+        height: var(--spacer-6);
+        overflow: visible;
+        position: relative;
+        width: 8px;
+
+        &:hover {
+            cursor: ns-resize;
+        }
+    }
+
+    .thumb {
+        background: var(--primary-c);
+        border-radius: 8px;
+        height: 8px;
+        position: absolute;
+        width: 8px;
+    }
 
     .icon.locked {
-        color: var(--warning-color);
+        bottom: 0;
+        color: var(--primary-c);
+        margin-bottom: -18px;
         margin-left: -3px;
-        margin-top: calc(-2 * var(--spacer-1));
+
+        // margin-top: calc(-2 * var(--spacer-2));
         position: absolute;
         z-index: 1000;
 
         &:hover {
             cursor: pointer;
-        }
-    }
-
-    input[type="range"] {
-        appearance: none;
-        background: var(--grey-8);
-        border: 1px solid var(--grey-5);
-        height: 10px;
-        margin: 0;
-        overflow: hidden;
-        transform: rotate(-90deg);
-        width: 100%;
-
-        &::-moz-range-track {
-            overflow: hidden;
-            width: 2px !important;
-
-            &:hover {
-                cursor: ew-resize;
-            }
-        }
-
-        &::-moz-range-thumb {
-            background: var(--grey-5);
-            border: 0;
-            border-radius: 0;
-            box-shadow: -80px 0 0 80px var(--primary-c);
-            display: none;
-            height: 100%;
-            width: var(--spacer-2);
-        }
-
-        &::-webkit-slider-runnable-track {
-            appearance: none;
-            height: var(--spacer-1);
-            margin-top: -1px;
-        }
-
-        &::-webkit-slider-thumb {
-            appearance: none;
-            background: var(--grey-5);
-            box-shadow: -80px 0 0 80px var(--primary-c);
-            height: var(--spacer-1);
-            width: var(--spacer-2);
-        }
-
-        &:hover {
-            cursor: ns-resize;
-        }
-
-        &[disabled]:hover {
-            cursor: not-allowed;
-        }
-
-        &:focus {
-            outline: none;
-        }
-
-        &.locked {
-
-            &::-webkit-slider-thumb {
-                background: var(--warning-color);
-
-                &:hover {
-                    cursor: disabled !important;
-                }
-            }
         }
     }
 }

@@ -5,6 +5,8 @@
             'audio': modelValue.hasAudio && !modelValue.hasVideo,
             'loading': !modelValue.playing
         }"
+        @mouseout="toggleStreamBar(false)"
+        @mouseover="toggleStreamBar(true)"
     >
         <video
             ref="media"
@@ -26,7 +28,26 @@
 
         <Reports v-if="stats.visible" :description="modelValue" @click="toggleStats" />
 
-        <div v-if="controls && modelValue.playing" class="stream-bar">
+        <div v-if="controls && modelValue.playing" class="stream-bar" :class="{active: bar.active}">
+            <SoundMeter
+                v-if="audioEnabled" class="soundmeter"
+                orientation="vertical"
+                :stream="stream"
+                :stream-id="stream.id"
+            />
+            <div
+                v-if="audioEnabled && modelValue.direction === 'down'" key=""
+                v-tip="{content: `${volume.value}% ${$t('audio volume')}, ${$t('double click to')} ${volume.locked ? $t('unlock') : $t('lock')}`}"
+                class="volume-slider"
+            >
+                <FieldSlider v-model="volume" />
+            </div>
+
+            <div class="user" :class="{'has-audio': audioEnabled}">
+                <div class="name">
+                    {{ modelValue.username }}
+                </div>
+            </div>
             <div class="buttons">
                 <button
                     v-if="pip.enabled" class="btn btn-menu small"
@@ -39,32 +60,12 @@
                 </button>
                 <button
                     v-if="hasSettings" class="btn btn-menu small"
-                    :class="{active: stats.visible}"
+                    :class="{active: stats.visibe}"
                     @click="toggleStats"
                 >
                     <Icon v-tip="{content: $t('stream info')}" class="icon-mini" name="Info" />
                 </button>
             </div>
-
-            <div class="user" :class="{'has-audio': audioEnabled}">
-                <div class="name">
-                    {{ modelValue.username }}
-                </div>
-                <div
-                    v-if="audioEnabled && modelValue.direction === 'down'" key=""
-                    v-tip="{content: `${volume.value}% ${$t('audio volume')}`}"
-                    class="volume-slider"
-                >
-                    <FieldSlider v-model="volume" />
-                </div>
-            </div>
-
-            <SoundMeter
-                v-if="audioEnabled" class="soundmeter"
-                orientation="vertical"
-                :stream="stream"
-                :stream-id="stream.id"
-            />
         </div>
     </div>
 </template>
@@ -117,6 +118,9 @@ export default {
     },
     data() {
         return {
+            bar: {
+                active: false,
+            },
             media: null,
             mediaFailed: false,
             muted: false,
@@ -303,6 +307,9 @@ export default {
         toggleStats() {
             this.stats.visible = !this.stats.visible
         },
+        toggleStreamBar(active) {
+            this.bar.active = active
+        },
     },
     mounted() {
         // Firefox doesn't support this API (yet).
@@ -387,7 +394,6 @@ export default {
         align-items: center;
         aspect-ratio: 4 / 3;
         background: var(--grey-2);
-        border: 2px solid var(--grey-4);
         display: flex;
         height: 100%;
         justify-content: center;
@@ -408,13 +414,6 @@ export default {
         }
     }
 
-    .media-container {
-
-        .icon {
-            color: var(--grey-6);
-        }
-    }
-
     .loading-container {
 
         .icon {
@@ -425,20 +424,26 @@ export default {
     .stream-bar {
         align-items: center;
         background: var(--grey-3);
-        border-top: 1px solid var(--grey-4);
         bottom: 0;
         display: flex;
+        min-width: 0;
         position: absolute;
-        width: 100%;
+        transition: all 0.5s ease;
+
+        .buttons {
+            display: none;
+        }
 
         .soundmeter {
+            background: var(--grey-2);
+            border: none;
             height: var(--spacer-6);
             margin: 0;
             width: 8px;
         }
 
-        .buttons {
-            display: flex;
+        .volume-slider {
+            z-index: 1000000;
         }
 
         .user {
@@ -450,10 +455,9 @@ export default {
             font-size: var(--text-s);
             font-weight: 600;
             height: var(--spacer-6);
-            justify-content: flex-end;
+            margin-left: var(--spacer-1);
 
             .name {
-                padding-right: calc(var(--spacer-1) * 2);
                 text-align: right;
                 text-transform: uppercase;
             }
@@ -464,24 +468,13 @@ export default {
                     margin-right: var(--spacer-1);
                 }
             }
+        }
 
-            .volume-slider {
-                bottom: 2px;
-                height: var(--spacer-1);
-                position: absolute;
+        &.active {
+            min-width: 100%;
 
-                input[type="range"] {
-                    // Cut off the top/bottom borders.
-                    border-left: 0;
-                    border-right: 0;
-                    bottom: 0;
-                    position: absolute;
-                    right: 0;
-                    transform: rotate(-90deg) translate(18px, 20px);
-
-                    // This is actually the height (rotated).
-                    width: var(--spacer-6);
-                }
+            .buttons {
+                display: flex;
             }
         }
     }
