@@ -208,6 +208,8 @@ export function disconnect() {
 
     app.$s.group.connected = false
     app.$s.streams = []
+    // Always reset active channel on disconnect
+    app.$s.chat.channel = ''
     connection.close()
     delLocalMedia()
 }
