@@ -28,7 +28,7 @@
 
         <Reports v-if="stats.visible" :description="modelValue" @click="toggleStats" />
 
-        <div v-if="controls && modelValue.playing" class="stream-bar" :class="{active: bar.active}">
+        <div v-if="controls && modelValue.playing" class="user-info">
             <SoundMeter
                 v-if="audioEnabled" class="soundmeter"
                 orientation="vertical"
@@ -42,30 +42,27 @@
             >
                 <FieldSlider v-model="volume" />
             </div>
-
             <div class="user" :class="{'has-audio': audioEnabled}">
-                <div class="name">
-                    {{ modelValue.username }}
-                </div>
+                {{ modelValue.username }}
             </div>
-            <div class="buttons">
-                <button
-                    v-if="pip.enabled" class="btn btn-menu small"
-                    @click="setPip"
-                >
-                    <Icon v-tip="{content: $t('picture-in-picture')}" class="icon-mini" name="Pip" />
-                </button>
-                <button class="btn btn-menu small" @click="setFullscreen">
-                    <Icon v-tip="{content: $t('fullscreen')}" class="icon-mini" name="Fullscreen" />
-                </button>
-                <button
-                    v-if="hasSettings" class="btn btn-menu small"
-                    :class="{active: stats.visibe}"
-                    @click="toggleStats"
-                >
-                    <Icon v-tip="{content: $t('stream info')}" class="icon-mini" name="Info" />
-                </button>
-            </div>
+        </div>
+        <div class="stream-options" :class="{active: bar.active}">
+            <button
+                v-if="pip.enabled" class="btn btn-menu small"
+                @click="setPip"
+            >
+                <Icon v-tip="{content: $t('picture-in-picture')}" class="icon-mini" name="Pip" />
+            </button>
+            <button class="btn btn-menu small" @click="setFullscreen">
+                <Icon v-tip="{content: $t('fullscreen')}" class="icon-mini" name="Fullscreen" />
+            </button>
+            <button
+                v-if="hasSettings" class="btn btn-menu small"
+                :class="{active: stats.visibe}"
+                @click="toggleStats"
+            >
+                <Icon v-tip="{content: $t('stream info')}" class="icon-mini" name="Info" />
+            </button>
         </div>
     </div>
 </template>
@@ -366,6 +363,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-items: center;
+    overflow: hidden;
     position: relative;
 
     video {
@@ -421,21 +419,21 @@ export default {
         }
     }
 
-    .stream-bar {
+    .user-info {
         align-items: center;
-        background: var(--grey-3);
+        background: hsl(var(--grey-h) var(--grey-s) var(--light-1) / var(--alpha-2));
         bottom: 0;
         display: flex;
         min-width: 0;
         position: absolute;
         transition: all 0.5s ease;
 
-        .buttons {
-            display: none;
+        .soundmeter,
+        .volume-slider {
+            background: hsl(var(--grey-h) var(--grey-s) var(--light-8) / var(--alpha-2));
         }
 
         .soundmeter {
-            background: var(--grey-2);
             border: none;
             height: var(--spacer-6);
             margin: 0;
@@ -443,7 +441,10 @@ export default {
         }
 
         .volume-slider {
-            z-index: 1000000;
+
+            .track {
+                background: none;
+            }
         }
 
         .user {
@@ -456,22 +457,29 @@ export default {
             font-weight: 600;
             height: var(--spacer-6);
             margin-left: var(--spacer-1);
+            margin-right: var(--spacer-1);
+            text-align: right;
+            text-transform: uppercase;
+            user-select: none;
+        }
+    }
 
-            .name {
-                text-align: right;
-                text-transform: uppercase;
-            }
+    .stream-options {
+        background: var(--grey-1);
+        bottom: 0;
+        display: flex;
+        position: absolute;
+        right: 0;
+        transform: translateY(var(--spacer-6));
+        transition: 0.3s ease-in-out;
 
-            &.has-audio {
-
-                .name {
-                    margin-right: var(--spacer-1);
-                }
-            }
+        button {
+            color: var(--grey-8);
         }
 
         &.active {
-            min-width: 100%;
+            // min-width: 100%;
+            transform: translateY(0);
 
             .buttons {
                 display: flex;
