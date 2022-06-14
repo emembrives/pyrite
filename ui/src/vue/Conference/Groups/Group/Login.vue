@@ -138,11 +138,12 @@ export default {
             const hasErrors = this.v$.$silentErrors.filter((v) => v.$validator !== '$externalResults').length > 0
             return hasErrors
         },
-        currentGroup: () => this.$m.group.currentGroup(),
+        currentGroup() {
+            return this.$m.group.currentGroup()
+        },
         isListedGroup() {
             return !!this.$s.groups.find((i) => i.name === this.$s.group.name)
         },
-
     },
 
     data() {
