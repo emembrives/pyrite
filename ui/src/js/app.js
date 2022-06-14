@@ -170,5 +170,3 @@ export let app = new Pyrite()
 for (const model of Object.values(app.$m)) {
     if (model._events) model._events()
 }
-
-if (import.meta.env.DEV) globalThis.app = app

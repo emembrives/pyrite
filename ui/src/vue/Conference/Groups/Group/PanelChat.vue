@@ -125,7 +125,7 @@ export default {
             }
 
             let message =  this.rawMessage
-            app.$m.chat.sendMessage(message)
+            this.$m.chat.sendMessage(message)
             this.rawMessage = ''
         },
     },
