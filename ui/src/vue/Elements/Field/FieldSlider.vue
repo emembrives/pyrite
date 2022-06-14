@@ -85,6 +85,8 @@ export default {
     },
     mounted() {
         this.track.height = this.$refs.track.offsetHeight
+        this.track.y = this.$refs.track.getBoundingClientRect().top + document.documentElement.scrollTop
+
         this.thumb.height =  this.$refs.thumb.offsetHeight
         this.thumb.width = this.$refs.thumb.offsetWidth
 
