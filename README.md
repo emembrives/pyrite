@@ -7,7 +7,8 @@
 to deploy and that requires moderate server resources. [Pyrite](https://pyrite.video)
 is an alternative web client and management interface for Galène, based on the
 [Vue](https://v3.vuejs.org/) framework. Checkout the [documentation](./docs/index.md)
-to learn about Pyrite's [features](./docs/features.md) and deployment options.
+for more information about Pyrite's [features](./docs/features.md) and deployment
+instructions.
 
 # Getting Started
 
@@ -45,6 +46,6 @@ nodemon admin/app.js  # Express backend: http://localhost:3030
 ```
 
 <p float="left">
-    <img width="300" src="./docs/pyrite.png">
-    <img width="300" src="./docs/pyrite-admin.png">
+    <img height="300" src="./docs/pyrite.png">
+    <img height="300" src="./docs/pyrite-admin.png">
 </p>
