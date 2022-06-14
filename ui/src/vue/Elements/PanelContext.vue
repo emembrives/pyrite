@@ -327,7 +327,26 @@ export default defineComponent({
                 }
 
                 .name {
-                    display: none;
+                    position: relative;
+
+                    .username {
+                        display: none;
+                    }
+
+                    .permissions {
+                        display: none;
+                    }
+
+                    .status {
+                        position: absolute;
+                        right: var(--spacer-1);
+                        top: var(--spacer-4);
+
+                        svg {
+                            height: var(--spacer-2);
+                            width: var(--spacer-2);
+                        }
+                    }
                 }
 
                 .context-menu {

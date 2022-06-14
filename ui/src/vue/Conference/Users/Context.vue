@@ -13,22 +13,22 @@
             />
 
             <div class="name">
-                <template v-if="user.username">
+                <div v-if="user.username" class="username">
                     {{ user.username }}
-                </template>
-                <template v-else>
+                </div>
+                <div v-else class="username">
                     '(anon)'
-                </template>
-                <span v-if="$s.users[0].id === user.id">
+                </div>
+                <div v-if="$s.users[0].id === user.id" class="username">
                     (you)
-                </span>
+                </div>
+
+                <div class="status">
+                    <Icon v-if="user.data.mic" class="icon icon-mini" name="Mic" />
+                    <Icon v-else class="icon icon-mini error" name="MicMute" />
+                </div>
 
                 <div class="permissions">
-                    <div class="status">
-                        <Icon v-if="user.data.mic" class="icon icon-mini" name="Mic" />
-                        <Icon v-else class="icon icon-mini error" name="MicMute" />
-                    </div>
-
                     <span v-if="user.permissions.present">
                         <Icon v-tip="{content: $t('presenter role')}" class="icon icon-mini" name="Present" />
                     </span>
