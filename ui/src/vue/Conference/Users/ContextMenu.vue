@@ -73,7 +73,7 @@ export default {
                 },
                 channelId: this.user.id,
             })
-            app.$s.panels.chat.collapsed = false
+            this.$s.panels.chat.collapsed = false
             this.toggleMenu()
         },
         kickUser(text) {

@@ -52,7 +52,7 @@ export default {
         // At this point, the chat history is already loaded and
         // we set the active channel. This circumvents unwanted
         // unread messages (see chat model's onMessage).
-        app.$s.chat.channel = 'main'
+        this.$s.chat.channel = 'main'
     },
     methods: {
         area(increment, streamCount, width, height, margin = 8) {

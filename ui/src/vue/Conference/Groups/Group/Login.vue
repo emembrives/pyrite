@@ -114,7 +114,7 @@
                 </button>
                 <button
                     class="btn btn-menu"
-                    :disabled="!app.$s.user.username && !app.$s.user.password"
+                    :disabled="!$s.user.username && !$s.user.password"
                     @click="clearCredentials"
                 >
                     <Icon v-tip="{content: $t('clear credentials')}" class="icon-small" name="Backspace" />
@@ -138,9 +138,9 @@ export default {
             const hasErrors = this.v$.$silentErrors.filter((v) => v.$validator !== '$externalResults').length > 0
             return hasErrors
         },
-        currentGroup: () => app.$m.group.currentGroup(),
+        currentGroup: () => this.$m.group.currentGroup(),
         isListedGroup() {
-            return !!app.$s.groups.find((i) => i.name === app.$s.group.name)
+            return !!this.$s.groups.find((i) => i.name === this.$s.group.name)
         },
 
     },
@@ -160,9 +160,9 @@ export default {
     },
     methods: {
         clearCredentials() {
-            app.$s.user.username = ''
-            app.$s.user.password = ''
-            app.store.save()
+            this.$s.user.username = ''
+            this.$s.user.password = ''
+            this.app.store.save()
         },
         async login() {
             this.vuelidateExternalResults.user.username = []
@@ -226,10 +226,10 @@ export default {
     },
     watch: {
         '$s.devices.cam.enabled'() {
-            app.store.save()
+            this.app.store.save()
         },
         '$s.devices.mic.enabled'() {
-            app.store.save()
+            this.app.store.save()
         },
     },
 }

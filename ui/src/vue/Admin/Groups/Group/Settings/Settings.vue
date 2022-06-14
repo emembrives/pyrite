@@ -86,7 +86,7 @@ import TabPermissions from './TabPermissions.vue'
 export default defineComponent({
     components: {Recordings, Stats, TabAccess, TabMisc, TabPermissions},
     computed: {
-        currentGroup: () => app.$m.group.currentGroup(),
+        currentGroup: () => this.$m.group.currentGroup(),
         tabId() {
             return this.$route.query.tab || 'misc'
         },
