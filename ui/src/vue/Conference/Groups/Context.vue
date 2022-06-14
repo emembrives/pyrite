@@ -58,7 +58,7 @@
 export default {
     computed: {
         isListedGroup() {
-            return !!app.$s.groups.find((i) => i.name === app.$s.group.name)
+            return !!this.$s.groups.find((i) => i.name === this.$s.group.name)
         },
     },
     methods: {
