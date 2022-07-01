@@ -120,7 +120,7 @@ export default {
         },
         toggleChat() {
             this.$s.panels.chat.collapsed = !this.$s.panels.chat.collapsed
-            app.store.save()
+            this.app.store.save()
         },
         toggleMicrophone() {
             this.$m.sfu.muteMicrophone(this.$s.devices.mic.enabled)

@@ -275,7 +275,9 @@ function newUpStream(_id, state) {
     const glnStream = connection.newUpStream(_id)
 
     let streamState = {
+        aspectRatio: 4 / 3,
         direction: 'up',
+        enlarged: false,
         hasAudio: false,
         hasVideo: false,
         id: glnStream.id,
@@ -343,7 +345,9 @@ function onDownStream(c) {
     // the onDownStream method is called twice.
     if (!app.$s.streams.find((s) => s.id === c.id)) {
         app.$s.streams.push({
+            aspectRatio: 4 / 3,
             direction: 'down',
+            enlarged: false,
             hasAudio: false,
             hasVideo: false,
             id: c.id,

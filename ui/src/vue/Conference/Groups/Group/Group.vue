@@ -7,9 +7,8 @@
         </router-view>
 
         <Stream
-            v-for="(description, index) in $s.streams" :key="description.id"
-            :ref="el => { if (el) { streamsRef[index] = el } else {streamsRef.splice(index, 1)}}"
-            v-model="$s.streams[index]"
+            v-for="(description, index) in sortedStreams" :key="description.id"
+            v-model="sortedStreams[index]"
         />
 
         <Icon v-if="!$s.streams.length" class="icon logo-animated" name="Logo" />
@@ -17,122 +16,105 @@
 </template>
 
 <script>
-import {nextTick} from 'vue'
-
 import Stream from './Stream/Stream.vue'
-/**
- * Optimized grid-layout thanks to https://github.com/salbatore
- * See: https://alicunde.github.io/Videoconference-Dish-CSS-JS/
- */
+
 export default {
-    computed: {
-        streamsCount() {
-            // All streams; loading & playing
-            return this.$s.streams.length
-        },
-        streamsPlayingCount() {
-            // Only playing streams
-            return this.$s.streams.filter((s) => s.playing).length
-        },
-    },
-    components: {Stream},
     beforeUnmount() {
         this.resizeObserver.disconnect()
     },
     beforeUpdate() {
         this.itemRefs = []
     },
+    computed: {
+        sortedStreams() {
+            const streams = this.$s.streams
+            return streams.sort((a, b) => {
+                if (a.username < b.username){
+                    return -1
+                }
+                if (a.username > b.username) {
+                    return 1
+                }
+                return 0
+            })
+        },
+        streamsCount() {
+            // All streams; loading & playing
+            return this.$s.streams.length
+        },
+        streamsPlayingCount() {
+            // Recalculate the stream canvas; the aspect-ratio of one
+            // the streams may have been changed (see stream loadedmetadata)
+            return this.$s.streams.filter((s) => s.playing).length
+        },
+    },
+    components: {Stream},
+    data() {
+        return {
+            // This is not the stream's aspect ratio; but the aspect-ratio / stream
+            // container to calculate with. I'm not sure if it may be feasible to
+            // calculate with aspect-ratio per stream here.
+            aspectRatio: 4 / 3,
+            margin: 16,
+        }
+    },
     async mounted() {
+        this.$refs.view.style.setProperty('--stream-margin', `${this.margin}px`)
+        this._calcLayout = this.calcLayout.bind(this)
         this.resizeObserver = new ResizeObserver(async() => {
-            requestAnimationFrame(this.setView.bind(this))
+            requestAnimationFrame(this._calcLayout)
         })
 
+        requestAnimationFrame(this._calcLayout)
         this.resizeObserver.observe(this.$refs.view)
-        this.setView()
         // At this point, the chat history is already loaded and
         // we set the active channel. This circumvents unwanted
         // unread messages (see chat model's onMessage).
         this.$s.chat.channel = 'main'
     },
     methods: {
-        area(increment, streamCount, width, height, margin = 8) {
-            let i = 0
-            let w = 0
-
-            let h = increment * 0.75 + (margin * 2)
-            while (i < (streamCount)) {
-                if ((w + increment) > width) {
-                    w = 0
-                    h = h + (increment * 0.75) + (margin * 2)
-                }
-                w = w + increment + (margin * 2)
-                i++
-            }
-            if (h > height) return false
-            else return increment
-        },
-        setView() {
+        /**
+         * Optimal space algorithm from Anton Dosov:
+         * https://dev.to/antondosov/building-a-video-gallery-just-like-in-zoom-4mam
+         * Also, learned from this resource:
+         * https://github.com/Alicunde/Videoconference-Dish-CSS-JS
+         */
+        calcLayout() {
             if (!this.$refs.view) return
-            const margin = 8
+            const containerWidth = this.$refs.view.offsetWidth
+            const containerHeight = this.$refs.view.offsetHeight
+            let layout = {area: 0, cols: 0, height: null, rows: 0, width: null}
+            let height, width
 
-            // Dimensions
-            const width = this.$refs.view.offsetWidth - (margin * 2)
-            const height = this.$refs.view.offsetHeight - (margin * 2)
+            for (let cols = 1; cols <= this.$s.streams.length; cols++) {
+                const rows = Math.ceil(this.$s.streams.length / cols)
+                const hScale = containerWidth / (cols * this.aspectRatio)
+                const vScale = containerHeight / rows
 
-            let max = 0
-
-            let i = 1
-            while (i < 5000) {
-                let w = this.area(i, this.streamsRef.length, width, height, margin)
-                if (w === false) {
-                    max =  i - 1
-                    break
-                }
-                i++
-            }
-
-            if (max > width) {
-                max = width
-            } else {
-                max = max - (margin * 2)
-            }
-            this.streamDimensions(max, margin)
-        },
-        streamDimensions(width, margin) {
-            for (const streamRef of this.streamsRef) {
-                // While disconnecting, the DOM node may be gone.
-                if (!streamRef.$refs.root) continue
-
-                let aspectRatio
-                if (streamRef.modelValue.settings.video && streamRef.modelValue.settings.video.aspectRatio) {
-                    aspectRatio = 1 / streamRef.modelValue.settings.video.aspectRatio
-                } else if (streamRef.$refs.media.videoHeight) {
-                    aspectRatio = streamRef.$refs.media.videoHeight / streamRef.$refs.media.videoWidth
+                // Determine which axis is the constraint.
+                if (hScale <= vScale) {
+                    width = Math.floor((containerWidth - this.margin) / cols) - this.margin
+                    height = Math.floor(width / this.aspectRatio) - this.margin
                 } else {
-                    aspectRatio = 0.75
+                    height = Math.floor((containerHeight - this.margin) / rows) - this.margin
+                    width = Math.floor(height * this.aspectRatio) - this.margin
                 }
 
-                streamRef.$refs.root.style.width = width + 'px'
-                streamRef.$refs.root.style.margin = margin + 'px'
-                streamRef.$refs.root.style.height = (width * aspectRatio) + 'px'
+                const area = width * height
+                if (area > layout.area) {
+                    layout = {area, cols, height, rows, width}
+                }
             }
+
+            this.$refs.view.style.setProperty('--stream-width', `${layout.width}px`)
         },
-    },
-    data() {
-        return {
-            streamsRef: [],
-        }
     },
     watch: {
         async streamsCount() {
-            await nextTick()
-            this.setView()
-            await nextTick()
+            requestAnimationFrame(this.calcLayout.bind(this))
         },
         async streamsPlayingCount() {
-            await nextTick()
-            this.setView()
-            await nextTick()
+            requestAnimationFrame(this.calcLayout.bind(this))
         },
     },
 }
@@ -157,15 +139,18 @@ export default {
     align-items: center;
     background: var(--grey-1);
     display: flex;
+    flex: 1;
     flex-wrap: wrap;
+    gap: var(--stream-margin);
     justify-content: center;
-    overflow: hidden;
     position: relative;
 
     .c-stream {
-        animation: show 0.4s ease;
+        animation: show 0.35s ease-in;
+        aspect-ratio: var(--aspect-ratio);
         box-shadow: var(--shadow-l);
-        position: relative;
+        max-width: var(--stream-width);
+        width: var(--stream-width);
     }
 
     .logo-animated {
@@ -176,7 +161,6 @@ export default {
     .c-settings {
         background: var(--overlay-c);
         left: 0;
-        max-width: 100%;
         max-width: 700px;
         position: absolute;
         top: 0;

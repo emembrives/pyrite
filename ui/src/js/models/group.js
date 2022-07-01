@@ -1,6 +1,6 @@
 import {app} from '@/js/app.js'
 
-export function  currentGroup() {
+export function currentGroup() {
     const currentGroup = app.$s.groups.find((i) => i.name === app.$s.group.name)
     // Assume hidden group; use selected group fields as placeholders.
     if (!currentGroup) {

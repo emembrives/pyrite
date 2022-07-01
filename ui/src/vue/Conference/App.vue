@@ -13,7 +13,6 @@
         </PanelContext>
 
         <ConferenceControls />
-
         <RouterView />
 
         <transition @enter="openChat" @leave="closeChat">
@@ -84,38 +83,10 @@ export default {
 
 <style lang="scss">
 .c-conference-app {
-    --c1-width: var(--spacer-8);
-
-    // Presence, General Controls, Login Screen
-    grid-template-columns: min-content var(--spacer-8) 1fr;
     height: 100vh;
-    overflow: hidden;
-
-    &.connected {
-        // Presence, General Controls, Group, Chat, Group Controls
-        grid-template-columns: min-content var(--c1-width) 1fr min-content min-content;
-
-        .c-panel-chat {
-            opacity: 1;
-            transition: opacity 150ms;
-        }
-
-        &.panel-chat-collapsed {
-            // Presence, Controls, Conference Space, Conference Controls
-            grid-template-columns: min-content var(--c1-width) 1fr min-content;
-        }
-
-        &.panel-chat-toggle {
-            // Toggling chat while being active the group
-            // Blocks: Presence, Controls, Chat, Conference Space
-            grid-template-columns: min-content var(--c1-width) 1fr min-content min-content;
-        }
-    }
+    width: 100vw;
 
     &.panel-chat-toggle {
-        // Toggling chat while leaving the group
-        // Blocks: Presence, Controls, Login, Chat
-        grid-template-columns: min-content var(--spacer-8) 1fr min-content;
         overflow: hidden;
         resize: none;
 

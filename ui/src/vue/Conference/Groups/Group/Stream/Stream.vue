@@ -3,7 +3,8 @@
         ref="root" class="c-stream"
         :class="{
             'audio': modelValue.hasAudio && !modelValue.hasVideo,
-            'loading': !modelValue.playing
+            'loading': !modelValue.playing,
+            'enlarged': modelValue.enlarged,
         }"
         @mouseout="toggleStreamBar(false)"
         @mouseover="toggleStreamBar(true)"
@@ -15,6 +16,7 @@
             :class="{'media-failed': mediaFailed, mirror: modelValue.mirror}"
             :muted="modelValue.direction === 'up'"
             :playsinline="true"
+            @click.stop="toggleEnlarge()"
         />
 
         <Transition name="loading-transition">
@@ -26,7 +28,7 @@
             </div>
         </Transition>
 
-        <Reports v-if="stats.visible" :description="modelValue" @click="toggleStats" />
+        <Reports v-if="stats.visible" :description="modelValue" @click.stop="toggleStats" />
 
         <div v-if="controls && modelValue.playing" class="user-info">
             <SoundMeter
@@ -49,7 +51,7 @@
         <div class="stream-options" :class="{active: bar.active}">
             <button
                 v-if="pip.enabled" class="btn btn-menu small"
-                @click="setPip"
+                @click.stop="setPip"
             >
                 <Icon v-tip="{content: $t('picture-in-picture')}" class="icon-mini" name="Pip" />
             </button>
@@ -59,7 +61,7 @@
             <button
                 v-if="hasSettings" class="btn btn-menu small"
                 :class="{active: stats.visibe}"
-                @click="toggleStats"
+                @click.stop="toggleStats"
             >
                 <Icon v-tip="{content: $t('stream info')}" class="icon-mini" name="Info" />
             </button>
@@ -297,6 +299,14 @@ export default {
                 this.$refs.media.requestPictureInPicture()
             }
         },
+        toggleEnlarge() {
+            for (const stream of this.$s.streams) {
+                if (stream.id !== this.modelValue.id) {
+                    stream.enlarged = false
+                }
+            }
+            this.$emit('update:modelValue', {...this.modelValue, enlarged: !this.modelValue.enlarged})
+        },
         toggleMuteVolume() {
             this.muted = !this.muted
             this.$refs.media.muted = this.muted
@@ -309,6 +319,9 @@ export default {
         },
     },
     mounted() {
+        // Directly set the default aspect-ratio; the loadedmetadata event takes
+        // a while before the stream knows its eventual video aspect ratio.
+        this.$refs.root.style.setProperty('--aspect-ratio', this.modelValue.aspectRatio)
         // Firefox doesn't support this API (yet).
         if (this.$refs.media.requestPictureInPicture) {
             this.pip.enabled = true
@@ -316,6 +329,15 @@ export default {
             this.$refs.media.addEventListener('enterpictureinpicture', () => { this.pip.active = true })
             this.$refs.media.addEventListener('leavepictureinpicture', () => { this.pip.active = false })
         }
+
+        this.$refs.media.addEventListener('loadedmetadata', () => {
+            // Use the default aspectRatio for audiotracks
+            if (this.$refs.media.videoHeight) {
+                const aspectRatio = this.$refs.media.videoWidth / this.$refs.media.videoHeight
+                this.$refs.root.style.setProperty('--aspect-ratio', aspectRatio)
+                this.$emit('update:modelValue', {...this.modelValue, aspectRatio})
+            }
+        })
 
         this.muted = this.$refs.media.muted
 
@@ -366,10 +388,27 @@ export default {
     overflow: hidden;
     position: relative;
 
+    &:hover {
+        cursor: pointer;
+    }
+
+    &.enlarged {
+        border: 2px solid var(--primary-c);
+        max-height: 90%;
+        opacity: 0.95;
+        position: absolute;
+        transform: scale(1.5);
+        transition: 0.3s ease-in-out;
+        z-index: 1000;
+
+        .stream-options,
+        .user-info {
+            display: none;
+        }
+    }
+
     video {
         border: none;
-        max-height: 100%;
-        object-fit: cover;
         opacity: 1;
         transition: opacity 0.3s;
 

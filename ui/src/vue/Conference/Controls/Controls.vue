@@ -88,7 +88,7 @@ export default {
     methods: {
         toggleCollapse() {
             this.$s.panels.context.collapsed = !this.$s.panels.context.collapsed
-            app.store.save()
+            this.app.store.save()
         },
         toggleRaiseHand() {
             this.$m.sfu.connection.userAction('setdata', this.$m.sfu.connection.id, {raisehand: !this.$s.user.data.raisehand})
