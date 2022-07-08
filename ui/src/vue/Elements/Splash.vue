@@ -53,6 +53,7 @@ export default {
 .c-splash {
     align-items: center;
     display: flex;
+    flex: 1;
     flex-direction: column;
     font-family: var(--font-2);
     justify-content: center;

@@ -166,6 +166,7 @@ class Pyrite extends EventEmitter {
 }
 
 export let app = new Pyrite()
+globalThis.app = app
 
 for (const model of Object.values(app.$m)) {
     if (model._events) model._events()

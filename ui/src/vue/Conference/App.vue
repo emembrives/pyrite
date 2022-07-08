@@ -29,7 +29,7 @@
 import ConferenceControls from './Controls/Controls.vue'
 import GroupControls from './Groups/Group/Controls.vue'
 import Groups from './Groups/Context.vue'
-import PanelChat from './Groups/Group/PanelChat.vue'
+import PanelChat from './Chat/PanelChat.vue'
 import PanelContext from '@/vue/Elements/PanelContext.vue'
 import UsersContext from './Users/Context.vue'
 
@@ -74,9 +74,18 @@ export default {
             })
         },
     },
-    mounted() {
+    async mounted() {
         const themeColor = getComputedStyle(document.querySelector('.app')).getPropertyValue('--grey-4')
         document.querySelector('meta[name="theme-color"]').content = themeColor
+
+        if (!this.$s.chat.emoji.list.length) {
+            this.app.logger.info('retrieving initial emoji list')
+            this.$s.chat.emoji.list = JSON.parse(await this.app.api.get('/api/chat/emoji'))
+            this.app.store.save()
+        }
+        for (const emoji of this.$s.chat.emoji.list) {
+            this.$m.chat.emojiLookup.add(emoji.codePointAt())
+        }
     },
 }
 </script>

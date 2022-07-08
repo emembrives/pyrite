@@ -100,6 +100,8 @@ export async function onMessage(sourceId, destinationId, nick, time, privileged,
 
 }
 
+export const emojiLookup = new Set()
+
 export function selectChannel(channel) {
     if (typeof channel === 'string') {
         channel = app.$s.chat.channels[channel]

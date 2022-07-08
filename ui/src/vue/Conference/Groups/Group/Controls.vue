@@ -7,7 +7,8 @@
                 @click="toggleChat"
             >
                 <Icon
-                    v-tip="{content: $s.panels.chat.collapsed ? $t('show chat panel') : $t('hide chat panel')}" class="icon-small"
+                    v-tip="{content: $s.panels.chat.collapsed ? $t('show chat panel') : $t('hide chat panel')}"
+                    class="icon-small"
                     :class="{active: $s.panels.chat.collapsed}"
                     :icon-props="{unread: unreadMessages}"
                     name="Chat"
@@ -77,6 +78,7 @@
 </template>
 
 <script>
+import {nextTick} from 'vue'
 import {unreadMessages} from '@/js/models/chat.js'
 
 export default {
@@ -118,7 +120,11 @@ export default {
             this.$m.sfu.delUpMediaKind('camera')
             this.$m.media.getUserMedia(this.$s.devices)
         },
-        toggleChat() {
+        async toggleChat() {
+            // Don't do a collapse animation while emoji is active; this is
+            // too heavy due to the 1800+ items grid layout.
+            this.$s.chat.emoji.active = false
+            await nextTick()
             this.$s.panels.chat.collapsed = !this.$s.panels.chat.collapsed
             this.app.store.save()
         },

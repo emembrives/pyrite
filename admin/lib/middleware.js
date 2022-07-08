@@ -1,3 +1,4 @@
+import apiChat from '../api/chat.js'
 import apiDashboard from '../api/dashboard.js'
 import apiGroups from '../api/groups.js'
 import apiProfile from '../api/profile.js'
@@ -17,6 +18,7 @@ import sessions from 'express-session'
 
 // These endpoints are allowed to bypass the authentication middleware:
 const endpointAllowList = [
+    '/api/chat/emoji',
     '/api/context',
     '/api/login',
     '/api/groups/public',
@@ -51,7 +53,7 @@ export async function authMiddleware(req, res, next) {
     }
 }
 
-export function initMiddleware() {
+export async function initMiddleware() {
     app.use(expressWinston.logger({
         colorize: true,
         expressFormat: true,
@@ -65,6 +67,7 @@ export function initMiddleware() {
 
     app.use(authMiddleware)
 
+    await apiChat(app)
     apiDashboard(app)
     apiGroups(app)
     apiProfile(app)

@@ -1,37 +1,11 @@
 <template>
     <div ref="view" class="c-panel-chat" :class="{[$s.env.layout]: true}">
+        <Emoji v-if="$s.chat.emoji.active" :onselect="addEmoji" />
         <div ref="messages" class="messages scroller">
-            <div
-                v-for="message of sortedMessages" :key="message.message"
-                class="message"
-                :class="{command: !message.nick, [message.kind]: true}"
-            >
-                <template v-if="message.kind === 'me'">
-                    <div class="text">
-                        {{ message.nick }} {{ $t(message.message) }}...
-                    </div>
-                    <div class="time">
-                        {{ formatTime(message.time) }}
-                    </div>
-                </template>
-
-                <template v-else>
-                    <header v-if="message.nick">
-                        <div class="author">
-                            {{ message.nick }}
-                        </div><div class="time">
-                            {{ formatTime(message.time) }}
-                        </div>
-                    </header>
-                    <section>
-                        <div v-for="msg of formatMessage(message.message)" :key="msg.id">
-                            {{ msg }}
-                        </div>
-                    </section>
-                </template>
-            </div>
+            <ChatMessage v-for="(message, index) in sortedMessages" :key="index" :message="message" />
         </div>
-        <div class="chat-channels">
+
+        <div v-if="!$s.chat.emoji.active" class="chat-channels">
             <div
                 v-for="(channel, key) in $s.chat.channels"
                 :key="key" class="chat-channel"
@@ -53,9 +27,11 @@
                 </button>
             </div>
         </div>
+
         <div class="send">
             <textarea
-                v-model="rawMessage"
+                ref="chatInput"
+                v-model="$s.chat.message"
                 autofocus
                 :placeholder="$t('type /help for help')"
                 @keydown.enter="$event.preventDefault()"
@@ -63,10 +39,16 @@
             />
             <button
                 class="btn btn-menu"
-                :disabled="rawMessage === ''"
+                :disabled="formattedMessage === ''"
                 @click="sendMessage"
             >
                 <Icon v-tip="{content: $t('send message')}" class="icon icon-mini" name="Send" />
+            </button>
+        </div>
+
+        <div class="chat-actions">
+            <button class="btn btn-menu" :class="{active: $s.chat.emoji.active}" @click="$s.chat.emoji.active = !$s.chat.emoji.active">
+                😼
             </button>
         </div>
     </div>
@@ -78,18 +60,24 @@
  * in collapsed state. Non-UI specific logic should be
  * placed in the chat model.
  */
+import ChatMessage from './Message.vue'
+import Emoji from './Emoji.vue'
 import {nextTick} from 'vue'
 
 export default {
     beforeUnmount() {
         this.resizeObserver.disconnect()
     },
+    components: {ChatMessage, Emoji},
     computed: {
         channelMessages() {
             if (this.$s.chat.channels[this.$s.chat.channel]) {
                 return this.$s.chat.channels[this.$s.chat.channel].messages
             }
             return []
+        },
+        formattedMessage() {
+            return this.$s.chat.message.trim()
         },
         sortedMessages() {
             if (this.$s.chat.channels[this.$s.chat.channel]) {
@@ -99,34 +87,31 @@ export default {
             return []
         },
     },
-    data() {
-        return {
-            rawMessage: '',
-        }
-    },
     methods: {
-        formatMessage(message) {
-            return message.split('\n')
-        },
-        formatTime(ts) {
-            const date = new Date(ts)
-            return date.toLocaleTimeString()
+        addEmoji(e, emoji) {
+            const message = [...this.$s.chat.message]
+            const caretPosition = this.$refs.chatInput.selectionStart
+            if (caretPosition >= 0) {
+                message.splice(caretPosition, 0, emoji)
+            }
+            this.$s.chat.message = message.join('')
+
+            if (!e.ctrlKey) {
+                this.$s.chat.emoji.active = false
+            }
         },
         async sendMessage(e) {
-            this.rawMessage = this.rawMessage.trim()
-            if (this.rawMessage === '') return false
-
             if (e instanceof KeyboardEvent) {
                 // ctrl/shift/meta +enter is next line.
                 if (!(e.key === 'Enter' && !e.ctrlKey && !e.shiftKey && !e.metaKey)) {
-                    this.rawMessage += '\r\n'
+                    this.$s.chat.message += '\r\n'
                     return false
                 }
             }
 
-            let message =  this.rawMessage
-            this.$m.chat.sendMessage(message)
-            this.rawMessage = ''
+            this.$m.chat.sendMessage(this.formattedMessage)
+            this.$s.chat.message = ''
+            this.$s.chat.emoji.active = false
         },
     },
     mounted() {
@@ -161,57 +146,13 @@ export default {
     height: 100vh;
     min-width: 375px;
 
-    .chat-channels {
-        background: var(--grey-3);
-        border-bottom: var(--border) solid var(--grey-4);
-        display: flex;
-        height: var(--spacer-8);
-        width: 100%;
-
-        .chat-channel {
-            background: var(--grey-3);
-            border: var(--border) solid var(--grey-4);
-            color: var(--grey-6);
-            display: flex;
-            font-family: var(--font-2);
-            margin: var(--spacer-1);
-            padding: var(--spacer-1);
-            user-select: none;
-
-            .author {
-                font-family: var(--font-1);
-            }
-
-            .channel-name {
-                align-items: center;
-                display: flex;
-
-                .icon {
-                    margin-right: var(--spacer-1);
-                }
-            }
-
-            &:hover {
-                cursor: pointer;
-            }
-
-            &.active {
-                background: var(--grey-2);
-                color: var(--primary-c);
-            }
-
-            .btn-close {
-                margin-left: var(--spacer-1);
-            }
-        }
-    }
-
     .messages {
         background: var(--grey-2);
         flex: 1;
         overflow-x: hidden;
         overflow-y: scroll;
-        padding-top: var(--spacer-2);
+
+        // padding-top: var(--spacer-2);
 
         .message {
             margin-bottom: var(--spacer-4);
@@ -290,6 +231,64 @@ export default {
                     align-self: flex-end;
                     color: var(--grey-5);
                 }
+            }
+        }
+    }
+
+    .chat-channels {
+        background: var(--grey-3);
+        border-bottom: var(--border) solid var(--grey-4);
+        display: flex;
+        height: var(--spacer-8);
+        width: 100%;
+
+        .chat-channel {
+            background: var(--grey-3);
+            border: var(--border) solid var(--grey-4);
+            color: var(--grey-6);
+            display: flex;
+            font-family: var(--font-2);
+            margin: var(--spacer-1);
+            padding: var(--spacer-1);
+            user-select: none;
+
+            .author {
+                font-family: var(--font-1);
+            }
+
+            .channel-name {
+                align-items: center;
+                display: flex;
+
+                .icon {
+                    margin-right: var(--spacer-1);
+                }
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            &.active {
+                background: var(--grey-2);
+                color: var(--primary-c);
+            }
+
+            .btn-close {
+                margin-left: var(--spacer-1);
+            }
+        }
+    }
+
+    .chat-actions {
+        background: var(--grey-2);
+
+        .btn-menu {
+            background: var(--grey-5);
+            height: 30px;
+
+            &.active {
+                background: var(--primary-c);
             }
         }
     }

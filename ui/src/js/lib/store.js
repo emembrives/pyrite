@@ -1,6 +1,12 @@
+import {mergeDeep} from './utils.js'
 import {reactive} from 'vue'
 
 const persistantState = reactive({
+    chat: {
+        emoji: {
+            list: [],
+        },
+    },
     devices: {
         audio: {
             enabled: true,
@@ -70,6 +76,11 @@ const volatileState = {
                 unread: 0,
             },
         },
+        emoji: {
+            active: false,
+            lookup: {},
+        },
+        message: '',
         width: 375,
     },
     env: {
@@ -125,8 +136,7 @@ class Store {
             restoredState = {}
         }
 
-        Object.assign(persistantState, {...restoredState, ...volatileState})
-        return persistantState
+        return mergeDeep(mergeDeep(persistantState, restoredState), volatileState)
     }
 
     save() {
