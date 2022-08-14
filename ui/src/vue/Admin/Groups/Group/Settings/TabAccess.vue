@@ -6,6 +6,11 @@
             :label="$t('public group')"
         />
         <FieldCheckbox
+            v-model="$s.admin.group['public-access']"
+            :help="$t('allow people to connect without a password')"
+            :label="$t('public access')"
+        />
+        <FieldCheckbox
             v-model="$s.admin.group['allow-anonymous']"
             :help="$t('allow people to connect without username')"
             :label="$t('anonymous login')"

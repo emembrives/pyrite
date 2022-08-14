@@ -12,11 +12,6 @@
         <div class="panels">
             <section>
                 <form>
-                    <FieldCheckbox
-                        v-if="currentGroup['allow-anonymous'] && false"
-                        v-model="anonymousLogin" :label="$t('anonymous login')"
-                    />
-
                     <FieldText
                         v-if="!isListedGroup"
                         v-model="currentGroup.name"
@@ -26,7 +21,6 @@
                     />
 
                     <FieldText
-                        v-if="!anonymousLogin"
                         v-model="v$.user.username.$model"
                         autocomplete="new-password"
                         :autofocus="$s.login.autofocus && $route.params.groupId"
@@ -36,6 +30,14 @@
                         :validation="v$.user.username"
                     />
 
+                    <button
+                        v-if="!passwordRequired"
+                        class="btn btn-widget"
+                        :disabled="btnLoginDisabled"
+                        @click="login"
+                    >
+                        {{ $t('Join as guest') }}
+                    </button>
                     <FieldText
                         v-model="v$.user.password.$model"
                         autocomplete="new-password"
@@ -125,13 +127,13 @@
 </template>
 
 <script>
-import {required} from '@vuelidate/validators'
 import useVuelidate from '@vuelidate/core'
 
 export default {
     computed: {
         btnLoginDisabled() {
-            if (this.busy || !this.$s.user.username || !this.$s.user.password) {
+            if (this.busy || (this.usernameRequired && !this.$s.user.username) ||
+                (this.passwordRequired && !this.$s.user.password)) {
                 return true
             }
             // Server validation should not disable the login button.
@@ -143,6 +145,12 @@ export default {
         },
         isListedGroup() {
             return !!this.$s.groups.find((i) => i.name === this.$s.group.name)
+        },
+        passwordRequired() {
+            return !this.currentGroup['allow-anonymous'] && !this.currentGroup['public-access']
+        },
+        usernameRequired() {
+            return !this.currentGroup['allow-anonymous']
         },
     },
 
@@ -171,12 +179,7 @@ export default {
 
             this.busy = true
             try {
-                if (this.anonymousLogin) {
-                    await this.$m.sfu.connect('', '')
-                } else {
-                    await this.$m.sfu.connect(this.$s.user.username, this.$s.user.password)
-                }
-
+                await this.$m.sfu.connect(this.$s.user.username, this.$s.user.password)
             } catch (err) {
                 if (err === 'group is locked') {
                     this.app.notifier.notify({
@@ -220,8 +223,8 @@ export default {
     validations() {
         return  {
             user: {
-                password: {required},
-                username: {required},
+                password: {},
+                username: {},
             },
         }
     },
