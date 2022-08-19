@@ -136,7 +136,7 @@ export async function loadGroups(publicEndpoint = false) {
     let galeneGroups
     try {
         galeneGroups = await (await fetch(`${app.settings.sfu.url}/public-groups.json`)).json()
-    } catch(err) {
+    } catch (err) {
         galeneGroups = []
     }
     const files = await globby(path.join(app.config.sfu.path.groups, '**', '*.json'))

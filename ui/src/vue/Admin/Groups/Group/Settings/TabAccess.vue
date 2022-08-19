@@ -11,6 +11,7 @@
             :label="$t('public access')"
         />
         <FieldCheckbox
+            v-if="$s.admin.group['public-access']"
             v-model="$s.admin.group['allow-anonymous']"
             :help="$t('allow people to connect without username')"
             :label="$t('anonymous login')"

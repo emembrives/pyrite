@@ -11,7 +11,17 @@
         </header>
         <div class="panels">
             <section>
-                <form>
+                <form autocomplete="off">
+                    <FieldCheckbox
+                        v-if="currentGroup['public-access'] && !currentGroup['allow-anonymous']"
+                        v-model="$s.user.authOption"
+                        :label="$t('login as guest')" :toggle="guestToggle"
+                    />
+                    <FieldRadioGroup
+                        v-else-if="currentGroup['allow-anonymous'] && currentGroup['public-access']"
+                        v-model="$s.user.authOption"
+                        :label="$t('login as')" :options="authOptions"
+                    />
                     <FieldText
                         v-if="!isListedGroup"
                         v-model="currentGroup.name"
@@ -21,24 +31,17 @@
                     />
 
                     <FieldText
+                        v-if="['user', 'guest'].includes($s.user.authOption)"
                         v-model="v$.user.username.$model"
-                        autocomplete="new-password"
+                        autocomplete="off"
                         :autofocus="$s.login.autofocus && $route.params.groupId"
                         :label="$t('username')"
                         name="username"
                         placeholder="Alice, Bob, Carol..."
                         :validation="v$.user.username"
                     />
-
-                    <button
-                        v-if="!passwordRequired"
-                        class="btn btn-widget"
-                        :disabled="btnLoginDisabled"
-                        @click="login"
-                    >
-                        {{ $t('Join as guest') }}
-                    </button>
                     <FieldText
+                        v-if="$s.user.authOption === 'user'"
                         v-model="v$.user.password.$model"
                         autocomplete="new-password"
                         :label="$t('password')"
@@ -127,6 +130,7 @@
 </template>
 
 <script>
+import {required} from '@vuelidate/validators'
 import useVuelidate from '@vuelidate/core'
 
 export default {
@@ -156,8 +160,14 @@ export default {
 
     data() {
         return {
-            anonymousLogin: false,
+
+            authOptions: [
+                ['user', this.$t('user')],
+                ['guest', this.$t('guest')],
+                ['anonymous', this.$t('anonymous')],
+            ],
             busy: false,
+            guestToggle: ['user', 'guest'],
             user: this.$s.user,
             vuelidateExternalResults: {
                 user: {
@@ -179,7 +189,13 @@ export default {
 
             this.busy = true
             try {
-                await this.$m.sfu.connect(this.$s.user.username, this.$s.user.password)
+                if (this.$s.user.authOption === 'user') {
+                    await this.$m.sfu.connect(this.$s.user.username, this.$s.user.password)
+                } else if (this.$s.user.authOption === 'guest') {
+                    await this.$m.sfu.connect(this.$s.user.username, '')
+                } else if (this.$s.user.authOption === 'anonymous') {
+                    await this.$m.sfu.connect('', '')
+                }
             } catch (err) {
                 if (err === 'group is locked') {
                     this.app.notifier.notify({
@@ -221,12 +237,23 @@ export default {
         return {v$: useVuelidate()}
     },
     validations() {
-        return  {
-            user: {
-                password: {},
-                username: {},
-            },
+        if (this.$s.user.authOption === 'user') {
+            return  {
+                user: {
+                    password: {required},
+                    username: {required},
+                },
+            }
+        } else if (this.$s.user.authOption === 'guest') {
+            return {
+                user: {
+                    username: {required},
+                },
+            }
+        } else {
+            return {}
         }
+
     },
     watch: {
         '$s.devices.cam.enabled'() {

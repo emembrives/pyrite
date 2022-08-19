@@ -5,9 +5,10 @@
                 {{ label }}
             </div>
             <label class="switch" :class="elementclass" :for="name">
+
                 <input
                     :id="name"
-                    :checked="modelValue"
+                    :checked="modelValue === toggle[0] ? false : true"
                     :class="elementclass"
                     :disabled="disabled"
                     :name="name"
@@ -31,13 +32,18 @@ export default {
     extends: Field,
     methods: {
         updateModel: function(event) {
-            this.$emit('update:modelValue', event.target.checked)
+            this.$emit('update:modelValue', event.target.checked ? this.toggle[1] : this.toggle[0])
         },
     },
     props: {
         modelValue: {
             required: true,
-            type: Boolean,
+            type: [Boolean, String],
+        },
+        toggle: {
+            default: () => [false, true],
+            required: false,
+            type: Array,
         },
     },
 }
