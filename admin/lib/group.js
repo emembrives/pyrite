@@ -132,13 +132,15 @@ export async function loadGroup(groupName) {
 
 export async function loadGroups(publicEndpoint = false) {
     app.logger.debug(`load groups`)
-    // Contains clientCount; mix it with the Pyrite group info.
+    // Galene group endpoint; contains client count and locked info. Add it
+    // to the more static Pyrite group info.
     let galeneGroups
     try {
         galeneGroups = await (await fetch(`${app.settings.sfu.url}/public-groups.json`)).json()
     } catch (err) {
         galeneGroups = []
     }
+
     const files = await globby(path.join(app.config.sfu.path.groups, '**', '*.json'))
     const groupNames = files.map((i) => {
         return i.substring(app.config.sfu.path.groups.length+1, i.length-5)
@@ -169,6 +171,7 @@ export async function loadGroups(publicEndpoint = false) {
         if (galeneGroup) {
             Object.assign(data, {
                 clientCount: galeneGroup.clientCount,
+                locked: galeneGroup.locked ? true : false,
                 name: groupName,
             })
         }
@@ -206,6 +209,7 @@ export async function saveGroup(groupName, data) {
     // Remove non-group data.
     delete saveData.name
     delete saveData.clientCount
+    delete saveData.locked
 
     if (saveData['public-access'] === true) {
         saveData.other.push({})

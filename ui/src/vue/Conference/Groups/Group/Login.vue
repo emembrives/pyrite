@@ -13,12 +13,12 @@
             <section>
                 <form autocomplete="off">
                     <FieldCheckbox
-                        v-if="currentGroup['public-access'] && !currentGroup['allow-anonymous']"
+                        v-if="!currentGroup.locked && (currentGroup['public-access'] && !currentGroup['allow-anonymous'])"
                         v-model="$s.user.authOption"
                         :label="$t('login as guest')" :toggle="guestToggle"
                     />
                     <FieldRadioGroup
-                        v-else-if="currentGroup['allow-anonymous'] && currentGroup['public-access']"
+                        v-else-if="!currentGroup.locked && (currentGroup['allow-anonymous'] && currentGroup['public-access'])"
                         v-model="$s.user.authOption"
                         :label="$t('login as')" :options="authOptions"
                     />
@@ -136,8 +136,7 @@ import useVuelidate from '@vuelidate/core'
 export default {
     computed: {
         btnLoginDisabled() {
-            if (this.busy || (this.usernameRequired && !this.$s.user.username) ||
-                (this.passwordRequired && !this.$s.user.password)) {
+            if (this.busy || this.v$.$error) {
                 return true
             }
             // Server validation should not disable the login button.
@@ -150,17 +149,10 @@ export default {
         isListedGroup() {
             return !!this.$s.groups.find((i) => i.name === this.$s.group.name)
         },
-        passwordRequired() {
-            return !this.currentGroup['allow-anonymous'] && !this.currentGroup['public-access']
-        },
-        usernameRequired() {
-            return !this.currentGroup['allow-anonymous']
-        },
     },
 
     data() {
         return {
-
             authOptions: [
                 ['user', this.$t('user')],
                 ['guest', this.$t('guest')],
@@ -217,7 +209,6 @@ export default {
             if (this.v$.$invalid) return
 
             // Save credentials for the next time.
-
             this.app.store.save()
 
             this.$s.group.connected = true
@@ -229,6 +220,7 @@ export default {
         },
     },
     async mounted() {
+        this.$s.user.authOption = 'user'
         this.busy = true
         await this.$m.media.queryDevices()
         this.busy = false
@@ -256,6 +248,9 @@ export default {
 
     },
     watch: {
+        '$route.params.groupId'() {
+            this.$s.user.authOption = 'user'
+        },
         '$s.devices.cam.enabled'() {
             this.app.store.save()
         },

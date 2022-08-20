@@ -75,6 +75,9 @@ export default {
                 this.$s.groups = groups
             } else {
                 for (const group of groups) {
+                    if (group.name === this.$s.group.name) {
+                        this.$s.group.locked = group.locked
+                    }
                     const _group = this.$s.groups.find((g) => g.name === group.name)
                     if (_group) {
                         Object.assign(_group, {
