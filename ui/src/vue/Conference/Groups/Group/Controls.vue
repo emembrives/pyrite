@@ -28,7 +28,6 @@
 
             <button
                 v-if="$s.permissions.present"
-
                 class="btn btn-menu"
                 :class="{active: $s.devices.cam.enabled, error: !$s.devices.cam.enabled}"
                 :disabled="!$s.mediaReady"
