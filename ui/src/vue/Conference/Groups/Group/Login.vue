@@ -220,7 +220,14 @@ export default {
         },
     },
     async mounted() {
-        this.$s.user.authOption = 'user'
+        let currentGroup = this.$m.group.currentGroup()
+        if (!currentGroup.locked && (currentGroup['allow-anonymous'] && currentGroup['public-access'])) {
+            this.$s.user.authOption = 'anonymous'
+        } else if (!currentGroup.locked && (currentGroup['public-access'] && !currentGroup['allow-anonymous'])) {
+            this.$s.user.authOption = 'guest'
+        }  else {
+            this.$s.user.authOption = 'user'
+        }
         this.busy = true
         await this.$m.media.queryDevices()
         this.busy = false
@@ -249,7 +256,14 @@ export default {
     },
     watch: {
         '$route.params.groupId'() {
-            this.$s.user.authOption = 'user'
+            let currentGroup = this.$m.group.currentGroup()
+            if (!currentGroup.locked && (currentGroup['allow-anonymous'] && currentGroup['public-access'])) {
+                this.$s.user.authOption = 'anonymous'
+            } else if (!currentGroup.locked && (currentGroup['public-access'] && !currentGroup['allow-anonymous'])) {
+                this.$s.user.authOption = 'guest'
+            }  else {
+                this.$s.user.authOption = 'user'
+            }
         },
         '$s.devices.cam.enabled'() {
             this.app.store.save()
