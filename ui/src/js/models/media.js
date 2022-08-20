@@ -6,12 +6,12 @@ export let screenStream
 export async function getUserMedia(presence) {
     app.$s.mediaReady = false
     // Cleanup the old networked stream first:
-    if (localStream && app.$s.group.connected) {
-        app.$m.sfu.delUpMediaKind('camera')
-    }
-
     if (localStream) {
-        app.$m.sfu.delLocalMedia()
+        if (app.$s.group.connected) {
+            app.$m.sfu.delUpMediaKind('camera')
+        } else {
+            app.$m.sfu.delLocalMedia()
+        }
     }
 
     let selectedAudioDevice = false

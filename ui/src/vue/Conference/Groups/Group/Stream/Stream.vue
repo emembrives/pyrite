@@ -97,6 +97,8 @@ export default {
             return false
         },
         hasSettings() {
+            if (!this.modelValue?.settings) return false
+
             // Firefox MediaStream settings are empty.
             // See https://bugzilla.mozilla.org/show_bug.cgi?id=1537986
             return (
@@ -269,6 +271,7 @@ export default {
                     // Local MediaStream (not part of Galene); e.g. Webcam test
                     this.stream = this.modelValue.src
                     this.$refs.media.srcObject = this.stream
+                    await this.playStream()
                 } else {
                     throw new Error('invalid Stream source type')
                 }
