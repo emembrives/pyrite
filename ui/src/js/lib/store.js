@@ -25,7 +25,7 @@ const persistantState = reactive({
             selected: {id: null, name: ''},
         },
     },
-    language: {id: 'en'},
+    language: {id: ['en', 'fr', 'nl'].includes(window.navigator.language.split("-")[0]) ? window.navigator.language.split("-")[0] : 'en'},
     loading: true,
     media: {
         accept: {id: 'everything', name: ''},
