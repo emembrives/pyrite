@@ -24,6 +24,7 @@ const PUBLIC_GROUP_FIELDS = [
     'displayName',
     'max-clients',
     'max-history-age',
+    'public-access',
 ]
 
 export function groupTemplate(groupId = null) {
@@ -52,6 +53,7 @@ export function groupTemplate(groupId = null) {
         other: [],
         presenter: [],
         public: true,
+        'public-access': false,
         redirect: '',
     }
 
@@ -109,6 +111,17 @@ export async function loadGroup(groupName) {
     const exists = await fs.pathExists(groupFile)
     if (!exists) return null
     const groupData = JSON.parse(await fs.promises.readFile(groupFile, 'utf8'))
+    // Public access is stored as an empty user entry in the "other" section of the galene group file.
+    // However, Pyrite stores it as a boolean bit in the group object, as this "empty" user does not exist.
+    // The code below does the conversion between these two formats.
+    const public_access_idx = groupData.other.findIndex(
+        (obj) => obj && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype)
+    if (public_access_idx !== -1) {
+        groupData['public-access'] = true
+        groupData.other.splice(public_access_idx, 1)
+    } else {
+        groupData['public-access'] = false
+    }
     groupData._permissions = await loadGroupPermissions(groupName)
     groupData._name = groupName
     groupData._newName = groupName
@@ -119,22 +132,24 @@ export async function loadGroup(groupName) {
 
 export async function loadGroups(publicEndpoint = false) {
     app.logger.debug(`load groups`)
-    // Contains clientCount; mix it with the Pyrite group info.
+    // Galene group endpoint; contains client count and locked info. Add it
+    // to the more static Pyrite group info.
     let galeneGroups
     try {
         galeneGroups = await (await fetch(`${app.settings.sfu.url}/public-groups.json`)).json()
-    } catch(err) {
+    } catch (err) {
         galeneGroups = []
     }
+
     const files = await globby(path.join(app.config.sfu.path.groups, '**', '*.json'))
-    const fileData = await Promise.all(files.map((i) => fs.promises.readFile(i, 'utf8')))
     const groupNames = files.map((i) => {
-        return i.replace(app.config.sfu.path.groups, '').replace('.json', '').replace('/', '')
+        return i.substring(app.config.sfu.path.groups.length+1, i.length-5)
     })
+    const fileData = await Promise.all(groupNames.map((i) => loadGroup(i, 'utf8')))
 
     const groupsData = []
     for (const [index, groupName] of groupNames.entries()) {
-        const groupData = JSON.parse(fileData[index])
+        const groupData = fileData[index]
         let data = {}
 
         if (publicEndpoint) {
@@ -150,17 +165,13 @@ export async function loadGroups(publicEndpoint = false) {
             }
         } else {
             data = groupData
-            data._permissions = await loadGroupPermissions(groupName)
-            data._name = groupName
-            data._newName = groupName
-            data._delete = false
-            data._unsaved = false
         }
 
         const galeneGroup = galeneGroups.find((i) => i.name === groupName)
         if (galeneGroup) {
             Object.assign(data, {
                 clientCount: galeneGroup.clientCount,
+                locked: galeneGroup.locked ? true : false,
                 name: groupName,
             })
         }
@@ -198,6 +209,18 @@ export async function saveGroup(groupName, data) {
     // Remove non-group data.
     delete saveData.name
     delete saveData.clientCount
+    delete saveData.locked
+
+    if (saveData['public-access'] === true) {
+        saveData.other.push({})
+    } else {
+        const public_access_idx = saveData.other.findIndex(
+            (obj) => obj && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype)
+        if (public_access_idx !== -1) {
+            saveData.other.splice(public_access_idx, 1)
+        }
+    }
+    delete saveData['public-access']
 
     await saveGroupPermissions(groupName, saveData._permissions)
 

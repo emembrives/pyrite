@@ -44,6 +44,7 @@ const persistantState = reactive({
     },
     theme: {id: 'system'},
     user: {
+        authOption: 'user',
         data: {
             availability: {id: 'available', name: ''},
             mic: true,

@@ -17,7 +17,7 @@
                     {{ user.username }}
                 </div>
                 <div v-else class="username">
-                    '(anon)'
+                    {{ $t('anonymous') }}
                 </div>
                 <div v-if="$s.users[0].id === user.id" class="username">
                     (you)
@@ -52,6 +52,7 @@ export default {
         sortedUsers() {
             const users = [...this.$s.users]
             users.sort(function(a, b) {
+                if (!a.username || !b.username) return 0
                 const aLowerName = a.username.toLowerCase()
                 const bLowerName = b.username.toLowerCase()
                 if (aLowerName < bLowerName) return -1
