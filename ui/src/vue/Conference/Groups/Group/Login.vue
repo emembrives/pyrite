@@ -255,21 +255,23 @@ export default {
 
     },
     watch: {
-        '$route.params.groupId'() {
-            let currentGroup = this.$m.group.currentGroup()
-            if (!currentGroup.locked && (currentGroup['allow-anonymous'] && currentGroup['public-access'])) {
-                this.$s.user.authOption = 'anonymous'
-            } else if (!currentGroup.locked && (currentGroup['public-access'] && !currentGroup['allow-anonymous'])) {
-                this.$s.user.authOption = 'guest'
-            }  else {
-                this.$s.user.authOption = 'user'
-            }
-        },
         '$s.devices.cam.enabled'() {
             this.app.store.save()
         },
         '$s.devices.mic.enabled'() {
             this.app.store.save()
+        },
+        currentGroup: {
+            handler(currentGroup) {
+                if (!currentGroup.locked && (currentGroup['allow-anonymous'] && currentGroup['public-access'])) {
+                    this.$s.user.authOption = 'anonymous'
+                } else if (!currentGroup.locked && (currentGroup['public-access'] && !currentGroup['allow-anonymous'])) {
+                    this.$s.user.authOption = 'guest'
+                }  else {
+                    this.$s.user.authOption = 'user'
+                }
+            },
+            deep: true,
         },
     },
 }
