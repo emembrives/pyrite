@@ -128,7 +128,14 @@ export default {
             this.app.store.save()
         },
         toggleMicrophone() {
+            let shouldRestartStream = !this.$s.devices.cam.enabled
             this.$m.sfu.muteMicrophone(this.$s.devices.mic.enabled)
+            if (shouldRestartStream) {
+                // When both the camera is off, toggling the microphone should also restart the stream.
+                // Otherwise, we would either continue to stream empty data (when both camera and mic are
+                // off), or we would not send our audio stream altogether.
+                this.$m.media.getUserMedia(this.$s.devices)
+            }
         },
         togglePlayFile(file) {
             if (file) {
