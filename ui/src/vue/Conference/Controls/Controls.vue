@@ -32,7 +32,7 @@
             </button>
 
             <button
-                v-if="$s.group.connected && $s.permissions.present"
+                v-if="$s.group.connected"
                 class="btn btn-menu"
                 :class="{active: $s.user.data.raisehand}"
                 @click="toggleRaiseHand"
