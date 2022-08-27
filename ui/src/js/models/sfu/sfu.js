@@ -544,6 +544,6 @@ function stopUpMedia(c) {
     app.logger.debug(`stopping up-stream ${c.id}`)
     c.stream.getTracks().forEach(t => t.stop())
 
-    app.$s.upMedia[c.label].splice(app.$s.upMedia[c.label].indexOf(c.id), 1)
-    app.$s.streams.splice(app.$s.streams.indexOf(c.id), 1)
+    app.$s.upMedia[c.label].splice(app.$s.upMedia[c.label].findIndex(i => i.id === c.id), 1)
+    app.$s.streams.splice(app.$s.streams.findIndex(i => i.id === c.id), 1)
 }
