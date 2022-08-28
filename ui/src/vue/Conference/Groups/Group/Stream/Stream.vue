@@ -23,9 +23,6 @@
             <div v-if="!modelValue.playing" class="loading-container">
                 <Icon class="spinner" name="Spinner" />
             </div>
-            <div v-else-if="!modelValue.hasVideo" class="media-container">
-                <Icon name="Logo" />
-            </div>
         </Transition>
 
         <Reports v-if="stats.visible" :description="modelValue" @click.stop="toggleStats" />

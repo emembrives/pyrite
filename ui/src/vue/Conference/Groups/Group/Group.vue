@@ -1,17 +1,25 @@
 <template>
-    <div ref="view" class="c-group">
-        <router-view v-slot="{ Component }">
-            <Transition>
-                <component :is="Component" />
-            </Transition>
-        </router-view>
+    <div class="c-viewport">
+        <div ref="view" class="c-group">
+            <router-view v-slot="{ Component }">
+                <Transition>
+                    <component :is="Component" />
+                </Transition>
+            </router-view>
 
-        <Stream
-            v-for="(description, index) in sortedStreams" :key="description.id"
-            v-model="sortedStreams[index]"
-        />
+            <Stream
+                v-for="index in sortedVideoStreams" :key="$s.streams[index].id"
+                v-model="$s.streams[index]"
+            />
 
-        <Icon v-if="!$s.streams.length" class="icon logo-animated" name="Logo" />
+            <Icon v-if="!sortedVideoStreams.length" class="icon logo-animated" name="Logo" />
+        </div>
+        <div v-if="sortedAudioStreams.length" ref="audio-view" class="c-group-audio">
+            <Stream
+                v-for="index in sortedAudioStreams" :key="$s.streams[index].id"
+                v-model="$s.streams[index]"
+            />
+        </div>
     </div>
 </template>
 
@@ -26,13 +34,25 @@ export default {
         this.itemRefs = []
     },
     computed: {
-        sortedStreams() {
-            const streams = this.$s.streams
-            return streams.sort((a, b) => {
-                if (a.username < b.username){
+        sortedAudioStreams() {
+            let indexes = Array.from(Array(this.$s.streams.length).keys()).filter((i) => !this.$s.streams[i].hasVideo)
+            return indexes.sort((a, b) => {
+                if (this.$s.streams[a].username < this.$s.streams[b].username){
                     return -1
                 }
-                if (a.username > b.username) {
+                if (this.$s.streams[a].username > this.$s.streams[b].username) {
+                    return 1
+                }
+                return 0
+            })
+        },
+        sortedVideoStreams() {
+            let indexes = Array.from(Array(this.$s.streams.length).keys()).filter((i) => this.$s.streams[i].hasVideo)
+            return indexes.sort((a, b) => {
+                if (this.$s.streams[a].username < this.$s.streams[b].username){
+                    return -1
+                }
+                if (this.$s.streams[a].username > this.$s.streams[b].username) {
                     return 1
                 }
                 return 0
@@ -134,38 +154,61 @@ export default {
     }
 }
 
-.c-group {
-    align-content: center;
-    align-items: center;
-    background: var(--grey-1);
+.c-viewport {
+    height: 100%;
+    width: 100%;
     display: flex;
-    flex: 1;
-    flex-wrap: wrap;
-    gap: var(--stream-margin);
-    justify-content: center;
-    position: relative;
+    flex-flow: column;
 
-    .c-stream {
-        animation: show 0.35s ease-in;
-        aspect-ratio: var(--aspect-ratio);
-        box-shadow: var(--shadow-l);
-        max-width: var(--stream-width);
-        width: var(--stream-width);
-    }
-
-    .logo-animated {
-        height: 30%;
-        width: 30%;
-    }
-
-    .c-settings {
-        background: var(--overlay-c);
-        left: 0;
-        max-width: 700px;
-        position: absolute;
-        top: 0;
+    .c-group {
+        align-content: center;
+        align-items: center;
+        background: var(--grey-1);
+        display: flex;
+        flex: 1 1 auto;
+        flex-flow: row wrap;
+        gap: var(--stream-margin);
+        justify-content: center;
         width: 100%;
-        z-index: 10;
+
+        .c-stream {
+            animation: show 0.35s ease-in;
+            aspect-ratio: var(--aspect-ratio);
+            box-shadow: var(--shadow-l);
+            max-width: var(--stream-width);
+            width: var(--stream-width);
+        }
+
+        .logo-animated {
+            height: 30%;
+            width: 30%;
+        }
+
+        .c-settings {
+            background: var(--overlay-c);
+            left: 0;
+            max-width: 700px;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+        }
+    }
+
+    .c-group-audio {
+        align-content: center;
+        align-items: center;
+        background: var(--grey-1);
+        display: flex;
+        flex: 0 1 var(--spacer-6);
+        flex-flow: row wrap;
+        gap: var(--stream-margin);
+        justify-content: center;
+
+        .c-stream {
+            flex: 1;
+            height: var(--spacer-6);
+        }
     }
 }
 </style>
