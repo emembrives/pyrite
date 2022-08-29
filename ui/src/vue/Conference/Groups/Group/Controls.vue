@@ -160,6 +160,9 @@ export default {
         '$s.devices.mic.enabled'(enabled) {
             this.$m.sfu.connection.userAction('setdata', this.$m.sfu.connection.id, {mic: enabled})
         },
+        '$s.permissions.present'() {
+            this.$m.media.getUserMedia(this.$s.devices)
+        },
         volume(volume) {
             for (const description of this.$s.streams) {
                 // Only downstreams have volume control:
