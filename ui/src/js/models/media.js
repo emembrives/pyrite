@@ -30,6 +30,7 @@ export async function getUserMedia(presence) {
         if (!presence.mic.enabled) selectedAudioDevice = false
         // A local stream cannot be initialized with neither audio and video; return early.
         if (!presence.cam.enabled && !presence.mic.enabled) {
+            app.$s.mediaReady = true
             return
         }
     }
@@ -59,6 +60,7 @@ export async function getUserMedia(presence) {
         localStream = await navigator.mediaDevices.getUserMedia(constraints)
     } catch (message) {
         app.notifier.notify({level: 'error', message})
+        app.$s.mediaReady = true
         return
     }
 
