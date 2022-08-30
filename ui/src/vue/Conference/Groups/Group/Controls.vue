@@ -21,7 +21,7 @@
                 @click="toggleMicrophone"
             >
                 <Icon
-                    v-tip="{content: `${$t('switch microphone')} ${$s.devices.mic.enabled ? $t('off') : $t('on')}`}"
+                    v-tip="{content: $s.devices.mic.enabled ? $t('switch microphone off') : $t('switch microphone on')}"
                     class="icon-small" :name="$s.devices.mic.enabled ? 'Mic' : 'MicMute'"
                 />
             </button>
@@ -34,7 +34,7 @@
                 @click="toggleCam"
             >
                 <Icon
-                    v-tip="{content: `${$t('switch camera')} ${$s.devices.cam.enabled ? $t('off') : $t('on')}`}"
+                    v-tip="{content: $s.devices.cam.enabled ? $t('switch camera off') : $t('switch camera on')}"
                     class="icon-small"
                     name="Webcam"
                 />
@@ -47,7 +47,7 @@
                 @click="toggleScreenshare"
             >
                 <Icon
-                    v-tip="{content: `${$t('switch screensharing')} ${$s.upMedia.screenshare.length ? $t('off') : $t('on')}`}"
+                    v-tip="{content: $s.upMedia.screenshare.length ? $t('switch screensharing off') : $t('switch screensharing on')}"
                     class="icon-small"
                     name="ScreenShare"
                 />
